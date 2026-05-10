@@ -61,48 +61,46 @@ const SceneBalloons = ({ onComplete }) => {
         <CurvedLoop marqueeText="HAPPY BIRTHDAY ✦ " speed={1.5} curveAmount={350} />
         <AnimatedText 
           text="SHATHINI" 
-          textClassName="text-[80px] md:text-[180px] font-cinzel font-bold text-white tracking-[0.3em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
+          textClassName="text-[clamp(3rem,15vw,10rem)] font-cinzel font-bold text-white tracking-[0.2em] md:tracking-[0.3em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
           underlineGradient="from-purple-400 via-fuchsia-500 to-pink-500"
-          underlineHeight="h-[4px]"
-          underlineOffset="-bottom-4"
-          className="mt-[-100px] mb-6 z-30"
+          underlineHeight="h-[2px] md:h-[4px]"
+          underlineOffset="-bottom-2 md:-bottom-4"
+          className="mt-[-40px] md:mt-[-100px] mb-6 z-30"
         />
 
         {/* Birthday Details - Adjusted Layout to clear Lanyard String */}
-        <div className="flex items-center justify-center w-full max-w-[90vw] md:max-w-5xl z-30 drop-shadow-md">
-          {/* Left Side: Date + Star - Moved further left and resized to match Age */}
-          <div className="flex-1 flex justify-end pr-16 md:pr-48 items-center">
-            <div className="flex items-center justify-center font-cinzel font-bold text-[#fce4ec] opacity-100 text-[22px]">
-              <div className="px-10">
-                <Counter end={20} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
-              </div>
-              <span className="text-pink-300 opacity-80 text-[22px] mx-4">&bull;</span>
-              <div className="px-10">
-                <Counter end={5} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
-              </div>
-              <span className="text-pink-300 opacity-80 text-[22px] mx-4">&bull;</span>
-              <div className="px-10">
-                <Counter end={2005} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
-              </div>
+        {/* Birthday Details - Responsive Layout */}
+        <div className="responsive-stack w-full px-4 z-30 drop-shadow-md">
+          {/* Left Side: Date */}
+          <div className="flex items-center justify-center font-cinzel font-bold text-[#fce4ec] text-[16px] md:text-[22px]">
+            <div className="px-2 md:px-10">
+              <Counter end={20} duration={2} className="text-[#fce4ec] w-auto" />
             </div>
-            {/* Star resized and spaced to match theme */}
-            <span className="text-pink-400 text-[26px] shrink-0 ml-8 md:ml-12">✦</span>
+            <span className="text-pink-300 opacity-80 mx-2 md:mx-4">&bull;</span>
+            <div className="px-2 md:px-10">
+              <Counter end={5} duration={2} className="text-[#fce4ec] w-auto" />
+            </div>
+            <span className="text-pink-300 opacity-80 mx-2 md:mx-4">&bull;</span>
+            <div className="px-2 md:px-10">
+              <Counter end={2005} duration={2} className="text-[#fce4ec] w-auto" />
+            </div>
+            <span className="text-pink-400 text-[20px] md:text-[26px] ml-4 md:ml-12">✦</span>
           </div>
           
-          {/* Right Side: Age - Moved further right for symmetry */}
-          <div className="flex-1 flex justify-start pl-16 md:pl-48">
+          {/* Right Side: Age */}
+          <div className="flex justify-center">
             <LightningText 
               text="21 YEARS" 
-              size={22} 
-              className="w-[180px] h-[50px] md:w-[240px] md:h-[60px]" 
+              size={18} 
+              className="w-[160px] h-[45px] md:w-[240px] md:h-[60px]" 
             />
           </div>
         </div>
 
-        <div className="mt-64 transform translate-y-[80px]">
+        <div className="mt-20 md:mt-64 transform translate-y-[40px] md:translate-y-[80px]">
           <Lanyard />
         </div>
-        <p className="subtitle-elegant">Pop the balloons to celebrate.</p>
+        <p className="subtitle-elegant mt-12">Pop the balloons to celebrate.</p>
         {showContinue && (
           <button 
             onClick={onComplete}
