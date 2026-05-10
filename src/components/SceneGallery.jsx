@@ -43,7 +43,7 @@ const SceneGallery = ({ onComplete }) => {
       </div>
 
       {/* Button */}
-      <div className="relative z-40 mt-auto mb-10 flex flex-col items-center gap-4">
+      <div className="relative z-40 mt-auto mb-24 flex flex-col items-center gap-4">
         {showContinue && (
           <>
             <button 

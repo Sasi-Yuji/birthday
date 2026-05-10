@@ -82,32 +82,32 @@ const SceneBalloons = ({ onComplete }) => {
         />
 
         {/* Birthday Details - Adjusted Layout to clear Lanyard String */}
-        <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-[95vw] md:max-w-5xl z-30 drop-shadow-md gap-4 md:gap-0">
+        <div className="flex flex-row items-center justify-between w-full px-4 sm:px-16 md:px-32 max-w-[100vw] md:max-w-5xl z-30 drop-shadow-md gap-0">
           {/* Left Side: Date + Star */}
-          <div className="flex-1 flex justify-center md:justify-end md:pr-48 items-center">
-            <div className="flex items-center justify-center font-cinzel font-bold text-[#fce4ec] opacity-100 text-[16px] sm:text-[18px] md:text-[22px]">
-              <div className="px-3 sm:px-6 md:px-10">
+          <div className="flex items-center justify-start">
+            <div className="flex items-center justify-center font-cinzel font-bold text-[#fce4ec] opacity-100 text-[11px] sm:text-[18px] md:text-[22px]">
+              <div className="px-1 sm:px-4 md:px-8">
                 <Counter end={20} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
               </div>
-              <span className="text-pink-300 opacity-80 text-[16px] sm:text-[18px] md:text-[22px] mx-1 md:mx-4">&bull;</span>
-              <div className="px-3 sm:px-6 md:px-10">
+              <span className="text-pink-300 opacity-80 text-[11px] sm:text-[18px] md:text-[22px] mx-0.5 sm:mx-2 md:mx-4">&bull;</span>
+              <div className="px-1 sm:px-4 md:px-8">
                 <Counter end={5} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
               </div>
-              <span className="text-pink-300 opacity-80 text-[16px] sm:text-[18px] md:text-[22px] mx-1 md:mx-4">&bull;</span>
-              <div className="px-3 sm:px-6 md:px-10">
+              <span className="text-pink-300 opacity-80 text-[11px] sm:text-[18px] md:text-[22px] mx-0.5 sm:mx-2 md:mx-4">&bull;</span>
+              <div className="px-1 sm:px-4 md:px-8">
                 <Counter end={2005} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
               </div>
             </div>
             {/* Star hidden on mobile if too crowded, or kept for flair */}
-            <span className="text-pink-400 text-[20px] md:text-[26px] shrink-0 ml-4 md:ml-12 hidden sm:block">✦</span>
+            <span className="text-pink-400 text-[16px] sm:text-[20px] md:text-[26px] shrink-0 ml-1 sm:ml-4 md:ml-12 hidden sm:block">✦</span>
           </div>
           
           {/* Right Side: Age */}
-          <div className="flex-1 flex justify-center md:justify-start md:pl-48">
+          <div className="flex items-center justify-end transform translate-y-[3px] sm:translate-y-[4px]">
             <LightningText 
               text="21 YEARS" 
-              size={window.innerWidth < 768 ? 32 : 40} 
-              className="w-[180px] h-[50px] sm:w-[200px] sm:h-[60px] md:w-[240px] md:h-[60px]" 
+              size={window.innerWidth < 768 ? 20 : 40} 
+              className="w-[110px] h-[30px] sm:w-[200px] sm:h-[60px] md:w-[240px] md:h-[60px]" 
             />
           </div>
         </div>

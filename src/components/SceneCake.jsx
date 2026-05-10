@@ -111,7 +111,7 @@ const SceneCake = ({ onComplete }) => {
       candle.position.set(pos[0], 4.5, pos[1]);
       scene.add(candle);
 
-      const fGeo = new THREE.SphereGeometry(0.25, 16, 16); // Increased flame size
+      const fGeo = new THREE.SphereGeometry(0.4, 16, 16); // Increased flame size
       const flame = new THREE.Mesh(fGeo, new THREE.MeshBasicMaterial({ color: 0xffcc00 }));
       flame.position.set(pos[0], 5.2, pos[1]);
       flame.userData = { active: true, index: i };
@@ -200,7 +200,7 @@ const SceneCake = ({ onComplete }) => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="absolute top-[10%] z-30 flex flex-col items-center pointer-events-none"
+              className="absolute top-[-20px] z-30 flex flex-col items-center pointer-events-none"
             >
               <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-2">
                 <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">Tap the flames</span>
