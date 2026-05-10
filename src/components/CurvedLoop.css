@@ -11,14 +11,40 @@
 .curved-loop-svg {
   user-select: none;
   width: 100%;
-  aspect-ratio: 100 / 12;
+  aspect-ratio: 100 / 25;
   overflow: visible;
   display: block;
-  font-size: clamp(4rem, 15vw, 12rem);
+  font-size: 140px; /* SVG units relative to 2000 width */
   fill: #ffffff;
   font-family: 'Cinzel', serif;
   font-weight: 800;
   text-transform: uppercase;
   line-height: 1;
+  letter-spacing: -0.02em;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+@media (min-width: 768px) {
+  .curved-loop-svg {
+    aspect-ratio: 100 / 12;
+    letter-spacing: 0;
+    font-size: 180px;
+  }
+}
+
+.curved-loop-jacket {
+  min-height: 120px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+  .curved-loop-jacket {
+    min-height: 200px;
+    margin-top: 2rem;
+  }
 }

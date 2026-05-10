@@ -21,7 +21,10 @@ const CurvedLoop = ({
   const [offset, setOffset] = useState(0);
   const uid = useId();
   const pathId = `curve-${uid}`;
-  const pathD = `M-500,40 Q1000,${40 + curveAmount} 2500,40`;
+  
+  // Dynamic curve amount based on window width
+  const effectiveCurve = window.innerWidth < 768 ? curveAmount * 0.6 : curveAmount;
+  const pathD = `M-500,40 Q1000,${40 + effectiveCurve} 2500,40`;
 
   const dragRef = useRef(false);
   const lastXRef = useRef(0);

@@ -33,7 +33,7 @@ html {
 }
 
 .title-cinematic {
-  font-size: clamp(2rem, 5vw, 5.5rem);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
   line-height: 1.1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -41,9 +41,7 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-  margin-bottom: 0.5rem;
-  width: 95%;
-  margin-inline: auto;
+  margin-bottom: 1rem;
 }
 
 .subtitle-elegant {
@@ -115,10 +113,8 @@ html {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border-radius: clamp(12px, 4vw, 24px);
-  padding: clamp(1.5rem, 5vw, 3rem);
-  width: 90%;
-  max-width: 1200px;
+  border-radius: 24px;
+  padding: 3rem;
 }
 
 .btn-luxury {
@@ -126,14 +122,11 @@ html {
   background: transparent;
   color: var(--text-main);
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-size: 0.9rem;
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 0.8rem 2rem;
-  @media (min-width: 768px) {
-    padding: 1rem 3rem;
-  }
+  padding: 1rem 3rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 100px;
   cursor: pointer;
@@ -141,7 +134,6 @@ html {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   backdrop-filter: blur(10px);
   z-index: 50;
-  white-space: nowrap;
 }
 
 .btn-luxury::before {
@@ -415,38 +407,17 @@ html {
   height: 24px;
 }
 
-/* Responsive Utils */
-.responsive-stack {
+.gift-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .responsive-stack {
-    flex-direction: row;
-    justify-content: center;
-    gap: 4rem;
-  }
-}
-
-.hide-on-mobile {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .hide-on-mobile {
-    display: block;
-  }
-}
-
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease forwards;
+  opacity: 0;
+  transform: translateY(40px);
+  z-index: 2;
+  pointer-events: none;
 }

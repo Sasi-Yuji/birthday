@@ -184,12 +184,12 @@ const SceneCake = ({ onComplete }) => {
 
   return (
     <>
-      <div className="content-wrapper relative z-20 pointer-events-none px-4">
+      <div className="content-wrapper relative z-20 pointer-events-none">
         <h1 className="title-cinematic font-cinzel">Make A Wish</h1>
         <p className="subtitle-elegant">Tap the flames to blow out the candles.</p>
       </div>
-      <div id="cake-canvas-container" ref={containerRef} className="w-full h-[40vh] md:h-[45vh] min-h-[300px] md:min-h-[350px] relative mt-2 md:mt-4 cursor-pointer z-10" />
-      <div className="relative z-40 mt-4 md:mt-6 px-4">
+      <div id="cake-canvas-container" ref={containerRef} className="w-full h-[45vh] min-h-[350px] relative mt-4 cursor-pointer z-10" />
+      <div className="relative z-40 mt-6">
         {showContinue && (
           <button onClick={onComplete} className="btn-luxury animate-fade-in pointer-events-auto">
             Continue The Celebration
