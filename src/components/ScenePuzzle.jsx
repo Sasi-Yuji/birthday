@@ -72,17 +72,17 @@ const ScenePuzzle = ({ onComplete }) => {
           ))}
         </div>
       </div>
-      <div className="relative z-40 mt-10">
+      <div className="bottom-button-container">
         {isWin && (
-          <button onClick={onComplete} className="btn-luxury py-3 px-10 text-xs md:text-sm animate-fade-in pointer-events-auto">
+          <button onClick={onComplete} className="btn-luxury animate-fade-up">
             Unlock Surprise
           </button>
         )}
       </div>
 
-      {/* Premium Teddy Bear Friends */}
-      <TeddyBear type="teddy3" delay={1.5} />
-      <TeddyBear type="teddy4" delay={2.5} />
+      {/* Premium Teddy Bear Friends - Increased top-left significantly as requested */}
+      <TeddyBear type="teddy3" delay={1.5} sizeMultiplier={1.6} />
+      <TeddyBear type="teddy4" delay={2.5} sizeMultiplier={1} />
     </>
   );
 };

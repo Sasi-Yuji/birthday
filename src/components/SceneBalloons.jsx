@@ -61,9 +61,14 @@ const SceneBalloons = ({ onComplete }) => {
 
     if (!hasPopped) {
       setHasPopped(true);
-      setTimeout(() => setShowContinue(true), 3000);
     }
   };
+
+  useEffect(() => {
+    // Auto-appear button after 3 seconds for consistency
+    const timer = setTimeout(() => setShowContinue(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -81,33 +86,26 @@ const SceneBalloons = ({ onComplete }) => {
           className="mt-[-30px] sm:mt-[-80px] md:mt-[-100px] mb-6 z-30"
         />
 
-        {/* Birthday Details - Adjusted Layout to clear Lanyard String */}
-        <div className="flex flex-row items-center justify-between w-full px-4 sm:px-16 md:px-32 max-w-[100vw] md:max-w-5xl z-30 drop-shadow-md gap-0">
-          {/* Left Side: Date + Star */}
-          <div className="flex items-center justify-start">
-            <div className="flex items-center justify-center font-cinzel font-bold text-[#fce4ec] opacity-100 text-[11px] sm:text-[18px] md:text-[22px]">
-              <div className="px-1 sm:px-4 md:px-8">
-                <Counter end={20} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
-              </div>
-              <span className="text-pink-300 opacity-80 text-[11px] sm:text-[18px] md:text-[22px] mx-0.5 sm:mx-2 md:mx-4">&bull;</span>
-              <div className="px-1 sm:px-4 md:px-8">
-                <Counter end={5} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
-              </div>
-              <span className="text-pink-300 opacity-80 text-[11px] sm:text-[18px] md:text-[22px] mx-0.5 sm:mx-2 md:mx-4">&bull;</span>
-              <div className="px-1 sm:px-4 md:px-8">
-                <Counter end={2005} duration={2} className="text-[#fce4ec] px-0 w-auto tracking-normal" />
-              </div>
+        {/* Birthday Details - Matched Typography */}
+        <div className="flex flex-row items-center justify-between w-full px-4 sm:px-16 md:px-32 max-w-[100vw] md:max-w-5xl z-30 drop-shadow-md gap-4">
+          {/* Left Side: Date */}
+          <div className="flex items-center justify-start text-date-age text-[12px] sm:text-[18px] md:text-[24px]">
+            <div className="flex items-center">
+              <Counter end={20} duration={2} className="px-0 w-auto" />
+              <span className="mx-1 opacity-60">&bull;</span>
+              <Counter end={5} duration={2} className="px-0 w-auto" />
+              <span className="mx-1 opacity-60">&bull;</span>
+              <Counter end={2005} duration={2} className="px-0 w-auto" />
             </div>
-            {/* Star hidden on mobile if too crowded, or kept for flair */}
-            <span className="text-pink-400 text-[16px] sm:text-[20px] md:text-[26px] shrink-0 ml-1 sm:ml-4 md:ml-12 hidden sm:block">✦</span>
+            <span className="text-pink-400 ml-2 hidden sm:block">✦</span>
           </div>
 
-          {/* Right Side: Age */}
-          <div className="flex items-center justify-end transform translate-y-[3px] sm:translate-y-[4px]">
+          {/* Right Side: Age - Matched Size */}
+          <div className="flex items-center justify-end text-date-age text-[12px] sm:text-[18px] md:text-[24px]">
             <LightningText
               text="21 YEARS"
-              size={window.innerWidth < 768 ? 20 : 40}
-              className="w-[110px] h-[30px] sm:w-[200px] sm:h-[60px] md:w-[240px] md:h-[60px]"
+              size={window.innerWidth < 480 ? 12 : window.innerWidth < 768 ? 18 : 24}
+              className="w-[90px] h-[20px] sm:w-[150px] sm:h-[40px] md:w-[200px] md:h-[50px]"
             />
           </div>
         </div>
@@ -118,10 +116,13 @@ const SceneBalloons = ({ onComplete }) => {
         <p className="subtitle-elegant mt-2 md:mt-0 text-[10px] sm:text-xs md:text-base tracking-[0.15em] md:tracking-[0.2em]">
           Tap the balloons to celebrate.
         </p>
+      </div>
+
+      <div className="bottom-button-container">
         {showContinue && (
           <button
             onClick={onComplete}
-            className="btn-luxury mt-2 md:mt-8 pointer-events-auto animate-fade-in py-2 px-6 md:py-4 md:px-10 text-[10px] md:text-sm"
+            className="btn-luxury animate-fade-up"
           >
             Continue The Celebration
           </button>

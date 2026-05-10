@@ -16,43 +16,48 @@ const SceneGallery = ({ onComplete }) => {
   }, []);
 
   return (
-    <div className="w-full h-full relative flex flex-col items-center justify-center overflow-hidden">
-      {/* Title */}
-      <div className="content-wrapper relative z-30 pointer-events-none mt-10">
-        <h1 className="title-cinematic font-cinzel text-4xl md:text-5xl drop-shadow-lg">Beautiful Memories</h1>
-        <p className="subtitle-elegant">Spinning through time ✨</p>
-        {showContinue && (
-          <div className="text-white/40 text-[10px] uppercase tracking-[0.3em] animate-pulse mt-2">
-            Drag to rotate the galaxy
-          </div>
-        )}
+    <div className="w-full h-full relative flex flex-col items-center overflow-hidden">
+      {/* Independent Header Container - Positioned at the absolute top with safe margins */}
+      <div className="fixed top-0 left-0 w-full pt-[80px] sm:pt-[120px] flex flex-col items-center z-[100] pointer-events-none px-4">
+        <div className="content-wrapper flex flex-col items-center text-center max-w-[90vw]">
+          <h1 className="title-cinematic font-cinzel text-3xl sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] leading-none mb-2">
+            Beautiful Memories
+          </h1>
+          <p className="subtitle-elegant text-[9px] sm:text-xs md:text-sm tracking-[0.4em] sm:tracking-[0.6em] opacity-90 mb-2">
+            Spinning through time ✨
+          </p>
+          {showContinue && (
+            <div className="text-white/40 text-[7px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] animate-pulse">
+              Drag to rotate the galaxy
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Dark Overlay for better contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-20 pointer-events-none" />
 
-      {/* 3D Orbit Gallery */}
-      <div className="absolute inset-0 z-10 w-full h-full cursor-grab active:cursor-grabbing">
+      {/* 3D Orbit Gallery - Independent container moved to its highest position */}
+      <div className="absolute inset-0 z-10 w-full h-full cursor-grab active:cursor-grabbing transform translate-y-0">
         <Canvas camera={{ position: [-15, 2, 15], fov: 40 }}>
           <ambientLight intensity={0.8} />
           <pointLight position={[10, 10, 10]} intensity={1.5} />
           <ParticleSphere images={galleryImages} />
-          <OrbitControls 
-            enablePan={false} 
-            enableZoom={false} 
-            enableRotate={true} 
-            autoRotate={true} 
-            autoRotateSpeed={0.5} 
+          <OrbitControls
+            enablePan={false}
+            enableZoom={false}
+            enableRotate={true}
+            autoRotate={true}
+            autoRotateSpeed={0.5}
           />
         </Canvas>
       </div>
 
-      {/* Button */}
-      <div className="relative z-40 mt-auto mb-40 flex flex-col items-center gap-4">
+      <div className="bottom-button-container">
         {showContinue && (
-          <button 
+          <button
             onClick={onComplete}
-            className="btn-luxury animate-fade-in pointer-events-auto shadow-2xl"
+            className="btn-luxury animate-fade-up shadow-2xl"
           >
             Explore More
           </button>

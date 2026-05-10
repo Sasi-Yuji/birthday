@@ -225,17 +225,17 @@ const SceneCake = ({ onComplete }) => {
         <div id="cake-canvas-container" ref={containerRef} className="w-full h-[45vh] min-h-[350px] relative mt-4 cursor-pointer z-10" />
       </div>
 
-      <div className="relative z-40 mt-6">
+      <div className="bottom-button-container">
         {showContinue && (
-          <button onClick={onComplete} className="btn-luxury animate-fade-in pointer-events-auto">
+          <button onClick={onComplete} className="btn-luxury animate-fade-up">
             Continue The Celebration
           </button>
         )}
       </div>
 
-      {/* Premium Teddy Bear Friends */}
-      <TeddyBear type="teddy3" delay={1.2} />
-      <TeddyBear type="teddy4" delay={2.2} />
+      {/* Premium Teddy Bear Friends - Increased top-left size more for balance */}
+      <TeddyBear type="teddy3" delay={1.2} sizeMultiplier={1.4} />
+      <TeddyBear type="teddy4" delay={2.2} sizeMultiplier={1.2} />
     </>
   );
 };

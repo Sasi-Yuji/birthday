@@ -7,12 +7,13 @@ import teddy4 from '../../assets/teddy4.png';
 
 const images = { teddy1, teddy2, teddy3, teddy4 };
 
-const TeddyBear = ({ type = "teddy3", delay = 0.5 }) => {
+const TeddyBear = ({ type = "teddy3", delay = 0.5, sizeMultiplier = 1 }) => {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const isSmallMobile = typeof window !== 'undefined' && window.innerWidth < 480;
   
-  // Responsive sizing
-  const size = isSmallMobile ? 65 : isMobile ? 85 : 160;
+  // Responsive sizing - Multiplied by sizeMultiplier for specific scene needs
+  const baseSize = isSmallMobile ? 85 : isMobile ? 110 : 200;
+  const size = baseSize * sizeMultiplier;
 
   // Animation config using absolute viewport units (vw/vh) for Top/Left/Right/Bottom
   const animations = {

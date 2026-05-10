@@ -42,18 +42,18 @@ const SceneGift = ({ onComplete }) => {
     spotLight.castShadow = true;
     scene.add(spotLight);
 
-    // Materials
+    // Materials - Premium Red & Green Theme
     const boxMat = new THREE.MeshStandardMaterial({ 
-      color: 0xee0a24, 
-      roughness: 0.05, 
+      color: 0xee0a24, // Premium Red
+      roughness: 0.1, 
       metalness: 0.1,
-      emissive: 0x330000,
+      emissive: 0x440000,
       emissiveIntensity: 0.1
     });
     const ribbonMat = new THREE.MeshStandardMaterial({ 
-      color: 0x004d00, 
-      roughness: 0.3, 
-      metalness: 0.2,
+      color: 0x004d00, // Premium Green
+      roughness: 0.2, 
+      metalness: 0.3,
       emissive: 0x002200,
       emissiveIntensity: 0.05
     });
@@ -221,6 +221,7 @@ const SceneGift = ({ onComplete }) => {
         y: Math.PI * 4, duration: 2, ease: "power2.out", delay: 0.6,
         onComplete: () => {
           setTimeout(() => setShowContinue(true), 400);
+          // Card remains permanently visible as requested
         }
       });
     };
@@ -304,10 +305,13 @@ const SceneGift = ({ onComplete }) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-full max-h-screen">
-      <div className="content-wrapper relative z-20 pointer-events-none pt-2 md:pt-6">
-        <h1 className="title-cinematic font-cinzel text-3xl md:text-5xl lg:text-6xl text-white drop-shadow-xl">A Special Gift</h1>
-        <p className="subtitle-elegant mt-2 text-white/80">Because today is your day.</p>
+    <div className="flex flex-col items-center justify-between w-full h-full max-h-screen relative overflow-hidden bg-[#050508]">
+      {/* Cinematic dark theme preserved */}
+      <div className="ambient-aurora opacity-40" />
+      
+      <div className="content-wrapper relative z-20 pointer-events-none pt-6 md:pt-10">
+        <h1 className="title-cinematic font-cinzel text-3xl md:text-5xl lg:text-6xl text-white drop-shadow-2xl">A Special Gift</h1>
+        <p className="subtitle-elegant mt-2 text-white/70">Because today is your day.</p>
       </div>
 
       <div className="relative w-full flex-1 flex flex-col items-center justify-center min-h-0">
@@ -346,6 +350,7 @@ const SceneGift = ({ onComplete }) => {
                 scale: 1, 
                 y: [0, -15, 0],
               }}
+              exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
               transition={{
                 y: {
                   duration: 4,
@@ -359,26 +364,22 @@ const SceneGift = ({ onComplete }) => {
               <img 
                 src="/luxury_birthday_card.png" 
                 alt="Birthday Card" 
-                className="w-full h-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
+                className="w-full h-auto drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)] rounded-lg"
               />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="pb-6 md:pb-12 z-40 flex justify-center w-full">
-        <AnimatePresence>
-          {showContinue && (
-            <motion.button 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              onClick={onComplete} 
-              className="btn-luxury py-3 px-10 text-xs md:text-sm pointer-events-auto"
-            >
-              Continue To Finale
-            </motion.button>
-          )}
-        </AnimatePresence>
+      <div className="bottom-button-container">
+        {showContinue && (
+          <button 
+            onClick={onComplete} 
+            className="btn-luxury animate-fade-up shadow-xl"
+          >
+            Continue To Finale
+          </button>
+        )}
       </div>
     </div>
   );
