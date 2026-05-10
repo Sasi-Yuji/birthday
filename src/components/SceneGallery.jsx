@@ -43,21 +43,23 @@ const SceneGallery = ({ onComplete }) => {
       </div>
 
       {/* Button */}
-      <div className="relative z-40 mt-auto mb-10">
+      <div className="relative z-40 mt-auto mb-10 flex flex-col items-center gap-4">
         {showContinue && (
-          <button 
-            onClick={onComplete}
-            className="btn-luxury animate-fade-in pointer-events-auto shadow-2xl"
-          >
-            Explore More
-          </button>
+          <>
+            <button 
+              onClick={onComplete}
+              className="btn-luxury animate-fade-in pointer-events-auto shadow-2xl"
+            >
+              Explore More
+            </button>
+            <div className="text-white/40 text-[10px] uppercase tracking-[0.3em] animate-pulse">
+              Drag to rotate the galaxy
+            </div>
+          </>
         )}
       </div>
 
-      {/* Instructional Tooltip */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 text-white/30 text-[10px] uppercase tracking-widest pointer-events-none">
-        Drag to rotate the galaxy
-      </div>
+
     </div>
   );
 };

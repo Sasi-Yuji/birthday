@@ -55,18 +55,9 @@ export function ParticleSphere({ images }) {
       const y = 0
       const z = SPHERE_RADIUS * Math.sin(angle)
 
-      const position = new THREE.Vector3(x, y, z)
-      const center = new THREE.Vector3(0, 0, 0)
-      const outwardDirection = position.clone().sub(center).normalize()
-
-      const euler = new THREE.Euler()
-      const matrix = new THREE.Matrix4()
-      matrix.lookAt(position, position.clone().add(outwardDirection), new THREE.Vector3(0, 1, 0))
-      euler.setFromRotationMatrix(matrix)
-
       imgs.push({
         position: [x, y, z],
-        rotation: [euler.x, euler.y, euler.z],
+        rotation: [0, -angle + Math.PI / 2, 0], // Perfectly vertical, facing outward
         textureIndex: i % textures.length,
       })
     }

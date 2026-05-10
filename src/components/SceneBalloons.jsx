@@ -106,22 +106,22 @@ const SceneBalloons = ({ onComplete }) => {
           <div className="flex-1 flex justify-center md:justify-start md:pl-48">
             <LightningText 
               text="21 YEARS" 
-              size={window.innerWidth < 768 ? 18 : 22} 
-              className="w-[140px] h-[40px] sm:w-[180px] h-[50px] md:w-[240px] md:h-[60px]" 
+              size={window.innerWidth < 768 ? 32 : 40} 
+              className="w-[180px] h-[50px] sm:w-[200px] sm:h-[60px] md:w-[240px] md:h-[60px]" 
             />
           </div>
         </div>
 
-        <div className="mt-12 sm:mt-52 md:mt-64 transform translate-y-[20px] sm:translate-y-[60px] md:translate-y-[80px]">
+        <div className="mt-4 sm:mt-52 md:mt-64 transform translate-y-[10px] sm:translate-y-[60px] md:translate-y-[80px]">
           <Lanyard />
         </div>
-        <p className="subtitle-elegant mt-4 md:mt-0 text-[10px] sm:text-xs md:text-base tracking-[0.15em] md:tracking-[0.2em]">
+        <p className="subtitle-elegant mt-2 md:mt-0 text-[10px] sm:text-xs md:text-base tracking-[0.15em] md:tracking-[0.2em]">
           Pop the balloons to celebrate.
         </p>
         {showContinue && (
           <button 
             onClick={onComplete}
-            className="btn-luxury mt-4 md:mt-8 pointer-events-auto animate-fade-in py-2 px-6 md:py-4 md:px-10 text-[10px] md:text-sm"
+            className="btn-luxury mt-2 md:mt-8 pointer-events-auto animate-fade-in py-2 px-6 md:py-4 md:px-10 text-[10px] md:text-sm"
           >
             Continue The Celebration
           </button>

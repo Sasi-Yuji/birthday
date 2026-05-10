@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDown } from 'lucide-react';
 import AudioSys from '../utils/AudioSystem';
 
 const SceneCake = ({ onComplete }) => {
   const containerRef = useRef(null);
   const [activeFlames, setActiveFlames] = useState(3);
   const [showContinue, setShowContinue] = useState(false);
+  const [showHint, setShowHint] = useState(true);
   const sceneRef = useRef(null);
 
   useEffect(() => {
@@ -108,9 +111,9 @@ const SceneCake = ({ onComplete }) => {
       candle.position.set(pos[0], 4.5, pos[1]);
       scene.add(candle);
 
-      const fGeo = new THREE.SphereGeometry(0.15, 16, 16);
+      const fGeo = new THREE.SphereGeometry(0.25, 16, 16); // Increased flame size
       const flame = new THREE.Mesh(fGeo, new THREE.MeshBasicMaterial({ color: 0xffcc00 }));
-      flame.position.set(pos[0], 5.1, pos[1]);
+      flame.position.set(pos[0], 5.2, pos[1]);
       flame.userData = { active: true, index: i };
       scene.add(flame);
       flames.push(flame);
@@ -135,6 +138,7 @@ const SceneCake = ({ onComplete }) => {
         const f = intersects[0].object;
         if (f.userData.active) {
           f.userData.active = false;
+          setShowHint(false); // Hide hint on first interaction
           gsap.to(f.scale, { x: 0, y: 0, z: 0, duration: 0.3 });
           gsap.to(f.userData.light, { intensity: 0, duration: 0.5 });
           AudioSys.playBlow();
@@ -188,7 +192,32 @@ const SceneCake = ({ onComplete }) => {
         <h1 className="title-cinematic font-cinzel">Make A Wish</h1>
         <p className="subtitle-elegant">Tap the flames to blow out the candles.</p>
       </div>
-      <div id="cake-canvas-container" ref={containerRef} className="w-full h-[45vh] min-h-[350px] relative mt-4 cursor-pointer z-10" />
+
+      <div className="relative w-full flex flex-col items-center">
+        <AnimatePresence>
+          {showHint && activeFlames === 3 && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              className="absolute top-[10%] z-30 flex flex-col items-center pointer-events-none"
+            >
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-2">
+                <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">Tap the flames</span>
+              </div>
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ArrowDown className="text-pink-400" size={32} />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div id="cake-canvas-container" ref={containerRef} className="w-full h-[45vh] min-h-[350px] relative mt-4 cursor-pointer z-10" />
+      </div>
+
       <div className="relative z-40 mt-6">
         {showContinue && (
           <button onClick={onComplete} className="btn-luxury animate-fade-in pointer-events-auto">
