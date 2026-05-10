@@ -366,7 +366,7 @@ const SceneGift = ({ onComplete }) => {
         </AnimatePresence>
       </div>
 
-      <div className="pb-28 md:pb-36 z-40 flex justify-center w-full">
+      <div className="pb-6 md:pb-12 z-40 flex justify-center w-full">
         <AnimatePresence>
           {showContinue && (
             <motion.button 

@@ -33,7 +33,7 @@ html {
 }
 
 .title-cinematic {
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-size: clamp(1.8rem, 8vw, 5.5rem);
   line-height: 1.1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -41,17 +41,18 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
 }
 
 .subtitle-elegant {
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  font-size: clamp(0.7rem, 3vw, 1.2rem);
   font-weight: 300;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: var(--text-muted);
   text-transform: uppercase;
-  margin-bottom: 2rem;
-  max-width: 800px;
+  margin-bottom: 1.5rem;
+  max-width: 90%;
   margin-inline: auto;
 }
 
@@ -84,10 +85,11 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: clamp(1rem, 5vw, 2rem);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .scene-container.active {
@@ -343,3 +345,36 @@ html {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .title-cinematic { font-size: clamp(2rem, 7vw, 4rem); }
+}
+
+@media (max-width: 768px) {
+  .title-cinematic { font-size: clamp(1.8rem, 9vw, 3.5rem); }
+  .btn-luxury { padding: 0.8rem 2rem; font-size: 0.8rem; }
+  .glass-panel { padding: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .title-cinematic { font-size: 1.6rem; letter-spacing: 0.03em; }
+  .subtitle-elegant { font-size: 0.65rem; letter-spacing: 0.1em; }
+  .scene-container { padding: 1rem; }
+  .btn-luxury { padding: 0.7rem 1.5rem; font-size: 0.7rem; }
+  
+  /* Prevent overflow on small screens */
+  body { font-size: 14px; }
+  
+  /* Ensure canvas containers don't push content off screen */
+  #cake-canvas-container {
+    height: 40vh !important;
+    min-height: 280px !important;
+  }
+}
+
+/* Fix for very short screens */
+@media (max-height: 600px) {
+  .title-cinematic { font-size: 1.4rem; }
+  .subtitle-elegant { margin-bottom: 0.5rem; }
+  .content-wrapper { margin-top: 1rem; }
+}

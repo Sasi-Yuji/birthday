@@ -9,28 +9,30 @@ const images = { teddy1, teddy2, teddy3, teddy4 };
 
 const TeddyBear = ({ type = "teddy3", delay = 0.5 }) => {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isSmallMobile = typeof window !== 'undefined' && window.innerWidth < 480;
   
-  // Define animations based on teddy type
+  // Responsive sizing
+  const size = isSmallMobile ? 65 : isMobile ? 85 : 160;
+
+  // Animation config using absolute viewport units (vw/vh) for Top/Left/Right/Bottom
   const animations = {
-    teddy3: {
-      initial: { x: "-50vw", y: "110vh", opacity: 0, rotate: -15 },
+    teddy3: { // Settles Top-Left, Comes from Bottom-Left Outside
+      initial: { left: "-30vw", top: "110vh", opacity: 0, rotate: -20 },
       animate: { 
-        x: isMobile ? "2vw" : "8vw", 
-        y: isMobile ? "10vh" : "12vh", 
+        left: isMobile ? "2vw" : "4vw", 
+        top: isMobile ? "5vh" : "8vh", 
         opacity: 1, 
         rotate: 0 
-      },
-      position: "top-left"
+      }
     },
-    teddy4: {
-      initial: { x: "110vw", y: "-50vh", opacity: 0, rotate: 15 },
+    teddy4: { // Settles Bottom-Right, Comes from Top-Right Outside
+      initial: { left: "110vw", top: "-30vh", opacity: 0, rotate: 20 },
       animate: { 
-        x: isMobile ? "68vw" : "80vw", 
-        y: isMobile ? "72vh" : "70vh", 
+        left: isMobile ? "75vw" : "82vw", 
+        top: isMobile ? "78vh" : "72vh", 
         opacity: 1, 
         rotate: 0 
-      },
-      position: "bottom-right"
+      }
     }
   };
 
@@ -41,15 +43,12 @@ const TeddyBear = ({ type = "teddy3", delay = 0.5 }) => {
       initial={config.initial}
       animate={config.animate}
       transition={{ 
-        duration: 2.5, 
+        duration: 3.5, 
         delay, 
-        ease: [0.34, 1.56, 0.64, 1] // Custom soft ease-out-back for premium feel
+        ease: [0.34, 1.56, 0.64, 1] 
       }}
-      className="fixed pointer-events-none z-50"
-      style={{ 
-        width: isMobile ? '80px' : '150px',
-        height: 'auto'
-      }}
+      className="fixed pointer-events-none z-[9999]"
+      style={{ width: size }}
     >
       <motion.div
         animate={{ 
@@ -60,14 +59,14 @@ const TeddyBear = ({ type = "teddy3", delay = 0.5 }) => {
           duration: 4, 
           repeat: Infinity, 
           ease: "easeInOut",
-          delay: delay + 2.5 // Start floating after entry
+          delay: delay + 3.5 
         }}
-        className="relative w-full h-full"
+        className="w-full h-auto"
       >
         <img 
           src={images[type]} 
           alt={`Teddy ${type}`} 
-          className="w-full h-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)]"
+          className="w-full h-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
         />
       </motion.div>
     </motion.div>

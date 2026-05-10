@@ -74,15 +74,15 @@ const ScenePuzzle = ({ onComplete }) => {
       </div>
       <div className="relative z-40 mt-10">
         {isWin && (
-          <button onClick={onComplete} className="btn-luxury animate-fade-in pointer-events-auto">
+          <button onClick={onComplete} className="btn-luxury py-3 px-10 text-xs md:text-sm animate-fade-in pointer-events-auto">
             Unlock Surprise
           </button>
         )}
       </div>
 
-      {/* Teddy Bear Friends */}
-      <TeddyBear startPos="top-left" delay={1.5} side="left" />
-      <TeddyBear startPos="bottom-right" delay={2.5} side="right" />
+      {/* Premium Teddy Bear Friends */}
+      <TeddyBear type="teddy3" delay={1.5} />
+      <TeddyBear type="teddy4" delay={2.5} />
     </>
   );
 };
