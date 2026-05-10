@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import gsap from 'gsap';
 import AudioSys from '../utils/AudioSystem';
 import PUZZLE_IMG from '../assets/pic1.jpeg';
+import TeddyBear from './ui/TeddyBear';
 
 const ScenePuzzle = ({ onComplete }) => {
   const [pieces, setPieces] = useState([]);
@@ -78,6 +79,10 @@ const ScenePuzzle = ({ onComplete }) => {
           </button>
         )}
       </div>
+
+      {/* Teddy Bear Friends */}
+      <TeddyBear startPos="top-left" delay={1.5} side="left" />
+      <TeddyBear startPos="bottom-right" delay={2.5} side="right" />
     </>
   );
 };

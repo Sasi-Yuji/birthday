@@ -21,6 +21,11 @@ const SceneGallery = ({ onComplete }) => {
       <div className="content-wrapper relative z-30 pointer-events-none mt-10">
         <h1 className="title-cinematic font-cinzel text-4xl md:text-5xl drop-shadow-lg">Beautiful Memories</h1>
         <p className="subtitle-elegant">Spinning through time ✨</p>
+        {showContinue && (
+          <div className="text-white/40 text-[10px] uppercase tracking-[0.3em] animate-pulse mt-2">
+            Drag to rotate the galaxy
+          </div>
+        )}
       </div>
 
       {/* Dark Overlay for better contrast */}
@@ -43,19 +48,14 @@ const SceneGallery = ({ onComplete }) => {
       </div>
 
       {/* Button */}
-      <div className="relative z-40 mt-auto mb-24 flex flex-col items-center gap-4">
+      <div className="relative z-40 mt-auto mb-40 flex flex-col items-center gap-4">
         {showContinue && (
-          <>
-            <button 
-              onClick={onComplete}
-              className="btn-luxury animate-fade-in pointer-events-auto shadow-2xl"
-            >
-              Explore More
-            </button>
-            <div className="text-white/40 text-[10px] uppercase tracking-[0.3em] animate-pulse">
-              Drag to rotate the galaxy
-            </div>
-          </>
+          <button 
+            onClick={onComplete}
+            className="btn-luxury animate-fade-in pointer-events-auto shadow-2xl"
+          >
+            Explore More
+          </button>
         )}
       </div>
 

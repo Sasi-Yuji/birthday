@@ -73,6 +73,25 @@ function App() {
   return (
     <div className="relative w-full h-screen bg-[#050508] text-[#F9F6EE] font-montserrat overflow-hidden select-none" ref={containerRef}>
       <GlobalCanvas effectMode={effectMode} />
+
+      {/* Dev Navigation Controls */}
+      <div className="fixed top-4 right-4 z-[9999] flex gap-2 pointer-events-auto">
+        <button 
+          onClick={() => goToScene(currentSceneIdx - 1)}
+          className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest transition-all"
+        >
+          Prev
+        </button>
+        <button 
+          onClick={() => goToScene(currentSceneIdx + 1)}
+          className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest transition-all"
+        >
+          Next
+        </button>
+        <div className="bg-white/5 px-2 py-1 rounded text-[10px] font-mono opacity-50 flex items-center">
+          {currentSceneIdx + 1} / {SCENES.length}
+        </div>
+      </div>
       
       {SCENES.map((scene, idx) => (
         <section 

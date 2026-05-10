@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import AudioSys from '../utils/AudioSystem';
+import TeddyBear from './ui/TeddyBear';
 
 const SceneCake = ({ onComplete }) => {
   const containerRef = useRef(null);
@@ -97,6 +98,11 @@ const SceneCake = ({ onComplete }) => {
     const ribbon2 = new THREE.Mesh(ribbon2Geo, goldMat);
     ribbon2.position.y = 2.6;
     cakeGroup.add(ribbon2);
+    
+    // Scale down the cake group for a cleaner mobile look
+    const isMobile = window.innerWidth < 768;
+    const cakeScale = isMobile ? 0.6 : 0.75;
+    cakeGroup.scale.set(cakeScale, cakeScale, cakeScale);
     scene.add(cakeGroup);
 
     const flames = [];
@@ -109,18 +115,19 @@ const SceneCake = ({ onComplete }) => {
         emissiveIntensity: 0.2
       }));
       candle.position.set(pos[0], 4.5, pos[1]);
-      scene.add(candle);
+      // Add candles to cakeGroup so they scale with the cake
+      cakeGroup.add(candle);
 
       const fGeo = new THREE.SphereGeometry(0.4, 16, 16); // Increased flame size
       const flame = new THREE.Mesh(fGeo, new THREE.MeshBasicMaterial({ color: 0xffcc00 }));
       flame.position.set(pos[0], 5.2, pos[1]);
       flame.userData = { active: true, index: i };
-      scene.add(flame);
+      cakeGroup.add(flame);
       flames.push(flame);
 
       const pLight = new THREE.PointLight(0xffaa00, 2, 8);
       pLight.position.set(pos[0], 5.2, pos[1]);
-      scene.add(pLight);
+      cakeGroup.add(pLight);
       flame.userData.light = pLight;
     });
 
@@ -225,6 +232,10 @@ const SceneCake = ({ onComplete }) => {
           </button>
         )}
       </div>
+
+      {/* Premium Teddy Bear Friends */}
+      <TeddyBear type="teddy3" delay={1.2} />
+      <TeddyBear type="teddy4" delay={2.2} />
     </>
   );
 };

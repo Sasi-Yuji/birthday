@@ -40,12 +40,12 @@ const SceneBalloons = ({ onComplete }) => {
       const isMobile = window.innerWidth < 768;
       const baseScale = isMobile ? 0.4 : 0.6;
       const randomRange = isMobile ? 0.4 : 0.7;
-      
+
       const id = Math.random().toString(36).substr(2, 9);
       const colorObj = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
       const sizeScale = baseScale + Math.random() * randomRange;
       const startX = Math.random() * 90 + 5;
-      
+
       setBalloons(prev => [...prev, { id, colorObj, sizeScale, startX }]);
     }, 800);
 
@@ -58,7 +58,7 @@ const SceneBalloons = ({ onComplete }) => {
       window.createGlobalExplosion(e.clientX, e.clientY, color, 40, true);
     }
     setBalloons(prev => prev.filter(b => b.id !== id));
-    
+
     if (!hasPopped) {
       setHasPopped(true);
       setTimeout(() => setShowContinue(true), 3000);
@@ -71,9 +71,9 @@ const SceneBalloons = ({ onComplete }) => {
         <div className="w-full max-w-[100vw] overflow-visible">
           <CurvedLoop marqueeText="HAPPY BIRTHDAY ✦ " speed={1.5} curveAmount={350} />
         </div>
-        
-        <AnimatedText 
-          text="SHATHINI" 
+
+        <AnimatedText
+          text="SHATHINI"
           textClassName="text-[48px] sm:text-[80px] md:text-[140px] lg:text-[180px] font-cinzel font-bold text-white tracking-[0.2em] md:tracking-[0.3em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
           underlineGradient="from-purple-400 via-fuchsia-500 to-pink-500"
           underlineHeight="h-[2px] md:h-[4px]"
@@ -101,13 +101,13 @@ const SceneBalloons = ({ onComplete }) => {
             {/* Star hidden on mobile if too crowded, or kept for flair */}
             <span className="text-pink-400 text-[16px] sm:text-[20px] md:text-[26px] shrink-0 ml-1 sm:ml-4 md:ml-12 hidden sm:block">✦</span>
           </div>
-          
+
           {/* Right Side: Age */}
           <div className="flex items-center justify-end transform translate-y-[3px] sm:translate-y-[4px]">
-            <LightningText 
-              text="21 YEARS" 
-              size={window.innerWidth < 768 ? 20 : 40} 
-              className="w-[110px] h-[30px] sm:w-[200px] sm:h-[60px] md:w-[240px] md:h-[60px]" 
+            <LightningText
+              text="21 YEARS"
+              size={window.innerWidth < 768 ? 20 : 40}
+              className="w-[110px] h-[30px] sm:w-[200px] sm:h-[60px] md:w-[240px] md:h-[60px]"
             />
           </div>
         </div>
@@ -116,10 +116,10 @@ const SceneBalloons = ({ onComplete }) => {
           <Lanyard />
         </div>
         <p className="subtitle-elegant mt-2 md:mt-0 text-[10px] sm:text-xs md:text-base tracking-[0.15em] md:tracking-[0.2em]">
-          Pop the balloons to celebrate.
+          Tap the balloons to celebrate.
         </p>
         {showContinue && (
-          <button 
+          <button
             onClick={onComplete}
             className="btn-luxury mt-2 md:mt-8 pointer-events-auto animate-fade-in py-2 px-6 md:py-4 md:px-10 text-[10px] md:text-sm"
           >
@@ -129,10 +129,10 @@ const SceneBalloons = ({ onComplete }) => {
       </div>
       <div className="balloon-stage" ref={containerRef}>
         {balloons.map(balloon => (
-          <Balloon 
-            key={balloon.id} 
-            {...balloon} 
-            onPop={(e) => handlePop(balloon.id, e, balloon.colorObj.base)} 
+          <Balloon
+            key={balloon.id}
+            {...balloon}
+            onPop={(e) => handlePop(balloon.id, e, balloon.colorObj.base)}
           />
         ))}
       </div>
@@ -145,7 +145,7 @@ const Balloon = ({ colorObj, sizeScale, startX, onPop }) => {
 
   useEffect(() => {
     const floatDuration = 8 + Math.random() * 7;
-    gsap.fromTo(ref.current, 
+    gsap.fromTo(ref.current,
       { y: 0 },
       {
         y: -window.innerHeight - 800,
@@ -170,7 +170,7 @@ const Balloon = ({ colorObj, sizeScale, startX, onPop }) => {
   }, []);
 
   return (
-    <div 
+    <div
       ref={ref}
       className="balloon-wrapper"
       style={{ left: `${startX}%`, bottom: '-250px', transform: `scale(${sizeScale})` }}
