@@ -151,6 +151,8 @@ class Media {
     this.planeHeight = planeHeight;
     this.distortion = distortion;
 
+    // Use a multi-column staggered distribution
+    this.cols = 2; // Default to 2 columns on mobile
     this.createShader();
     this.createMesh();
     this.onResize();
@@ -172,11 +174,11 @@ class Media {
         uPlaneSize: { value: [0, 0] },
         uImageSize: { value: [0, 0] },
         uSpeed: { value: 0 },
-        rotationAxis: { value: [0, 1, 0] },
-        distortionAxis: { value: [1, 1, 0] },
+        rotationAxis: { value: [Math.random() - 0.5, 1, Math.random() - 0.5] },
+        distortionAxis: { value: [1, 1, Math.random()] },
         uDistortion: { value: this.distortion },
         uViewportSize: { value: [this.viewport.width, this.viewport.height] },
-        uTime: { value: 0 }
+        uTime: { value: Math.random() * 100 }
       },
       cullFace: false
     });
@@ -202,7 +204,18 @@ class Media {
     this.plane.scale.x = (this.viewport.width * this.planeWidth) / this.screen.width;
     this.plane.scale.y = (this.viewport.height * this.planeHeight) / this.screen.height;
 
-    this.plane.position.x = 0;
+    // Responsive column distribution
+    this.cols = this.screen.width < 640 ? 2 : 3;
+    const colIndex = this.index % this.cols;
+    const colSpacing = this.viewport.width / (this.cols + 1);
+    
+    // Distribute X position across columns with a slight random jitter
+    this.plane.position.x = -this.viewport.width / 2 + (colIndex + 1) * colSpacing;
+    this.plane.position.x += (Math.random() - 0.5) * (colSpacing * 0.4);
+    
+    // Add varying Z depth for a more layered look
+    this.plane.position.z = (this.index % 3) * 0.5;
+    
     this.plane.program.uniforms.uPlaneSize.value = [this.plane.scale.x, this.plane.scale.y];
   }
 
@@ -214,20 +227,26 @@ class Media {
     }
     this.setScale();
 
-    this.padding = 5;
+    this.padding = 0.8; // Increased padding for better vertical spacing
     this.height = this.plane.scale.y + this.padding;
-    this.heightTotal = this.height * this.length;
+    this.itemsInCol = Math.ceil(this.length / this.cols);
+    this.heightTotal = this.height * this.itemsInCol;
 
-    this.y = -this.heightTotal / 2 + (this.index + 0.5) * this.height;
+    const rowIndex = Math.floor(this.index / this.cols);
+    // Stagger rows slightly for organic feel
+    const stagger = (this.index % this.cols) * (this.height * 0.5);
+    
+    this.y = -this.heightTotal / 2 + (rowIndex + 0.5) * this.height + stagger;
   }
 
   update(scroll) {
+    // Current loop position with extra wrap-around logic
     this.plane.position.y = this.y - scroll.current - this.extra;
 
     const position = map(this.plane.position.y, -this.viewport.height, this.viewport.height, 5, 15);
 
     this.program.uniforms.uPosition.value = position;
-    this.program.uniforms.uTime.value += 0.04;
+    this.program.uniforms.uTime.value += 0.01;
     this.program.uniforms.uSpeed.value = scroll.current;
 
     const planeHeight = this.plane.scale.y;
@@ -236,9 +255,10 @@ class Media {
     const topEdge = this.plane.position.y + planeHeight / 2;
     const bottomEdge = this.plane.position.y - planeHeight / 2;
 
-    if (topEdge < -viewportHeight / 2) {
+    // Infinite loop logic
+    if (topEdge < -this.heightTotal / 2) {
       this.extra -= this.heightTotal;
-    } else if (bottomEdge > viewportHeight / 2) {
+    } else if (bottomEdge > this.heightTotal / 2) {
       this.extra += this.heightTotal;
     }
   }
@@ -385,6 +405,9 @@ class Canvas {
   }
 
   update() {
+    // Add continuous auto-scroll
+    this.scroll.target += 0.005;
+
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
 
     if (this.medias) {

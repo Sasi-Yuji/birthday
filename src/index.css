@@ -476,25 +476,28 @@ html {
   max-width: min(100%, 80rem);
   margin-left: auto;
   margin-right: auto;
-  margin-top: clamp(0.5rem, 2vh, 1rem);
-  padding: clamp(0.75rem, 3vw, 1.5rem);
+  margin-top: clamp(0.5rem, 2vh, 1.25rem);
   background: rgba(20, 20, 25, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: clamp(0.75rem, 2vw, 1rem);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .puzzle-grid {
-  --puzzle-board: min(100%, clamp(16rem, 86vw, 25rem));
+  --puzzle-board: min(92vw, clamp(16rem, 80vw, 25rem));
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 2px;
   width: var(--puzzle-board);
   aspect-ratio: 1 / 1;
-  background: #000;
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -502,10 +505,10 @@ html {
 .puzzle-piece {
   width: 100%;
   height: 100%;
-  background-size: var(--puzzle-board) var(--puzzle-board);
   cursor: grab;
   position: relative;
   transition: filter 0.2s, transform 0.2s, z-index 0s;
+  background-repeat: no-repeat;
 }
 
 .puzzle-piece:active {
@@ -526,20 +529,28 @@ html {
 
 /* Cake WebGL — fluid height, never forces horizontal scroll */
 #cake-canvas-container {
-  width: 100% !important;
-  max-width: min(72rem, 100%) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  height: clamp(200px, min(42vh, 88vw), 520px) !important;
-  min-height: min(240px, 36vh) !important;
-  max-height: min(56vh, 600px) !important;
+  width: 100%;
+  max-width: min(72rem, 100%);
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1 1 auto;
+  min-height: 240px;
+  max-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 768px) {
   #cake-canvas-container {
-    height: clamp(280px, 46vh, 620px) !important;
-    min-height: min(300px, 40vh) !important;
-    max-height: min(62vh, 680px) !important;
+    min-height: 300px;
+    max-height: 640px;
+  }
+}
+
+@media (max-height: 700px) {
+  #cake-canvas-container {
+    max-height: 45vh;
   }
 }
 
@@ -647,98 +658,89 @@ html {
   letter-spacing: 0.1em;
 }
 
-/* Scene balloons — responsive date / age bar (single scale, no tiny age on mobile) */
+/* Scene balloons — mobile-first date / age; --bd-lightning > --bd-font so stroke canvas matches filled Cinzel */
 .balloons-detail-row {
   --bd-font: 12px;
-  --bd-lightning: 12;
-  --bd-age-w: 7.5rem;
-  --bd-age-h: 1.75rem;
+  --bd-lightning: 16;
+  --bd-age-w: 8.5rem;
+  --bd-age-h: 2.125rem;
   box-sizing: border-box;
   width: 100%;
-  max-width: min(100vw - 1.5rem, 80rem);
+  max-width: min(100% - 0.75rem, 80rem);
   margin-inline: auto;
-  padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
-  padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+  padding-left: max(0.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.5rem, env(safe-area-inset-right, 0px));
 }
 
-@media (max-width: 359px) {
-  .balloons-detail-row {
-    --bd-font: 11px;
-    --bd-lightning: 11;
-    --bd-age-w: 6.875rem;
-    --bd-age-h: 1.5625rem;
-    max-width: 100%;
-    padding-inline: 0.375rem;
-  }
-}
-
-@media (min-width: 360px) and (max-width: 374px) {
-  .balloons-detail-row {
-    --bd-age-w: 7.25rem;
-    --bd-age-h: 1.6875rem;
-  }
-}
-
-@media (min-width: 375px) and (max-width: 479px) {
-  .balloons-detail-row {
-    --bd-font: 12px;
-    --bd-lightning: 12;
-    --bd-age-w: 7.75rem;
-    --bd-age-h: 1.8125rem;
-  }
-}
-
-@media (min-width: 480px) and (max-width: 639px) {
+@media (min-width: 360px) {
   .balloons-detail-row {
     --bd-font: 13px;
-    --bd-lightning: 13;
-    --bd-age-w: 8.375rem;
-    --bd-age-h: 1.9375rem;
+    --bd-lightning: 17;
+    --bd-age-w: 9rem;
+    --bd-age-h: 2.25rem;
   }
 }
 
-@media (min-width: 640px) and (max-width: 767px) {
+@media (min-width: 375px) {
+  .balloons-detail-row {
+    --bd-font: 14px;
+    --bd-lightning: 18;
+    --bd-age-w: 9.5rem;
+    --bd-age-h: 2.375rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .balloons-detail-row {
+    --bd-font: 15px;
+    --bd-lightning: 19;
+    --bd-age-w: 10.25rem;
+    --bd-age-h: 2.5rem;
+  }
+}
+
+@media (min-width: 640px) {
   .balloons-detail-row {
     --bd-font: 18px;
-    --bd-lightning: 18;
-    --bd-age-w: 11.25rem;
-    --bd-age-h: 2.625rem;
+    --bd-lightning: 20;
+    --bd-age-w: 11.5rem;
+    --bd-age-h: 2.875rem;
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) {
   .balloons-detail-row {
     --bd-font: 22px;
-    --bd-lightning: 22;
+    --bd-lightning: 23;
     --bd-age-w: 13.75rem;
-    --bd-age-h: 3.125rem;
+    --bd-age-h: 3.2rem;
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1279px) {
+@media (min-width: 1024px) {
   .balloons-detail-row {
     --bd-font: 24px;
-    --bd-lightning: 24;
+    --bd-lightning: 25;
     --bd-age-w: 15rem;
-    --bd-age-h: 3.375rem;
+    --bd-age-h: 3.4rem;
   }
 }
 
-@media (min-width: 1280px) and (max-width: 1535px) {
+@media (min-width: 1280px) {
   .balloons-detail-row {
     --bd-font: 26px;
-    --bd-lightning: 26;
+    --bd-lightning: 27;
     --bd-age-w: 16.25rem;
-    --bd-age-h: 3.5rem;
+    --bd-age-h: 3.55rem;
   }
 }
 
 @media (min-width: 1536px) {
   .balloons-detail-row {
     --bd-font: 28px;
-    --bd-lightning: 28;
+    --bd-lightning: 29;
     --bd-age-w: 17.25rem;
-    --bd-age-h: 3.625rem;
+    --bd-age-h: 3.65rem;
   }
 }
 
@@ -753,6 +755,11 @@ html {
   align-items: center;
   min-height: var(--bd-age-h);
   min-width: 0;
+}
+
+.balloons-detail-row .balloons-age-col {
+  position: relative;
+  z-index: 2;
 }
 
 .balloons-detail-row .balloons-age-slot {

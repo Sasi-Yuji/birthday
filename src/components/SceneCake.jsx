@@ -19,12 +19,16 @@ const SceneCake = ({ onComplete }) => {
 
     const scene = new THREE.Scene();
     sceneRef.current = scene;
-    const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
+    
+    const aspect = container.clientWidth / container.clientHeight;
+    const camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 1000);
+    // Adjusted camera lookAt to center the cake better vertically
     camera.position.set(0, 5, 14);
-    camera.lookAt(0, 1, 0);
+    camera.lookAt(0, 2.2, 0);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     container.appendChild(renderer.domElement);
 
@@ -53,8 +57,8 @@ const SceneCake = ({ onComplete }) => {
     plate.receiveShadow = true;
     cakeGroup.add(plate);
 
-    // Main Cake Tiers with color
-    const cakeColor = 0xff8da1; // Vibrant Strawberry Pink
+    // Main Cake Tiers
+    const cakeColor = 0xff8da1;
     const creamMat = new THREE.MeshStandardMaterial({ 
       color: cakeColor, 
       roughness: 0.3,
@@ -75,7 +79,7 @@ const SceneCake = ({ onComplete }) => {
     t2.castShadow = true; t2.receiveShadow = true;
     cakeGroup.add(t2);
 
-    // Frosting/Drip Detail
+    // Frosting
     const dripMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1 });
     const dripGeo = new THREE.CylinderGeometry(2.55, 2.55, 0.4, 64);
     const drip = new THREE.Mesh(dripGeo, dripMat);
@@ -99,10 +103,13 @@ const SceneCake = ({ onComplete }) => {
     ribbon2.position.y = 2.6;
     cakeGroup.add(ribbon2);
     
-    // Scale down the cake group for a cleaner mobile look
-    const isMobile = window.innerWidth < 768;
-    const cakeScale = isMobile ? 0.6 : 0.75;
-    cakeGroup.scale.set(cakeScale, cakeScale, cakeScale);
+    // Scale cake proportionally
+    const updateScale = () => {
+      const isMobile = window.innerWidth < 768;
+      const cakeScale = isMobile ? 0.65 : 0.8;
+      cakeGroup.scale.set(cakeScale, cakeScale, cakeScale);
+    };
+    updateScale();
     scene.add(cakeGroup);
 
     const flames = [];
@@ -115,10 +122,9 @@ const SceneCake = ({ onComplete }) => {
         emissiveIntensity: 0.2
       }));
       candle.position.set(pos[0], 4.5, pos[1]);
-      // Add candles to cakeGroup so they scale with the cake
       cakeGroup.add(candle);
 
-      const fGeo = new THREE.SphereGeometry(0.4, 16, 16); // Increased flame size
+      const fGeo = new THREE.SphereGeometry(0.4, 16, 16);
       const flame = new THREE.Mesh(fGeo, new THREE.MeshBasicMaterial({ color: 0xffcc00 }));
       flame.position.set(pos[0], 5.2, pos[1]);
       flame.userData = { active: true, index: i };
@@ -145,7 +151,7 @@ const SceneCake = ({ onComplete }) => {
         const f = intersects[0].object;
         if (f.userData.active) {
           f.userData.active = false;
-          setShowHint(false); // Hide hint on first interaction
+          setShowHint(false);
           gsap.to(f.scale, { x: 0, y: 0, z: 0, duration: 0.3 });
           gsap.to(f.userData.light, { intensity: 0, duration: 0.5 });
           AudioSys.playBlow();
@@ -166,9 +172,21 @@ const SceneCake = ({ onComplete }) => {
       }
     };
 
+    const handleResize = () => {
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      updateScale();
+    };
+
     container.addEventListener('click', handleClick);
+    window.addEventListener('resize', handleResize);
 
     let time = 0;
+    let animationId;
     const animate = () => {
       time += 0.05;
       cakeGroup.rotation.y = Math.sin(time * 0.2) * 0.1;
@@ -180,12 +198,14 @@ const SceneCake = ({ onComplete }) => {
         }
       });
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
     animate();
 
     return () => {
       container.removeEventListener('click', handleClick);
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationId);
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
@@ -194,31 +214,31 @@ const SceneCake = ({ onComplete }) => {
   }, []);
 
   return (
-    <div className="flex w-full min-h-0 flex-1 flex-col items-center gap-1 py-2 sm:gap-2 sm:py-4 md:py-6">
-      <div className="content-wrapper pointer-events-none relative z-20">
+    <div className="flex w-full h-full flex-col items-center justify-center py-6 sm:py-10 md:py-12">
+      <div className="content-wrapper pointer-events-none relative z-20 mb-4 sm:mb-8 md:mb-10">
         <h1 className="title-cinematic font-cinzel">Make A Wish</h1>
         <p className="subtitle-elegant">Tap the flames to blow out the candles.</p>
       </div>
 
-      <div className="relative flex w-full min-h-0 max-w-5xl flex-col items-center px-2 sm:px-4">
+      <div className="relative flex w-full flex-1 min-h-0 max-w-5xl flex-col items-center justify-center px-4 sm:px-6">
         <AnimatePresence>
           {showHint && activeFlames === 3 && (
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="absolute top-[-20px] z-30 flex flex-col items-center pointer-events-none"
+              className="absolute top-[-40px] z-30 flex flex-col items-center pointer-events-none sm:top-[-50px]"
             >
-              <div className="mb-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
-                <span className="text-[0.6rem] font-bold uppercase tracking-widest text-white/80 sm:text-[10px]">
+              <div className="mb-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
+                <span className="text-[0.65rem] font-bold uppercase tracking-widest text-white/90 sm:text-[11px]">
                   Tap the flames
                 </span>
               </div>
               <motion.div
-                animate={{ y: [0, 10, 0] }}
+                animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <ArrowDown className="h-7 w-7 text-pink-400 sm:h-8 sm:w-8" />
+                <ArrowDown className="h-7 w-7 text-pink-400 sm:h-9 sm:w-9" />
               </motion.div>
             </motion.div>
           )}
@@ -227,11 +247,11 @@ const SceneCake = ({ onComplete }) => {
         <div
           id="cake-canvas-container"
           ref={containerRef}
-          className="relative z-10 mt-3 w-full min-h-0 max-w-4xl cursor-pointer sm:mt-4 md:max-w-5xl"
+          className="relative z-10 w-full flex-1 min-h-0 max-w-4xl cursor-pointer"
         />
       </div>
 
-      <div className="bottom-button-container">
+      <div className="bottom-button-container h-24 sm:h-32">
         {showContinue && (
           <button onClick={onComplete} className="btn-luxury animate-fade-up">
             Continue The Celebration
@@ -239,8 +259,8 @@ const SceneCake = ({ onComplete }) => {
         )}
       </div>
 
-      <TeddyBear type="teddy3" delay={1.2} sizeMultiplier={1.52} stackReserve={0.11} />
-      <TeddyBear type="teddy4" delay={2.2} sizeMultiplier={1.38} stackReserve={0.15} />
+      <TeddyBear type="teddy3" delay={1.2} sizeMultiplier={1.4} stackReserve={0.12} />
+      <TeddyBear type="teddy4" delay={2.2} sizeMultiplier={1.3} stackReserve={0.18} />
     </div>
   );
 };

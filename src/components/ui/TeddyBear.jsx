@@ -30,6 +30,10 @@ const TeddyBear = ({
 	sizeMultiplier = 1,
 	/** Extra fraction of viewport height kept clear at bottom (cake / CTA); default ~11% */
 	stackReserve = 0.11,
+	/** Manual vertical offset for top-aligned bears (px) */
+	topOffset = 0,
+	/** Manual vertical offset for bottom-aligned bears (px) */
+	bottomOffset = 0,
 }) => {
 	const [dims, setDims] = useState(() => ({
 		w: typeof window !== 'undefined' ? window.innerWidth : 390,
@@ -73,25 +77,25 @@ const TeddyBear = ({
 	const animateTL = useMemo(
 		() => ({
 			left: edgeX,
-			top: edgeTop,
+			top: edgeTop + topOffset,
 			opacity: 1,
 			rotate: 0,
 		}),
-		[edgeX, edgeTop]
+		[edgeX, edgeTop, topOffset]
 	);
 
 	const animateBR = useMemo(() => {
 		const extraInset =
 			dims.w < 400 ? 10 : dims.w < 480 ? 8 : dims.w < 768 ? 6 : 4;
 		const leftPx = Math.max(0, dims.w - imgW - edgeX - extraInset);
-		const topPx = Math.max(0, dims.h - imgH - bottomGap);
+		const topPx = Math.max(0, dims.h - imgH - bottomGap + bottomOffset);
 		return {
 			left: leftPx,
 			top: topPx,
 			opacity: 1,
 			rotate: 0,
 		};
-	}, [dims.w, dims.h, imgW, imgH, edgeX, bottomGap]);
+	}, [dims.w, dims.h, imgW, imgH, edgeX, bottomGap, bottomOffset]);
 
 	const initialTL = useMemo(
 		() => ({

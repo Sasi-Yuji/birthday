@@ -16,13 +16,15 @@ const BALLOON_COLORS = [
 
 import Butterfly from './ui/Butterfly';
 
+/** Keep in sync with `index.css` `.balloons-detail-row` --bd-lightning (stroke text reads smaller than filled date) */
 function readInitialLightningSize() {
-  if (typeof window === 'undefined') return 12;
+  if (typeof window === 'undefined') return 16;
   const w = window.innerWidth;
-  if (w < 360) return 11;
-  if (w < 480) return 12;
-  if (w < 640) return 13;
-  if (w < 768) return 18;
+  if (w < 360) return 16;
+  if (w < 375) return 17;
+  if (w < 480) return 18;
+  if (w < 640) return 19;
+  if (w < 768) return 20;
   if (w < 1024) return 22;
   if (w < 1280) return 24;
   if (w < 1536) return 26;
@@ -149,9 +151,9 @@ const SceneBalloons = ({ onComplete }) => {
         {/* Birthday Details — date + age scale together via .balloons-detail-row (index.css) */}
         <div
           ref={detailRowRef}
-          className="balloons-detail-row flex flex-row items-center justify-between z-30 drop-shadow-md gap-2 sm:gap-4"
+          className="balloons-detail-row relative z-[35] flex flex-row items-center justify-between gap-2 drop-shadow-md sm:gap-4"
         >
-          <div className="balloons-date-col flex flex-1 min-w-0 justify-start text-date-age">
+          <div className="balloons-date-col flex min-w-0 flex-1 justify-start text-date-age">
             <div className="balloons-date-text flex items-center">
               <Counter end={20} duration={2} className="px-0 w-auto" />
               <span className="mx-0.5 sm:mx-1 opacity-60 shrink-0">&bull;</span>
@@ -162,7 +164,7 @@ const SceneBalloons = ({ onComplete }) => {
             <span className="text-pink-400 ml-1.5 sm:ml-2 hidden sm:inline shrink-0">✦</span>
           </div>
 
-          <div className="balloons-age-col flex flex-shrink-0 justify-end text-date-age">
+          <div className="balloons-age-col flex shrink-0 justify-end text-date-age">
             <LightningText text="21 YEARS" size={lightningSize} className="balloons-age-slot" />
           </div>
         </div>

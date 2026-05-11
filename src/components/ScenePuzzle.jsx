@@ -57,32 +57,36 @@ const ScenePuzzle = ({ onComplete }) => {
       <div className="content-wrapper relative z-20 pointer-events-none">
         <p className="subtitle-elegant">Complete the picture to unlock the surprise.</p>
       </div>
-      <div className="puzzle-stage relative flex flex-col items-center">
-        <div className={`puzzle-grid transition-all duration-1000 ${isWin ? 'gap-0' : 'gap-[2px]'}`}>
+      <div className="puzzle-stage relative flex flex-col items-center justify-center p-4 sm:p-8">
+        <div className={`puzzle-grid transition-all duration-1000 ${isWin ? 'gap-0 shadow-2xl' : 'gap-[2px] shadow-lg'}`}>
           {pieces.map((p, i) => (
             <div
               key={i}
-              className={`puzzle-piece ${selectedIdx === i ? 'selected' : ''} ${isWin ? 'border-transparent cursor-default' : ''}`}
+              className={`puzzle-piece ${selectedIdx === i ? 'selected' : ''} ${isWin ? 'cursor-default' : ''}`}
               style={{
                 backgroundImage: `url(${PUZZLE_IMG})`,
+                backgroundSize: '300% 300%',
                 backgroundPosition: `${(p.correctVal % 3) * 50}% ${Math.floor(p.correctVal / 3) * 50}%`,
+                backgroundRepeat: 'no-repeat',
+                borderRadius: isWin ? '0' : '4px',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
               onClick={() => handlePieceClick(i)}
             />
           ))}
         </div>
       </div>
-      <div className="bottom-button-container">
+      <div className="bottom-button-container h-24 sm:h-32">
         {isWin && (
           <button onClick={onComplete} className="btn-luxury animate-fade-up">
-            Unlock Surprise
+            Unlock The Secret
           </button>
         )}
       </div>
 
-      {/* Premium Teddy Bear Friends - Increased top-left significantly as requested */}
-      <TeddyBear type="teddy3" delay={1.5} sizeMultiplier={1.6} stackReserve={0.11} />
-      <TeddyBear type="teddy4" delay={2.5} sizeMultiplier={1.08} stackReserve={0.14} />
+      {/* Premium Teddy Bear Friends - Moved teddy3 up with topOffset */}
+      <TeddyBear type="teddy3" delay={1.2} sizeMultiplier={1.4} topOffset={-25} />
+      <TeddyBear type="teddy4" delay={2.2} sizeMultiplier={1.3} stackReserve={0.05} bottomOffset={45} />
     </>
   );
 };
