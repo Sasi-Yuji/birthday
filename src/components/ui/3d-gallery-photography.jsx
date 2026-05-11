@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useMemo, useCallback, useState, useEffect, useLayoutEffect } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -154,9 +154,50 @@ function GalleryScene({
 		maxBlur: 3.0,
 	},
 }) {
+	const { camera, size, gl } = useThree();
 	const [scrollVelocity, setScrollVelocity] = useState(0);
 	const [autoPlay, setAutoPlay] = useState(true);
 	const lastInteraction = useRef(Date.now());
+
+	/* Responsive framing: avoid oversized cards on phones while keeping desktop close to original */
+	useLayoutEffect(() => {
+		if (!camera?.isPerspectiveCamera) return;
+		const minPx = Math.max(Math.min(size.width, size.height), 2);
+		const maxPx = Math.max(size.width, size.height, 2);
+		const aspect = size.width / Math.max(size.height, 1);
+		camera.aspect = aspect;
+
+		if (minPx < 330) camera.fov = 56;
+		else if (minPx < 400) camera.fov = 55;
+		else if (minPx < 480) camera.fov = 54;
+		else if (minPx < 640) camera.fov = 53;
+		else if (minPx < 820) camera.fov = 52;
+		else if (maxPx >= 1800 && minPx >= 1000) camera.fov = 47;
+		else camera.fov = 50;
+
+		const zPull =
+			minPx < 340
+				? 3.4
+				: minPx < 400
+					? 3
+					: minPx < 480
+						? 2.6
+						: minPx < 640
+							? 2.1
+							: minPx < 768
+								? 1.6
+								: minPx < 1024
+									? 1
+									: minPx < 1440
+										? 0.55
+										: 0.35;
+
+		camera.position.set(0, 0, zPull);
+		camera.lookAt(0, 0, -16);
+		camera.near = 0.01;
+		camera.far = 220;
+		camera.updateProjectionMatrix();
+	}, [camera, size.width, size.height]);
 
 	// Normalize images to objects
 	const normalizedImages = useMemo(
@@ -180,6 +221,8 @@ function GalleryScene({
 		const positions = [];
 		const maxHorizontalOffset = MAX_HORIZONTAL_OFFSET;
 		const maxVerticalOffset = MAX_VERTICAL_OFFSET;
+		const minPx = Math.max(Math.min(size.width, size.height), 2);
+		const spread = THREE.MathUtils.clamp(0.36 + (minPx / 1050) * 0.64, 0.36, 1);
 
 		for (let i = 0; i < visibleCount; i++) {
 			// Create varied distribution patterns for both axes
@@ -191,16 +234,18 @@ function GalleryScene({
 			const verticalRadius = 1.4 + ((i + 1) % 4) * 1.0; 
 
 			const x =
-				(Math.sin(horizontalAngle) * horizontalRadius * maxHorizontalOffset) /
-				4;
+				((Math.sin(horizontalAngle) * horizontalRadius * maxHorizontalOffset) /
+					4) *
+				spread;
 			const y =
-				(Math.cos(verticalAngle) * verticalRadius * maxVerticalOffset) / 5;
+				((Math.cos(verticalAngle) * verticalRadius * maxVerticalOffset) / 5) *
+				spread;
 
 			positions.push({ x, y });
 		}
 
 		return positions;
-	}, [visibleCount]);
+	}, [visibleCount, size.width, size.height]);
 
 	const totalImages = normalizedImages.length;
 	const depthRange = DEFAULT_DEPTH_RANGE;
@@ -257,17 +302,15 @@ function GalleryScene({
 	);
 
 	useEffect(() => {
-		const canvas = document.querySelector('canvas');
-		if (canvas) {
-			canvas.addEventListener('wheel', handleWheel, { passive: false });
-			document.addEventListener('keydown', handleKeyDown);
+		const canvas = gl.domElement;
+		canvas.addEventListener('wheel', handleWheel, { passive: false });
+		document.addEventListener('keydown', handleKeyDown);
 
-			return () => {
-				canvas.removeEventListener('wheel', handleWheel);
-				document.removeEventListener('keydown', handleKeyDown);
-			};
-		}
-	}, [handleWheel, handleKeyDown]);
+		return () => {
+			canvas.removeEventListener('wheel', handleWheel);
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [gl, handleWheel, handleKeyDown]);
 
 	// Auto-play logic - Start immediately and maintain slow scroll
 	useEffect(() => {
@@ -416,12 +459,18 @@ function GalleryScene({
 
 				const worldZ = plane.z - depthRange / 2;
 
-				// Calculate scale to maintain aspect ratio
+				// Calculate scale to maintain aspect ratio (viewport-aware so mobile cards stay proportional)
 				const aspect = texture.image
 					? texture.image.width / texture.image.height
 					: 1;
+				const minPx = Math.max(Math.min(size.width, size.height), 2);
+				const maxPx = Math.max(size.width, size.height, 2);
+				const scaleNorm = THREE.MathUtils.clamp(minPx / 500, 0.44, 1.05);
+				const widePenalty =
+					maxPx > 0 ? THREE.MathUtils.clamp(900 / maxPx, 0.82, 1) : 1;
+				const base = 2 * scaleNorm * widePenalty;
 				const scale =
-					aspect > 1 ? [2 * aspect, 2, 1] : [2, 2 / aspect, 1];
+					aspect > 1 ? [base * aspect, base, 1] : [base, base / aspect, 1];
 
 				return (
 					<ImagePlane
@@ -507,8 +556,9 @@ export default function InfiniteGallery({
 	return (
 		<div className={className} style={style}>
 			<Canvas
-				camera={{ position: [0, 0, 0], fov: 55 }}
+				camera={{ position: [0, 0, 0], fov: 52, near: 0.01, far: 220 }}
 				gl={{ antialias: true, alpha: true }}
+				dpr={[1, 2]}
 			>
 				<GalleryScene
 					images={images}

@@ -81,8 +81,8 @@ const ScenePuzzle = ({ onComplete }) => {
       </div>
 
       {/* Premium Teddy Bear Friends - Increased top-left significantly as requested */}
-      <TeddyBear type="teddy3" delay={1.5} sizeMultiplier={1.6} />
-      <TeddyBear type="teddy4" delay={2.5} sizeMultiplier={1} />
+      <TeddyBear type="teddy3" delay={1.5} sizeMultiplier={1.6} stackReserve={0.11} />
+      <TeddyBear type="teddy4" delay={2.5} sizeMultiplier={1.08} stackReserve={0.14} />
     </>
   );
 };

@@ -16,11 +16,10 @@ const SceneGallery = ({ onComplete }) => {
   }, []);
 
   return (
-    <div className="w-full h-full relative flex flex-col items-center overflow-hidden">
-      {/* Independent Header Container - Positioned at the absolute top with safe margins */}
-      <div className="fixed top-0 left-0 w-full pt-[80px] sm:pt-[120px] flex flex-col items-center z-[100] pointer-events-none px-4">
-        <div className="content-wrapper flex flex-col items-center text-center max-w-[90vw]">
-          <h1 className="title-cinematic font-cinzel text-3xl sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] leading-none mb-2">
+    <div className="relative flex h-full min-h-0 w-full max-w-[100vw] flex-col items-center overflow-x-hidden overflow-y-hidden">
+      <div className="pointer-events-none fixed left-0 top-0 z-[100] flex w-full flex-col items-center pt-[clamp(4.5rem,14vh,7.5rem)] sm:pt-[clamp(5.5rem,16vh,8.5rem)]">
+        <div className="content-wrapper flex max-w-full flex-col items-center text-center">
+          <h1 className="title-cinematic font-cinzel mb-2 text-2xl leading-none drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
             Beautiful Memories
           </h1>
           <p className="subtitle-elegant text-[9px] sm:text-xs md:text-sm tracking-[0.4em] sm:tracking-[0.6em] opacity-90 mb-2">

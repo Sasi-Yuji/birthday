@@ -27,14 +27,14 @@ const SceneIntro = ({ onStart }) => {
 
   return (
     <>
-      <div className="content-wrapper glass-panel relative">
+      <div className="content-wrapper glass-panel relative w-full max-w-lg sm:max-w-xl md:max-w-2xl">
         <p className="kicker-text">A Special Surprise Awaits</p>
         <h1 className="title-cinematic font-cinzel">Tonight Is All About You</h1>
-        <p className="subtitle-elegant mb-8">An unforgettable cinematic birthday experience.</p>
+        <p className="subtitle-elegant mb-6 sm:mb-8">An unforgettable cinematic birthday experience.</p>
 
         {!showButton && (
-          <div className="w-full flex flex-col items-center mt-8">
-            <div className="w-64 h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div className="mt-6 flex w-full max-w-[min(20rem,85vw)] flex-col items-center sm:mt-8">
+            <div className="h-1 w-full rounded-full bg-gray-800 overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-yellow-600 via-yellow-200 to-yellow-600 transition-all duration-100"
                 style={{ width: `${progress}%` }}
@@ -44,7 +44,7 @@ const SceneIntro = ({ onStart }) => {
         )}
       </div>
 
-      <div className="bottom-button-container">
+      <div className="bottom-button-container bottom-button-container--intro">
         {showButton && (
           <button 
             onClick={handleStart}

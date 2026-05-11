@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import InfiniteGallery from "./ui/3d-gallery-photography";
 import FlyingPosters from './ui/FlyingPosters';
 import pic1 from '../assets/pic1.jpeg';
@@ -14,18 +14,46 @@ const SceneGallery3D = ({ onComplete }) => {
     { src: pic2, alt: "Memory 6" },
   ];
 
-  const posterImages = [pic1, pic2, pic1, pic2, pic1, pic2];
+  const posterImages = useMemo(
+    () => [pic1, pic2, pic1, pic2, pic1, pic2],
+    []
+  );
+  const posterImagesReversed = useMemo(
+    () => [...posterImages].reverse(),
+    [posterImages]
+  );
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const [dims, setDims] = useState(() => ({
+    w: typeof window !== 'undefined' ? window.innerWidth : 1024,
+    h: typeof window !== 'undefined' ? window.innerHeight : 768,
+  }));
+
+  useEffect(() => {
+    const onResize = () =>
+      setDims({ w: window.innerWidth, h: window.innerHeight });
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const minDim = Math.min(dims.w, dims.h);
+  const isMobile = dims.w < 768;
+
+  const mobileFlying = useMemo(() => {
+    if (minDim < 330) return { pw: 64, ph: 88, d: 2.5 };
+    if (minDim < 380) return { pw: 72, ph: 98, d: 2.65 };
+    if (minDim < 430) return { pw: 80, ph: 108, d: 2.75 };
+    if (minDim < 520) return { pw: 88, ph: 120, d: 2.85 };
+    return { pw: 100, ph: 136, d: 3 };
+  }, [minDim]);
 
   return (
-    <div className="w-full h-screen relative bg-[#050508] overflow-hidden">
-      {/* Background Decor - Flying Posters positioned around the gallery */}
+    <div className="scene-gallery-3d-root w-full h-full min-h-0 flex flex-col relative bg-[#050508] overflow-hidden">
+      {/* Background decor — poster planes scale with viewport so they never dominate the frame */}
       {!isMobile ? (
         <>
-          {/* Left Column */}
           <div className="absolute top-0 left-0 w-[25%] h-full z-0 opacity-40 pointer-events-none">
-            <FlyingPosters 
+            <FlyingPosters
               items={posterImages}
               planeWidth={200}
               planeHeight={280}
@@ -33,10 +61,9 @@ const SceneGallery3D = ({ onComplete }) => {
               scrollEase={0.03}
             />
           </div>
-          {/* Right Column */}
           <div className="absolute top-0 right-0 w-[25%] h-full z-0 opacity-40 pointer-events-none scale-x-[-1]">
-            <FlyingPosters 
-              items={posterImages.reverse()}
+            <FlyingPosters
+              items={posterImagesReversed}
               planeWidth={200}
               planeHeight={280}
               distortion={2}
@@ -45,49 +72,44 @@ const SceneGallery3D = ({ onComplete }) => {
           </div>
         </>
       ) : (
-        /* Mobile: Single subtle background layer */
         <div className="absolute inset-0 z-0 opacity-15 pointer-events-none">
-          <FlyingPosters 
+          <FlyingPosters
             items={posterImages}
-            planeWidth={120}
-            planeHeight={160}
-            distortion={3}
+            planeWidth={mobileFlying.pw}
+            planeHeight={mobileFlying.ph}
+            distortion={mobileFlying.d}
             scrollEase={0.03}
           />
         </div>
       )}
 
-      {/* Main 3D Gallery - Centered */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center">
+      <div className="gallery-3d-canvas-host relative z-10 w-full flex-1 min-h-0 flex items-stretch justify-center">
         <InfiniteGallery
           images={images}
           speed={0.8}
-          className="h-full w-full"
+          className="h-full w-full min-h-[220px] max-h-full"
         />
       </div>
-      
-      {/* Cinematic Header Overlay */}
-      <div className="absolute top-8 md:top-12 left-0 w-full text-center z-30 pointer-events-none px-4">
-        <h2 className="text-[24px] md:text-[64px] font-cinzel font-bold text-white tracking-[0.2em] drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+
+      <div className="absolute top-6 sm:top-8 md:top-12 left-0 w-full text-center z-30 pointer-events-none px-3 sm:px-4 max-w-[100vw]">
+        <h2 className="text-[clamp(1.15rem,5.5vw,1.65rem)] sm:text-[clamp(1.5rem,4vw,2.25rem)] md:text-[64px] font-cinzel font-bold text-white tracking-[0.12em] md:tracking-[0.2em] drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
           CHRONICLES OF JOY
         </h2>
-        <p className="text-[8px] md:text-sm font-montserrat uppercase tracking-[0.4em] text-white/50 mt-2">
+        <p className="text-[clamp(0.5rem,2vw,0.65rem)] sm:text-[9px] md:text-sm font-montserrat uppercase tracking-[0.28em] md:tracking-[0.4em] text-white/50 mt-1.5 md:mt-2 max-w-[min(100%,28rem)] mx-auto">
           Every moment is a beautiful story
         </p>
       </div>
 
-      {/* Mobile-optimized Instructions */}
-      <div className="absolute bottom-24 md:bottom-32 left-0 right-0 text-center z-30 pointer-events-none px-6">
-        <div className="text-white/30 font-mono uppercase text-[7px] md:text-[10px] font-semibold tracking-[0.2em] space-y-1">
+      <div className="gallery-3d-hint absolute left-0 right-0 text-center z-30 pointer-events-none px-4 sm:px-6 max-w-[100vw] mx-auto">
+        <div className="text-white/30 font-mono uppercase text-[clamp(0.5rem,1.8vw,0.55rem)] sm:text-[8px] md:text-[10px] font-semibold tracking-[0.2em]">
           <p>{isMobile ? 'Swipe to explore the timeline' : 'Scroll to navigate the memories'}</p>
         </div>
       </div>
 
-      {/* Action Button */}
-      <div className="bottom-button-container z-40 mb-4 md:mb-0">
-        <button 
+      <div className="bottom-button-container bottom-button-container--gallery3d z-40">
+        <button
           onClick={onComplete}
-          className="btn-luxury px-10 py-3 text-[10px] md:text-xs"
+          className="btn-luxury animate-fade-up sm:px-10 sm:py-3"
         >
           Begin the Celebration
         </button>

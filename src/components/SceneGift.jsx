@@ -301,12 +301,14 @@ const SceneGift = ({ onComplete }) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-full max-h-screen relative overflow-hidden bg-[#050508]">
+    <div className="relative flex h-full min-h-0 w-full max-w-[100vw] flex-col items-center justify-between overflow-x-hidden overflow-y-hidden bg-[#050508] py-4 sm:py-6 md:py-8 lg:py-10">
       {/* Cinematic dark theme preserved */}
       <div className="ambient-aurora opacity-40" />
       
-      <div className="content-wrapper relative z-20 pointer-events-none pt-6 md:pt-10">
-        <h1 className="title-cinematic font-cinzel text-3xl md:text-5xl lg:text-6xl text-white drop-shadow-2xl">A Special Gift</h1>
+      <div className="content-wrapper pointer-events-none relative z-20 pt-2 sm:pt-4 md:pt-8">
+        <h1 className="title-cinematic font-cinzel text-white drop-shadow-2xl">
+          A Special Gift
+        </h1>
         <p className="subtitle-elegant mt-2 text-white/70">Because today is your day.</p>
       </div>
 

@@ -74,24 +74,26 @@ function App() {
   }, [isTransitioning]);
 
   return (
-    <div className="relative w-full h-screen bg-[#050508] text-[#F9F6EE] font-montserrat overflow-hidden select-none" ref={containerRef}>
+    <div
+      className="relative mx-auto h-[100dvh] min-h-0 w-full max-w-[100vw] overflow-x-hidden overflow-y-hidden bg-[#050508] text-[#F9F6EE] font-montserrat select-none"
+      ref={containerRef}
+    >
       <GlobalCanvas effectMode={effectMode} />
 
-      {/* Dev Navigation Controls */}
-      <div className="fixed top-4 right-4 z-[9999] flex gap-2 pointer-events-auto">
-        <button 
+      <div className="pointer-events-auto fixed left-2 top-2 z-[9999] flex max-w-[calc(100vw-0.75rem)] flex-wrap items-center justify-end gap-1.5 sm:left-auto sm:right-3 sm:top-3 md:right-4 md:top-4 md:gap-2">
+        <button
           onClick={() => goToScene(currentSceneIdx - 1)}
-          className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest transition-all"
+          className="rounded border border-white/20 bg-white/10 px-2 py-1 text-[9px] uppercase tracking-widest transition-all hover:bg-white/20 sm:px-3 sm:text-[10px]"
         >
           Prev
         </button>
-        <button 
+        <button
           onClick={() => goToScene(currentSceneIdx + 1)}
-          className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest transition-all"
+          className="rounded border border-white/20 bg-white/10 px-2 py-1 text-[9px] uppercase tracking-widest transition-all hover:bg-white/20 sm:px-3 sm:text-[10px]"
         >
           Next
         </button>
-        <div className="bg-white/5 px-2 py-1 rounded text-[10px] font-mono opacity-50 flex items-center">
+        <div className="flex items-center rounded bg-white/5 px-1.5 py-1 font-mono text-[9px] opacity-50 sm:px-2 sm:text-[10px]">
           {currentSceneIdx + 1} / {SCENES.length}
         </div>
       </div>

@@ -194,13 +194,13 @@ const SceneCake = ({ onComplete }) => {
   }, []);
 
   return (
-    <>
-      <div className="content-wrapper relative z-20 pointer-events-none">
+    <div className="flex w-full min-h-0 flex-1 flex-col items-center gap-1 py-2 sm:gap-2 sm:py-4 md:py-6">
+      <div className="content-wrapper pointer-events-none relative z-20">
         <h1 className="title-cinematic font-cinzel">Make A Wish</h1>
         <p className="subtitle-elegant">Tap the flames to blow out the candles.</p>
       </div>
 
-      <div className="relative w-full flex flex-col items-center">
+      <div className="relative flex w-full min-h-0 max-w-5xl flex-col items-center px-2 sm:px-4">
         <AnimatePresence>
           {showHint && activeFlames === 3 && (
             <motion.div 
@@ -209,20 +209,26 @@ const SceneCake = ({ onComplete }) => {
               exit={{ opacity: 0, scale: 0.5 }}
               className="absolute top-[-20px] z-30 flex flex-col items-center pointer-events-none"
             >
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-2">
-                <span className="text-[10px] uppercase tracking-widest text-white/80 font-bold">Tap the flames</span>
+              <div className="mb-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 backdrop-blur-md sm:px-4 sm:py-2">
+                <span className="text-[0.6rem] font-bold uppercase tracking-widest text-white/80 sm:text-[10px]">
+                  Tap the flames
+                </span>
               </div>
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <ArrowDown className="text-pink-400" size={32} />
+                <ArrowDown className="h-7 w-7 text-pink-400 sm:h-8 sm:w-8" />
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div id="cake-canvas-container" ref={containerRef} className="w-full h-[45vh] min-h-[350px] relative mt-4 cursor-pointer z-10" />
+        <div
+          id="cake-canvas-container"
+          ref={containerRef}
+          className="relative z-10 mt-3 w-full min-h-0 max-w-4xl cursor-pointer sm:mt-4 md:max-w-5xl"
+        />
       </div>
 
       <div className="bottom-button-container">
@@ -233,10 +239,9 @@ const SceneCake = ({ onComplete }) => {
         )}
       </div>
 
-      {/* Premium Teddy Bear Friends - Increased top-left size more for balance */}
-      <TeddyBear type="teddy3" delay={1.2} sizeMultiplier={1.4} />
-      <TeddyBear type="teddy4" delay={2.2} sizeMultiplier={1.2} />
-    </>
+      <TeddyBear type="teddy3" delay={1.2} sizeMultiplier={1.52} stackReserve={0.11} />
+      <TeddyBear type="teddy4" delay={2.2} sizeMultiplier={1.38} stackReserve={0.15} />
+    </div>
   );
 };
 
