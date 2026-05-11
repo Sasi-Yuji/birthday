@@ -14,11 +14,16 @@ const BALLOON_COLORS = [
   { bg: 'radial-gradient(circle at 30% 30%, #ffd700, #b8860b, #4a3600)', base: '#ffd700' }
 ];
 
+import Butterfly from './ui/Butterfly';
+
 const SceneBalloons = ({ onComplete }) => {
   const [balloons, setBalloons] = useState([]);
   const [hasPopped, setHasPopped] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
   const containerRef = useRef(null);
+  
+  const [firstLetterRef, setFirstLetterRef] = useState(null);
+  const [lastLetterRef, setLastLetterRef] = useState(null);
 
   useEffect(() => {
     // Determine initial count and size based on screen width
@@ -84,7 +89,29 @@ const SceneBalloons = ({ onComplete }) => {
           underlineHeight="h-[2px] md:h-[4px]"
           underlineOffset="-bottom-2 md:-bottom-4"
           className="mt-[-30px] sm:mt-[-80px] md:mt-[-100px] mb-6 z-30"
+          onFirstLetterRef={setFirstLetterRef}
+          onLastLetterRef={setLastLetterRef}
         />
+
+        {/* Butterflies */}
+        {firstLetterRef && (
+          <Butterfly 
+            targetRef={firstLetterRef} 
+            side="left" 
+            delay={0.5} 
+            color1="#00f0ff" 
+            color2="#7b2cbf" 
+          />
+        )}
+        {lastLetterRef && (
+          <Butterfly 
+            targetRef={lastLetterRef} 
+            side="right" 
+            delay={1.2} 
+            color1="#ff4579" 
+            color2="#ffd700" 
+          />
+        )}
 
         {/* Birthday Details - Matched Typography */}
         <div className="flex flex-row items-center justify-between w-full px-4 sm:px-16 md:px-32 max-w-[100vw] md:max-w-5xl z-30 drop-shadow-md gap-4">

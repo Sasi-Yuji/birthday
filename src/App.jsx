@@ -4,6 +4,8 @@ import GlobalCanvas from './components/GlobalCanvas';
 import SceneIntro from './components/SceneIntro';
 import SceneBalloons from './components/SceneBalloons';
 import SceneGallery from './components/SceneGallery';
+import ScenePosters from './components/ScenePosters';
+import SceneGallery3D from './components/SceneGallery3D';
 import SceneCake from './components/SceneCake';
 import ScenePuzzle from './components/ScenePuzzle';
 import SceneGift from './components/SceneGift';
@@ -13,6 +15,7 @@ const SCENES = [
   'intro',
   'balloons',
   'gallery',
+  'gallery3d',
   'cake',
   'puzzle',
   'gift',
@@ -101,10 +104,11 @@ function App() {
           {currentSceneIdx === 0 && idx === 0 && <SceneIntro onStart={() => goToScene(1)} />}
           {currentSceneIdx === 1 && idx === 1 && <SceneBalloons onComplete={() => goToScene(2)} />}
           {currentSceneIdx === 2 && idx === 2 && <SceneGallery onComplete={() => goToScene(3)} />}
-          {currentSceneIdx === 3 && idx === 3 && <SceneCake onComplete={() => goToScene(4)} />}
-          {currentSceneIdx === 4 && idx === 4 && <ScenePuzzle onComplete={() => goToScene(5)} />}
-          {currentSceneIdx === 5 && idx === 5 && <SceneGift onComplete={() => goToScene(6)} />}
-          {currentSceneIdx === 6 && idx === 6 && <SceneFinale />}
+          {currentSceneIdx === 3 && idx === 3 && <SceneGallery3D onComplete={() => goToScene(4)} />}
+          {currentSceneIdx === 4 && idx === 4 && <SceneCake onComplete={() => goToScene(5)} />}
+          {currentSceneIdx === 5 && idx === 5 && <ScenePuzzle onComplete={() => goToScene(6)} />}
+          {currentSceneIdx === 6 && idx === 6 && <SceneGift onComplete={() => goToScene(7)} />}
+          {currentSceneIdx === 7 && idx === 7 && <SceneFinale />}
         </section>
       ))}
     </div>

@@ -140,7 +140,7 @@ const SceneGift = ({ onComplete }) => {
 
     // 3D Card
     const cardGroup = new THREE.Group();
-    cardGroup.position.y = 1.5;
+    cardGroup.position.y = 1.0; // Start lower, inside the box
     cardGroup.scale.set(0, 0, 0);
     
     const cardWidth = isMobile ? 3.4 : 4.2;
@@ -149,12 +149,9 @@ const SceneGift = ({ onComplete }) => {
     const cardMesh = new THREE.Mesh(cardGeo, cardMat);
     cardGroup.add(cardMesh);
 
-    const cardRimGeo = new THREE.BoxGeometry(cardWidth + 0.1, cardHeight + 0.1, 0.02);
-    const cardRimMesh = new THREE.Mesh(cardRimGeo, ribbonMat);
-    cardRimMesh.position.z = -0.01;
-    cardGroup.add(cardRimMesh);
+    // Removed green rim as per user request
 
-    cardGroup.position.z = 0.5; // Move card forward to avoid clipping
+    cardGroup.position.z = 0; // Center it inside the box
     scene.add(cardGroup);
 
     // Interaction State
@@ -203,25 +200,24 @@ const SceneGift = ({ onComplete }) => {
         x: 0, y: 0, z: 0, duration: 1, ease: "power2.out"
       });
 
-      // Card flyout
+      // Card flyout - starts from inside
       gsap.to(cardGroup.scale, {
-        x: 1, y: 1, z: 1, duration: 1.2, ease: "back.out(1.2)", delay: 0.6
+        x: 1, y: 1, z: 1, duration: 1.5, ease: "power2.out", delay: 0.6
       });
       gsap.to(cardGroup.position, {
-        y: isMobile ? 5.2 : 6.2, duration: 1.5, ease: "power2.out", delay: 0.6,
+        y: isMobile ? 5.2 : 6.2, duration: 1.8, ease: "power2.out", delay: 0.6,
         onStart: () => {
           // Trigger the 2D image appearance slightly before the 3D card reaches the top
           setTimeout(() => {
             setShowCardContent(true);
-            gsap.to(cardMat, { opacity: 0, duration: 0.4 });
-          }, 400);
+            gsap.to(cardMat, { opacity: 0, duration: 0.6 });
+          }, 600);
         }
       });
       gsap.to(cardGroup.rotation, {
-        y: Math.PI * 4, duration: 2, ease: "power2.out", delay: 0.6,
+        y: Math.PI * 4, duration: 2.5, ease: "power2.out", delay: 0.6,
         onComplete: () => {
           setTimeout(() => setShowContinue(true), 400);
-          // Card remains permanently visible as requested
         }
       });
     };

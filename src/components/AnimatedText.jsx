@@ -15,9 +15,27 @@ const AnimatedText = React.forwardRef(
     underlineGradient = "from-blue-500 via-purple-500 to-pink-500",
     underlineHeight = "h-1",
     underlineOffset = "bottom-0",
+    onFirstLetterRef,
+    onLastLetterRef,
     ...props
   }, ref) => {
     const letters = Array.from(text)
+    const capturedFirst = React.useRef(null);
+    const capturedLast = React.useRef(null);
+
+    const firstLetterRef = React.useCallback((node) => {
+      if (node && node !== capturedFirst.current) {
+        capturedFirst.current = node;
+        if (onFirstLetterRef) onFirstLetterRef(node);
+      }
+    }, [onFirstLetterRef]);
+
+    const lastLetterRef = React.useCallback((node) => {
+      if (node && node !== capturedLast.current) {
+        capturedLast.current = node;
+        if (onLastLetterRef) onLastLetterRef(node);
+      }
+    }, [onLastLetterRef]);
 
     const container = {
       hidden: { 
@@ -84,11 +102,20 @@ const AnimatedText = React.forwardRef(
             animate={replay ? "visible" : "hidden"}
             className={cn(textClassName)}
           >
-            {letters.map((letter, index) => (
-              <motion.span key={index} variants={child} className="inline-block">
-                {letter === " " ? "\u00A0" : letter}
-              </motion.span>
-            ))}
+            {letters.map((letter, index) => {
+              const isFirst = index === 0;
+              const isLast = index === letters.length - 1;
+              return (
+                <motion.span 
+                  key={index} 
+                  ref={isFirst ? firstLetterRef : (isLast ? lastLetterRef : null)}
+                  variants={child} 
+                  className="inline-block"
+                >
+                  {letter === " " ? "\u00A0" : letter}
+                </motion.span>
+              );
+            })}
           </motion.div>
 
           <motion.div
