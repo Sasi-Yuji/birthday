@@ -177,20 +177,20 @@ function GalleryScene({
 
 		const zPull =
 			minPx < 340
-				? 3.4
+				? 4.5
 				: minPx < 400
-					? 3
+					? 4.0
 					: minPx < 480
-						? 2.6
+						? 3.5
 						: minPx < 640
-							? 2.1
+							? 2.8
 							: minPx < 768
-								? 1.6
+								? 2.2
 								: minPx < 1024
-									? 1
+									? 1.5
 									: minPx < 1440
-										? 0.55
-										: 0.35;
+										? 0.8
+										: 0.5;
 
 		camera.position.set(0, 0, zPull);
 		camera.lookAt(0, 0, -16);
@@ -230,8 +230,9 @@ function GalleryScene({
 			const verticalAngle = (i * 1.618 + Math.PI / 3) % (Math.PI * 2);
 
 			// Increased base radius to clear the center
-			const horizontalRadius = 1.8 + (i % 3) * 1.5; 
-			const verticalRadius = 1.4 + ((i + 1) % 4) * 1.0; 
+			// Increased base radius and spread for better spacing on mobile
+			const horizontalRadius = 2.2 + (i % 3) * 1.8; 
+			const verticalRadius = 1.8 + ((i + 1) % 4) * 1.2; 
 
 			const x =
 				((Math.sin(horizontalAngle) * horizontalRadius * maxHorizontalOffset) /
@@ -465,10 +466,11 @@ function GalleryScene({
 					: 1;
 				const minPx = Math.max(Math.min(size.width, size.height), 2);
 				const maxPx = Math.max(size.width, size.height, 2);
-				const scaleNorm = THREE.MathUtils.clamp(minPx / 500, 0.44, 1.05);
+				// Much larger base scale for mobile
+				const scaleNorm = THREE.MathUtils.clamp(minPx / 350, 0.75, 1.3);
 				const widePenalty =
-					maxPx > 0 ? THREE.MathUtils.clamp(900 / maxPx, 0.82, 1) : 1;
-				const base = 2 * scaleNorm * widePenalty;
+					maxPx > 0 ? THREE.MathUtils.clamp(900 / maxPx, 0.85, 1) : 1;
+				const base = 2.4 * scaleNorm * widePenalty;
 				const scale =
 					aspect > 1 ? [base * aspect, base, 1] : [base, base / aspect, 1];
 

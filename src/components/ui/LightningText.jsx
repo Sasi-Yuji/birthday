@@ -12,9 +12,15 @@ class TextEffect {
     this.color = options.color || '#fce4ec';
     this.delay = options.delay || 4; 
     this.basedelay = this.delay;
+    this.letterSpacing = options.letterSpacing || '0px';
+    this.strokeWidth = options.strokeWidth || 1;
     
     // Using Cinzel font to match the birthday theme
     buffer.font = `bold ${this.size}px Cinzel, serif`;
+    if ('letterSpacing' in buffer) {
+      buffer.letterSpacing = this.letterSpacing;
+    }
+    
     this.bound = buffer.measureText(this.copy);
     this.bound.height = this.size * 1.5;
     
@@ -23,7 +29,7 @@ class TextEffect {
     this.y = canvasHeight * 0.5 - this.bound.height * 0.5;
 
     buffer.strokeStyle = this.color;
-    buffer.lineWidth = 1;
+    buffer.lineWidth = this.strokeWidth;
     buffer.strokeText(this.copy, 0, this.bound.height * 0.8);
     this.data = buffer.getImageData(0, 0, this.bound.width, this.bound.height);
     this.index = 0;
@@ -214,7 +220,7 @@ class Particles {
 }
 
 // Main React Component
-const LightningText = ({ text = "20 • 05 • 2005", size = 40, className = "" }) => {
+const LightningText = ({ text = "20 • 05 • 2005", size = 40, letterSpacing = "0px", strokeWidth = 1, className = "" }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const thunderRef = useRef([]);
@@ -236,7 +242,12 @@ const LightningText = ({ text = "20 • 05 • 2005", size = 40, className = "" 
       canvas.height = h * dpr;
       ctx.scale(dpr, dpr);
       
-      textRef.current = new TextEffect({ copy: text, size: size }, w, h);
+      textRef.current = new TextEffect({ 
+        copy: text, 
+        size: size,
+        letterSpacing: letterSpacing,
+        strokeWidth: strokeWidth
+      }, w, h);
     };
 
     updateDimensions();
@@ -281,7 +292,7 @@ const LightningText = ({ text = "20 • 05 • 2005", size = 40, className = "" 
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, [text, size]);
+  }, [text, size, letterSpacing, strokeWidth]);
 
   return (
     <div className={`relative ${className}`}>

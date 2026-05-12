@@ -1,5 +1,32 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import FlyingPosters from './ui/FlyingPosters';
+
+const birthdayTextItems = [
+  { text: 'Happy Birthday ✨', className: 'joy-text--left-one', delay: '0s' },
+  { text: 'Beautiful Soul 💖', className: 'joy-text--right-one', delay: '3.6s' },
+  { text: 'Princess Energy 👑', className: 'joy-text--left-two', delay: '7.2s' },
+  { text: 'Forever Young 🌸', className: 'joy-text--right-two', delay: '10.8s' },
+  { text: 'Shine Like a Star ✨', className: 'joy-text--left-three', delay: '14.4s' },
+  { text: '21 Years of Happiness 🎂', className: 'joy-text--right-three', delay: '18s' },
+  { text: 'Sweet Memories 💫', className: 'joy-text--left-four', delay: '21.6s' },
+  { text: 'Keep Smiling 😊', className: 'joy-text--right-four', delay: '25.2s' },
+  { text: 'Born to Sparkle 💎', className: 'joy-text--center-low', delay: '28.8s' },
+  { text: 'Queen of the Day 👸', className: 'joy-text--center-mid', delay: '32.4s' },
+];
+
+const BirthdayTextAura = () => (
+  <div className="birthday-text-aura" aria-hidden="true">
+    {birthdayTextItems.map(item => (
+      <span
+        key={item.text}
+        className={`birthday-float-text ${item.className}`}
+        style={{ animationDelay: item.delay }}
+      >
+        {item.text}
+      </span>
+    ))}
+  </div>
+);
 
 const ScenePosters = ({ onComplete }) => {
   const [vw, setVw] = useState(
@@ -61,6 +88,7 @@ const ScenePosters = ({ onComplete }) => {
           distortion={3}
           scrollEase={0.06}
         />
+        {vw < 640 && <BirthdayTextAura />}
       </div>
 
       <div className="bottom-button-container z-40 flex flex-col items-center gap-2 sm:gap-4 pb-4">

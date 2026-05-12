@@ -560,6 +560,214 @@ html {
   }
 }
 
+/* Chronicles of Joy mobile background */
+.birthday-text-aura {
+  position: absolute;
+  inset: clamp(6.25rem, 16vh, 8rem) max(0.75rem, env(safe-area-inset-right, 0px)) clamp(7.5rem, 22vh, 10rem) max(0.75rem, env(safe-area-inset-left, 0px));
+  z-index: 17;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+
+.birthday-float-text {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: min(38vw, 9.25rem);
+  color: rgba(255, 248, 238, 0.76);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.52rem, 2.25vw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+  text-transform: uppercase;
+  padding: 0.25rem 0.35rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  background-size: 220% 100%;
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.2),
+    0 0 22px rgba(212, 175, 55, 0.18),
+    0 0 34px rgba(255, 105, 180, 0.14);
+  opacity: 0;
+  filter: blur(0.1px) drop-shadow(0 0 14px rgba(255, 210, 235, 0.12));
+  animation:
+    birthday-text-drift 36s cubic-bezier(0.42, 0, 0.2, 1) infinite,
+    birthday-text-shimmer 3.6s linear infinite;
+  will-change: transform, opacity, background-position;
+}
+
+.joy-text--left-one {
+  left: 5%;
+  top: 22%;
+  --joy-x: -4vw;
+  --joy-y: -3vh;
+}
+
+.joy-text--right-one {
+  right: 4%;
+  top: 26%;
+  --joy-x: 5vw;
+  --joy-y: -2vh;
+}
+
+.joy-text--left-two {
+  left: 7%;
+  top: 42%;
+  --joy-x: -5vw;
+  --joy-y: 2vh;
+}
+
+.joy-text--right-two {
+  right: 6%;
+  top: 45%;
+  --joy-x: 4vw;
+  --joy-y: 2vh;
+}
+
+.joy-text--left-three {
+  left: 4%;
+  top: 60%;
+  --joy-x: -4vw;
+  --joy-y: 3vh;
+}
+
+.joy-text--right-three {
+  right: 5%;
+  top: 61%;
+  --joy-x: 4vw;
+  --joy-y: 3vh;
+}
+
+.joy-text--left-four {
+  left: 10%;
+  top: 76%;
+  --joy-x: -5vw;
+  --joy-y: 3vh;
+}
+
+.joy-text--right-four {
+  right: 10%;
+  top: 76%;
+  --joy-x: 5vw;
+  --joy-y: 3vh;
+}
+
+.joy-text--center-low {
+  left: 31%;
+  top: 83%;
+  --joy-x: 0vw;
+  --joy-y: 3vh;
+}
+
+.joy-text--center-mid {
+  left: 32%;
+  top: 34%;
+  --joy-x: 0vw;
+  --joy-y: -2vh;
+}
+
+@keyframes birthday-text-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.96);
+  }
+
+  4% {
+    opacity: 0;
+  }
+
+  7% {
+    opacity: 0.68;
+  }
+
+  10% {
+    opacity: 0.54;
+    transform: translate3d(0, 0, 0) scale(1.01);
+  }
+
+  13% {
+    opacity: 0;
+    transform: translate3d(var(--joy-x), var(--joy-y), 0) scale(1.04);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--joy-x), var(--joy-y), 0) scale(1.04);
+  }
+}
+
+@keyframes birthday-text-shimmer {
+  0% { background-position: 220% 0; }
+  100% { background-position: -220% 0; }
+}
+
+@keyframes shiny-text {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.animate-shiny-text {
+  animation: shiny-text 8s linear infinite;
+}
+
+.dreamy-text-float {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(236, 72, 153, 0.4),
+    0 0 30px rgba(236, 72, 153, 0.2);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.feminine-glow-text {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-shadow: 
+    0 0 8px rgba(255, 182, 193, 0.8),
+    0 0 15px rgba(255, 105, 180, 0.5);
+}
+
+.floating-star-glow {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+
+.scene-gallery-3d-root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(106, 13, 173, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.05) 0%, transparent 60%);
+  filter: blur(60px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .birthday-text-aura {
+    display: none;
+  }
+}
+
 /* Very short viewports */
 @media (max-height: 600px) {
   .subtitle-elegant {
@@ -661,7 +869,9 @@ html {
 /* Scene balloons — mobile-first date / age; --bd-lightning > --bd-font so stroke canvas matches filled Cinzel */
 .balloons-detail-row {
   --bd-font: 12px;
-  --bd-lightning: 16;
+  --bd-lightning: 20;
+  --bd-spacing: 0.12em;
+  --bd-weight: 1.5;
   --bd-age-w: 8.5rem;
   --bd-age-h: 2.125rem;
   box-sizing: border-box;
@@ -675,7 +885,9 @@ html {
 @media (min-width: 360px) {
   .balloons-detail-row {
     --bd-font: 13px;
-    --bd-lightning: 17;
+    --bd-lightning: 21;
+    --bd-spacing: 0.12em;
+    --bd-weight: 1.5;
     --bd-age-w: 9rem;
     --bd-age-h: 2.25rem;
   }
@@ -684,7 +896,9 @@ html {
 @media (min-width: 375px) {
   .balloons-detail-row {
     --bd-font: 14px;
-    --bd-lightning: 18;
+    --bd-lightning: 22;
+    --bd-spacing: 0.12em;
+    --bd-weight: 1.5;
     --bd-age-w: 9.5rem;
     --bd-age-h: 2.375rem;
   }
@@ -693,7 +907,9 @@ html {
 @media (min-width: 480px) {
   .balloons-detail-row {
     --bd-font: 15px;
-    --bd-lightning: 19;
+    --bd-lightning: 23;
+    --bd-spacing: 0.12em;
+    --bd-weight: 1.5;
     --bd-age-w: 10.25rem;
     --bd-age-h: 2.5rem;
   }
@@ -702,7 +918,9 @@ html {
 @media (min-width: 640px) {
   .balloons-detail-row {
     --bd-font: 18px;
-    --bd-lightning: 20;
+    --bd-lightning: 25;
+    --bd-spacing: 0.11em;
+    --bd-weight: 1.2;
     --bd-age-w: 11.5rem;
     --bd-age-h: 2.875rem;
   }
@@ -712,6 +930,8 @@ html {
   .balloons-detail-row {
     --bd-font: 22px;
     --bd-lightning: 23;
+    --bd-spacing: 0.1em;
+    --bd-weight: 1;
     --bd-age-w: 13.75rem;
     --bd-age-h: 3.2rem;
   }
@@ -721,6 +941,8 @@ html {
   .balloons-detail-row {
     --bd-font: 24px;
     --bd-lightning: 25;
+    --bd-spacing: 0.1em;
+    --bd-weight: 1;
     --bd-age-w: 15rem;
     --bd-age-h: 3.4rem;
   }
@@ -730,6 +952,8 @@ html {
   .balloons-detail-row {
     --bd-font: 26px;
     --bd-lightning: 27;
+    --bd-spacing: 0.1em;
+    --bd-weight: 1;
     --bd-age-w: 16.25rem;
     --bd-age-h: 3.55rem;
   }

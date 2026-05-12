@@ -18,17 +18,17 @@ import Butterfly from './ui/Butterfly';
 
 /** Keep in sync with `index.css` `.balloons-detail-row` --bd-lightning (stroke text reads smaller than filled date) */
 function readInitialLightningSize() {
-  if (typeof window === 'undefined') return 16;
+  if (typeof window === 'undefined') return 20;
   const w = window.innerWidth;
-  if (w < 360) return 16;
-  if (w < 375) return 17;
-  if (w < 480) return 18;
-  if (w < 640) return 19;
-  if (w < 768) return 20;
-  if (w < 1024) return 22;
-  if (w < 1280) return 24;
-  if (w < 1536) return 26;
-  return 28;
+  if (w < 360) return 20;
+  if (w < 375) return 21;
+  if (w < 480) return 22;
+  if (w < 640) return 23;
+  if (w < 768) return 25;
+  if (w < 1024) return 23;
+  if (w < 1280) return 25;
+  if (w < 1536) return 27;
+  return 29;
 }
 
 const SceneBalloons = ({ onComplete }) => {
@@ -41,14 +41,24 @@ const SceneBalloons = ({ onComplete }) => {
   const [lastLetterRef, setLastLetterRef] = useState(null);
   const detailRowRef = useRef(null);
   const [lightningSize, setLightningSize] = useState(readInitialLightningSize);
+  const [lightningSpacing, setLightningSpacing] = useState('0.1em');
+  const [lightningWeight, setLightningWeight] = useState(1);
 
   useLayoutEffect(() => {
     const row = detailRowRef.current;
     if (!row) return;
     const read = () => {
-      const raw = getComputedStyle(row).getPropertyValue('--bd-lightning').trim();
-      const n = parseFloat(raw, 10);
-      if (!Number.isNaN(n) && n > 0) setLightningSize(n);
+      const style = getComputedStyle(row);
+      const rawSize = style.getPropertyValue('--bd-lightning').trim();
+      const nSize = parseFloat(rawSize, 10);
+      if (!Number.isNaN(nSize) && nSize > 0) setLightningSize(nSize);
+
+      const rawSpacing = style.getPropertyValue('--bd-spacing').trim();
+      if (rawSpacing) setLightningSpacing(rawSpacing);
+
+      const rawWeight = style.getPropertyValue('--bd-weight').trim();
+      const nWeight = parseFloat(rawWeight, 10);
+      if (!Number.isNaN(nWeight) && nWeight > 0) setLightningWeight(nWeight);
     };
     read();
     const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(read) : null;
@@ -165,7 +175,13 @@ const SceneBalloons = ({ onComplete }) => {
           </div>
 
           <div className="balloons-age-col flex shrink-0 justify-end text-date-age">
-            <LightningText text="21 YEARS" size={lightningSize} className="balloons-age-slot" />
+            <LightningText 
+              text="21 YEARS" 
+              size={lightningSize} 
+              letterSpacing={lightningSpacing}
+              strokeWidth={lightningWeight}
+              className="balloons-age-slot" 
+            />
           </div>
         </div>
 

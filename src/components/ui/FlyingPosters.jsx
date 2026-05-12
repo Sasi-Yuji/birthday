@@ -74,6 +74,9 @@ precision highp float;
 uniform vec2 uImageSize;
 uniform vec2 uPlaneSize;
 uniform sampler2D tMap;
+uniform float uBrightness;
+uniform float uContrast;
+uniform float uAlpha;
 
 varying vec2 vUv;
 
@@ -93,7 +96,11 @@ void main() {
 
   vec2 uv = vUv * scale + (1.0 - scale) * 0.5;
 
-  gl_FragColor = texture2D(tMap, uv);
+  vec4 color = texture2D(tMap, uv);
+  color.rgb = (color.rgb - 0.5) * uContrast + 0.5;
+  color.rgb *= uBrightness;
+
+  gl_FragColor = vec4(color.rgb, color.a * uAlpha);
 }
 `;
 
@@ -150,6 +157,20 @@ class Media {
     this.planeWidth = planeWidth;
     this.planeHeight = planeHeight;
     this.distortion = distortion;
+    this.mobileEdgeSlots = [
+      [-0.39, 0.32],
+      [0.38, 0.28],
+      [-0.36, -0.25],
+      [0.39, -0.31],
+      [-0.26, 0.05],
+      [0.27, -0.02]
+    ];
+    this.mobileDrift = {
+      x: 0,
+      y: 0,
+      speed: 0.35 + (index % 5) * 0.045,
+      phase: index * 1.73
+    };
 
     // Use a multi-column staggered distribution
     this.cols = 2; // Default to 2 columns on mobile
@@ -174,6 +195,9 @@ class Media {
         uPlaneSize: { value: [0, 0] },
         uImageSize: { value: [0, 0] },
         uSpeed: { value: 0 },
+        uBrightness: { value: 1 },
+        uContrast: { value: 1 },
+        uAlpha: { value: 1 },
         rotationAxis: { value: [Math.random() - 0.5, 1, Math.random() - 0.5] },
         distortionAxis: { value: [1, 1, Math.random()] },
         uDistortion: { value: this.distortion },
@@ -201,20 +225,38 @@ class Media {
   }
 
   setScale() {
-    this.plane.scale.x = (this.viewport.width * this.planeWidth) / this.screen.width;
-    this.plane.scale.y = (this.viewport.height * this.planeHeight) / this.screen.height;
+    const isMobile = this.screen.width < 640;
+    const mobileScale = isMobile ? 0.76 : 1;
+    this.plane.scale.x = (this.viewport.width * this.planeWidth * mobileScale) / this.screen.width;
+    this.plane.scale.y = (this.viewport.height * this.planeHeight * mobileScale) / this.screen.height;
 
     // Responsive column distribution
     this.cols = this.screen.width < 640 ? 2 : 3;
-    const colIndex = this.index % this.cols;
-    const colSpacing = this.viewport.width / (this.cols + 1);
-    
-    // Distribute X position across columns with a slight random jitter
-    this.plane.position.x = -this.viewport.width / 2 + (colIndex + 1) * colSpacing;
-    this.plane.position.x += (Math.random() - 0.5) * (colSpacing * 0.4);
+
+    if (isMobile) {
+      const slot = this.mobileEdgeSlots[this.index % this.mobileEdgeSlots.length];
+      this.mobileBaseX = slot[0] * this.viewport.width;
+      this.mobileBaseY = slot[1] * this.viewport.height;
+      this.mobileDrift.x = this.viewport.width * (0.035 + (this.index % 3) * 0.012);
+      this.mobileDrift.y = this.viewport.height * (0.025 + (this.index % 4) * 0.008);
+      this.plane.position.x = this.mobileBaseX;
+      this.program.uniforms.uBrightness.value = 1.36;
+      this.program.uniforms.uContrast.value = 1.18;
+      this.program.uniforms.uAlpha.value = 0.94;
+    } else {
+      const colIndex = this.index % this.cols;
+      const colSpacing = this.viewport.width / (this.cols + 1);
+
+      // Distribute X position across columns with a slight random jitter
+      this.plane.position.x = -this.viewport.width / 2 + (colIndex + 1) * colSpacing;
+      this.plane.position.x += (Math.random() - 0.5) * (colSpacing * 0.4);
+      this.program.uniforms.uBrightness.value = 1;
+      this.program.uniforms.uContrast.value = 1;
+      this.program.uniforms.uAlpha.value = 1;
+    }
     
     // Add varying Z depth for a more layered look
-    this.plane.position.z = (this.index % 3) * 0.5;
+    this.plane.position.z = isMobile ? -1.2 - (this.index % 4) * 0.2 : (this.index % 3) * 0.5;
     
     this.plane.program.uniforms.uPlaneSize.value = [this.plane.scale.x, this.plane.scale.y];
   }
@@ -227,7 +269,8 @@ class Media {
     }
     this.setScale();
 
-    this.padding = 0.8; // Increased padding for better vertical spacing
+    this.isMobile = this.screen.width < 640;
+    this.padding = this.isMobile ? 1.35 : 0.8; // Increased padding for better vertical spacing
     this.height = this.plane.scale.y + this.padding;
     this.itemsInCol = Math.ceil(this.length / this.cols);
     this.heightTotal = this.height * this.itemsInCol;
@@ -236,12 +279,26 @@ class Media {
     // Stagger rows slightly for organic feel
     const stagger = (this.index % this.cols) * (this.height * 0.5);
     
-    this.y = -this.heightTotal / 2 + (rowIndex + 0.5) * this.height + stagger;
+    this.y = this.isMobile
+      ? this.mobileBaseY + (rowIndex % 2 === 0 ? 0.08 : -0.08) * this.viewport.height
+      : -this.heightTotal / 2 + (rowIndex + 0.5) * this.height + stagger;
   }
 
   update(scroll) {
     // Current loop position with extra wrap-around logic
-    this.plane.position.y = this.y - scroll.current - this.extra;
+    const time = this.program.uniforms.uTime.value;
+    const driftX = this.isMobile
+      ? Math.sin(time * this.mobileDrift.speed + this.mobileDrift.phase) * this.mobileDrift.x
+      : 0;
+    const driftY = this.isMobile
+      ? Math.cos(time * (this.mobileDrift.speed * 0.7) + this.mobileDrift.phase) * this.mobileDrift.y
+      : 0;
+
+    if (this.isMobile) {
+      this.plane.position.x = this.mobileBaseX + driftX;
+    }
+
+    this.plane.position.y = this.y - scroll.current - this.extra + driftY;
 
     const position = map(this.plane.position.y, -this.viewport.height, this.viewport.height, 5, 15);
 
@@ -250,7 +307,6 @@ class Media {
     this.program.uniforms.uSpeed.value = scroll.current;
 
     const planeHeight = this.plane.scale.y;
-    const viewportHeight = this.viewport.height;
 
     const topEdge = this.plane.position.y + planeHeight / 2;
     const bottomEdge = this.plane.position.y - planeHeight / 2;
