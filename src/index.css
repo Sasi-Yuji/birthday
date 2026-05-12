@@ -305,6 +305,21 @@ html {
   pointer-events: auto;
 }
 
+.balloons-tap-hint {
+  pointer-events: none;
+  margin: 0;
+  max-width: min(88vw, 24rem);
+  padding-inline: 0.75rem;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: clamp(0.6rem, 2.4vw, 0.78rem);
+  letter-spacing: 0.16em;
+  line-height: 1.35;
+  text-align: center;
+  text-shadow:
+    0 0 12px rgba(255, 255, 255, 0.18),
+    0 0 24px rgba(255, 105, 180, 0.12);
+}
+
 @media (max-width: 767px) {
   .bottom-button-container {
     bottom: clamp(1.75rem, calc(6.5vh + env(safe-area-inset-bottom, 0px)), 4.75rem);
@@ -749,17 +764,195 @@ html {
   pointer-events: none;
 }
 
-.scene-gallery-3d-root::before {
+.spotlight-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.spotlight-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(106, 13, 173, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.05) 0%, transparent 60%);
-  filter: blur(60px);
-  z-index: 1;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.06),
+    transparent 40%
+  );
+  z-index: 3;
   pointer-events: none;
+}
+
+.tilt-card-inner {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+}
+
+.text-reveal-blur {
+  filter: blur(10px);
+  opacity: 0;
+  animation: reveal-blur 1.2s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes reveal-blur {
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.glass-card-premium {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glass-card-premium:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 
+    0 35px 60px -15px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.glow-mesh-background {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+  filter: blur(100px);
+  z-index: -1;
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0) rotate(var(--base-rotate, 0deg)); }
+  50% { transform: translateY(-20px) rotate(calc(var(--base-rotate, 0deg) + 2deg)); }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.gallery3d-title {
+  font-size: clamp(1.35rem, 5.8vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+
+.gallery3d-quote-band {
+  position: absolute;
+  left: max(1rem, env(safe-area-inset-left, 0px));
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  top: clamp(6rem, 16vh, 8.5rem);
+  z-index: 24;
+  display: none;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gallery3d-floating-quote {
+  max-width: min(88vw, 22rem);
+  color: rgba(255, 246, 252, 0.88);
+  font-family: var(--font-instrument-serif), serif;
+  font-size: clamp(0.82rem, 3.6vw, 1.05rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  text-shadow:
+    0 0 12px rgba(255, 255, 255, 0.24),
+    0 0 24px rgba(255, 105, 180, 0.22),
+    0 0 42px rgba(212, 175, 55, 0.12);
+}
+
+@media (max-width: 767px) {
+  .scene-gallery-3d-root {
+    isolation: isolate;
+    padding-inline: max(0.75rem, env(safe-area-inset-left, 0px));
+  }
+
+  .scene-gallery-3d-root .gallery3d-header {
+    top: max(1.85rem, calc(env(safe-area-inset-top, 0px) + 1.1rem));
+    z-index: 45;
+    padding-inline: max(0.75rem, env(safe-area-inset-left, 0px));
+  }
+
+  .scene-gallery-3d-root .gallery3d-title {
+    margin-inline: auto;
+    max-width: calc(100vw - 2rem);
+    font-size: clamp(1.18rem, 5.9vw, 1.58rem);
+    line-height: 1.05;
+    letter-spacing: clamp(0.06em, 1vw, 0.14em);
+    transform: translateX(0.04em);
+  }
+
+  .scene-gallery-3d-root .gallery3d-subtitle,
+  .scene-gallery-3d-root .gallery3d-desktop-quote {
+    display: none;
+  }
+
+  .scene-gallery-3d-root .gallery3d-quote-band {
+    display: flex;
+    top: clamp(4.95rem, 12.5vh, 6.7rem);
+  }
+
+  .scene-gallery-3d-root .gallery3d-orbit-stage {
+    inset: clamp(8.1rem, 23vh, 10.25rem) 0 clamp(7rem, 17vh, 8.75rem);
+    z-index: 20;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+
+  .scene-gallery-3d-root .gallery3d-orbit-core {
+    width: clamp(13.75rem, 60vw, 17rem);
+    height: clamp(13.75rem, 60vw, 17rem);
+    transform: translateY(-0.25rem);
+  }
+
+  .scene-gallery-3d-root .gallery3d-orbit-core > div {
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+    margin-left: -86px;
+    margin-top: -86px;
+  }
+
+  .scene-gallery-3d-root .glass-card-premium {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 16px 38px rgba(0, 0, 0, 0.7),
+      0 0 28px rgba(255, 182, 193, 0.12),
+      inset 0 0 12px rgba(255, 255, 255, 0.08);
+  }
+
+  .scene-gallery-3d-root > .absolute.bottom-10 {
+    bottom: max(1.8rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem));
+    left: max(1rem, env(safe-area-inset-left, 0px));
+    right: max(1rem, env(safe-area-inset-right, 0px));
+    display: flex;
+    justify-content: center;
+  }
+
+  .scene-gallery-3d-root > .absolute.bottom-10 button {
+    width: min(100%, 21rem);
+    padding: 0.95rem 1.25rem;
+    letter-spacing: 0.22em;
+  }
 }
 
 @media (min-width: 640px) {
@@ -786,9 +979,18 @@ html {
 /* Slightly higher thumb clearance on key scenes (inherits mobile bottom above) */
 @media (max-width: 767px) {
   .bottom-button-container--intro,
-  .bottom-button-container--balloons,
   .bottom-button-container--gallery3d {
     bottom: clamp(2.25rem, calc(8vh + env(safe-area-inset-bottom, 0px)), 5.5rem);
+  }
+
+  .bottom-button-container--balloons {
+    bottom: clamp(1.4rem, calc(5vh + env(safe-area-inset-bottom, 0px)), 3rem);
+    gap: clamp(0.75rem, 2.2vh, 1.1rem);
+    padding-inline: max(1rem, env(safe-area-inset-left, 0px));
+  }
+
+  .bottom-button-container--balloons .btn-luxury {
+    width: min(92vw, 23rem);
   }
 }
 

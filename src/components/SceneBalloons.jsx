@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import AudioSys from '../utils/AudioSystem';
 import Lanyard from './Lanyard';
@@ -16,6 +16,26 @@ const BALLOON_COLORS = [
 
 import Butterfly from './ui/Butterfly';
 
+function createRandomBalloon({ isMobile }) {
+  const baseScale = isMobile ? 0.4 : 0.6;
+  const randomRange = isMobile ? 0.4 : 0.7;
+
+  return {
+    id: Math.random().toString(36).substr(2, 9),
+    colorObj: BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)],
+    sizeScale: baseScale + Math.random() * randomRange,
+    startX: Math.random() * 90 + 5
+  };
+}
+
+function createInitialBalloons() {
+  if (typeof window === 'undefined') return [];
+
+  const isMobile = window.innerWidth < 768;
+  const initialCount = isMobile ? 4 : 6;
+  return Array.from({ length: initialCount }).map(() => createRandomBalloon({ isMobile }));
+}
+
 /** Keep in sync with `index.css` `.balloons-detail-row` --bd-lightning (stroke text reads smaller than filled date) */
 function readInitialLightningSize() {
   if (typeof window === 'undefined') return 20;
@@ -32,7 +52,7 @@ function readInitialLightningSize() {
 }
 
 const SceneBalloons = ({ onComplete }) => {
-  const [balloons, setBalloons] = useState([]);
+  const [balloons, setBalloons] = useState(createInitialBalloons);
   const [hasPopped, setHasPopped] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
   const containerRef = useRef(null);
@@ -71,32 +91,9 @@ const SceneBalloons = ({ onComplete }) => {
   }, []);
 
   useEffect(() => {
-    // Determine initial count and size based on screen width
-    const isMobile = window.innerWidth < 768;
-    const initialCount = isMobile ? 4 : 6;
-    const baseScale = isMobile ? 0.4 : 0.6;
-    const randomRange = isMobile ? 0.4 : 0.7;
-
-    // Initial burst
-    const initialBalloons = Array.from({ length: initialCount }).map(() => ({
-      id: Math.random().toString(36).substr(2, 9),
-      colorObj: BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)],
-      sizeScale: baseScale + Math.random() * randomRange,
-      startX: Math.random() * 90 + 5
-    }));
-    setBalloons(initialBalloons);
-
     const spawnInterval = setInterval(() => {
       const isMobile = window.innerWidth < 768;
-      const baseScale = isMobile ? 0.4 : 0.6;
-      const randomRange = isMobile ? 0.4 : 0.7;
-
-      const id = Math.random().toString(36).substr(2, 9);
-      const colorObj = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
-      const sizeScale = baseScale + Math.random() * randomRange;
-      const startX = Math.random() * 90 + 5;
-
-      setBalloons(prev => [...prev, { id, colorObj, sizeScale, startX }]);
+      setBalloons(prev => [...prev, createRandomBalloon({ isMobile })]);
     }, 800);
 
     return () => clearInterval(spawnInterval);
@@ -188,12 +185,12 @@ const SceneBalloons = ({ onComplete }) => {
         <div className="balloons-lanyard-block mt-4 sm:mt-52 md:mt-64 transform translate-y-[10px] sm:translate-y-[60px] md:translate-y-[80px]">
           <Lanyard />
         </div>
-        <p className="subtitle-elegant mt-2 md:mt-0 max-w-[min(100%,22rem)] px-2 text-[10px] sm:text-xs md:text-base tracking-[0.15em] md:tracking-[0.2em]">
-          Tap the balloons to celebrate.
-        </p>
       </div>
 
       <div className="bottom-button-container bottom-button-container--balloons">
+        <p className="balloons-tap-hint subtitle-elegant">
+          Tap the balloons to celebrate.
+        </p>
         {showContinue && (
           <button
             onClick={onComplete}
