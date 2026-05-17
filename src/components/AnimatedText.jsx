@@ -41,13 +41,13 @@ const AnimatedText = React.forwardRef(
       hidden: { 
         opacity: 0 
       },
-      visible: (i = 1) => ({
+      visible: {
         opacity: 1,
         transition: { 
-          staggerChildren: duration, 
-          delayChildren: i * delay 
+          staggerChildren: 0.65, /* Very slow, majestic letter stagger reveal */
+          delayChildren: delay 
         }
-      })
+      }
     }
 
     const child = {
@@ -55,18 +55,18 @@ const AnimatedText = React.forwardRef(
         opacity: 1,
         y: 0,
         transition: {
-          type: "spring",
-          damping: 12,
-          stiffness: 200
+          type: "tween",
+          ease: "easeOut",
+          duration: 1.5 /* Slow motion float up taking 1.5 seconds per letter */
         }
       },
       hidden: {
         opacity: 0,
-        y: 20,
+        y: 30,
         transition: {
-          type: "spring",
-          damping: 12,
-          stiffness: 200
+          type: "tween",
+          ease: "easeIn",
+          duration: 1.2
         }
       }
     }
@@ -80,8 +80,8 @@ const AnimatedText = React.forwardRef(
         width: "100%",
         left: "0%",
         transition: {
-          delay: letters.length * delay,
-          duration: 0.8,
+          delay: letters.length * 0.72, /* Smoothly wait for the extremely slow reveal to complete */
+          duration: 2.2,                /* Extremely slow, luxurious drawing motion */
           ease: "easeOut"
         }
       }

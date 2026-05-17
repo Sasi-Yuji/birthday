@@ -4,7 +4,8 @@ import pic1 from '../assets/pic1.jpeg';
 import pic2 from '../assets/pic2.jpeg';
 
 const StaggeredTitle = ({ text }) => {
-  const letters = text.toUpperCase().split("");
+  // Correctly splits surrogate pairs (emojis) to prevent broken character boxes
+  const letters = Array.from(text.toUpperCase());
   return (
     <h1 className="gallery3d-title flex flex-nowrap justify-center font-cinzel font-black">
       {letters.map((char, i) => (
@@ -65,16 +66,16 @@ const OrbitingPhoto = ({ src, index, total, radius, speed, size, isMobile }) => 
 };
 
 const birthdayQuotes = [
-  'Happy Birthday ✨',
-  'Beautiful Soul 💖',
-  'Princess Energy 👑',
-  'Forever Young 🌸',
-  'Shine Like a Star ✨',
-  '21 Years of Happiness 🎂',
-  'Sweet Memories 💫',
-  'Keep Smiling 😊',
-  'Born to Sparkle 💎',
-  'Queen of the Day 👸'
+  '🎉 Happy Birthday to a Special Soul ✨',
+  '🌸 You have a Beautiful & Caring Heart 💖',
+  '👑 Wearing your Invisible Princess Crown ✨',
+  '💫 Forever Young, Radiant, & Blessed 🌸',
+  '⭐ Shine Brightly Like the Midnight Star ✨',
+  '🎈 Celebrating 21 Years of Pure Happiness 🎂',
+  '✉️ A Galaxy of Sweet, Golden Memories 💫',
+  '💖 Keep Smiling, Your Smile is Magical 😊',
+  '💎 Pure Sparkle, Elegance, & Grace ✨',
+  '👸 The Beautiful Queen of Our Hearts 👑'
 ];
 
 const BirthdayQuoteCycle = () => {
@@ -125,7 +126,7 @@ const SceneGallery3D = ({ onComplete }) => {
   ], []);
 
   return (
-    <div className="scene-gallery-3d-root w-full h-full relative bg-[#010103] overflow-hidden flex flex-col items-center">
+    <div className="scene-gallery-3d-root w-full h-full relative bg-transparent overflow-hidden flex flex-col items-center">
       {/* Background VFX */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-purple-900/20 via-transparent to-blue-900/20" />
@@ -133,14 +134,14 @@ const SceneGallery3D = ({ onComplete }) => {
 
       {/* 1. CHRONICLES OF JOY - FIXED TOP */}
       <div className="gallery3d-header absolute top-10 sm:top-16 w-full text-center z-30 px-4">
-        <StaggeredTitle text="CHRONICLES OF JOY" />
+        <StaggeredTitle text="✨ CHRONICLES OF JOY ✨" />
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.8 }}
           transition={{ delay: 1.2 }}
           className="gallery3d-subtitle mt-4 text-[9px] sm:text-xs tracking-[0.4em] text-white/90 font-bold uppercase"
         >
-          A Timeless Celebration
+          💖 A TIMELESS CELEBRATION 💫
         </motion.p>
       </div>
 
@@ -172,7 +173,7 @@ const SceneGallery3D = ({ onComplete }) => {
           transition={{ delay: 1.8 }}
           className="text-white font-instrument-serif italic text-base sm:text-2xl md:text-3xl font-bold uppercase tracking-wider drop-shadow-lg"
         >
-          "Your light shines brighter than the stars"
+          ✨ "Your beautiful smile makes every single day brighter" 💖
         </motion.h2>
       </div>
 
@@ -185,9 +186,9 @@ const SceneGallery3D = ({ onComplete }) => {
           transition={{ delay: 2.2 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-10 py-4 sm:px-16 sm:py-5 glass-card-premium rounded-full text-white tracking-[0.3em] text-[10px] sm:text-xs font-black uppercase"
+          className="btn-luxury px-10 py-4 sm:px-16 sm:py-5 animate-fade-up shadow-2xl"
         >
-          CONTINUE
+          CONTINUE THE JOURNEY ➔
         </motion.button>
       </div>
 

@@ -227,7 +227,7 @@ const SceneCake = ({ onComplete }) => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="absolute top-[-40px] z-30 flex flex-col items-center pointer-events-none sm:top-[-50px]"
+              className="absolute top-[25px] z-30 flex flex-col items-center pointer-events-none sm:top-[35px]"
             >
               <div className="mb-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
                 <span className="text-[0.65rem] font-bold uppercase tracking-widest text-white/90 sm:text-[11px]">

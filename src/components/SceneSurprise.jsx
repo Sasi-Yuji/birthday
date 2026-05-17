@@ -145,10 +145,18 @@ const SceneSurprise = ({ onComplete }) => {
           onClick={() => openModal('message')}
           onMouseMove={(e) => handleMouseMove(e, 'card-message')}
         >
-          <div className="card-icon-container">✉️</div>
-          <h2 className="card-title">Surprise Message</h2>
-          <p className="card-desc">A beautiful heartfelt letter waiting to be read just for you.</p>
-          {openedSurprises.message && <span className="absolute top-3 right-3 text-xs bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30">Read</span>}
+          <div className="card-content-inner">
+            <div className="card-icon-container">✉️</div>
+            <h2 className="card-title">Surprise Message</h2>
+            <p className="card-desc">A beautiful heartfelt letter waiting to be read just for you.</p>
+          </div>
+          <div className="card-status-container">
+            {openedSurprises.message ? (
+              <span className="card-status-badge read">Read</span>
+            ) : (
+              <span className="card-status-badge unopened">Tap to Open</span>
+            )}
+          </div>
         </div>
 
         {/* FLOWERS CARD */}
@@ -159,10 +167,18 @@ const SceneSurprise = ({ onComplete }) => {
           onClick={() => openModal('flowers')}
           onMouseMove={(e) => handleMouseMove(e, 'card-flowers')}
         >
-          <div className="card-icon-container">💐</div>
-          <h2 className="card-title">Birthday Flowers</h2>
-          <p className="card-desc">A magical bouquet gallery carrying elegant sweet whispers.</p>
-          {openedSurprises.flowers && <span className="absolute top-3 right-3 text-xs bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30">Seen</span>}
+          <div className="card-content-inner">
+            <div className="card-icon-container">💐</div>
+            <h2 className="card-title">Birthday Flowers</h2>
+            <p className="card-desc">A magical bouquet gallery carrying elegant sweet whispers.</p>
+          </div>
+          <div className="card-status-container">
+            {openedSurprises.flowers ? (
+              <span className="card-status-badge seen">Seen</span>
+            ) : (
+              <span className="card-status-badge unopened">Tap to Open</span>
+            )}
+          </div>
         </div>
 
         {/* CAKE CARD */}
@@ -173,10 +189,18 @@ const SceneSurprise = ({ onComplete }) => {
           onClick={() => openModal('cake')}
           onMouseMove={(e) => handleMouseMove(e, 'card-cake')}
         >
-          <div className="card-icon-container">🎂</div>
-          <h2 className="card-title">Surprise Cake</h2>
-          <p className="card-desc">Make a romantic wish and blow the candle in celebration.</p>
-          {openedSurprises.cake && <span className="absolute top-3 right-3 text-xs bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30">Wish Made</span>}
+          <div className="card-content-inner">
+            <div className="card-icon-container">🎂</div>
+            <h2 className="card-title">Surprise Cake</h2>
+            <p className="card-desc">Make a romantic wish and blow the candle in celebration.</p>
+          </div>
+          <div className="card-status-container">
+            {openedSurprises.cake ? (
+              <span className="card-status-badge wish-made">Wish Made</span>
+            ) : (
+              <span className="card-status-badge unopened">Tap to Open</span>
+            )}
+          </div>
         </div>
       </div>
 

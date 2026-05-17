@@ -5,8 +5,7 @@ class TextEffect {
   constructor(options = {}, canvasWidth, canvasHeight) {
     const pool = document.createElement('canvas');
     const buffer = pool.getContext('2d');
-    pool.width = canvasWidth;
-    pool.height = canvasHeight;
+    
     this.size = options.size || 40; 
     this.copy = (options.copy || `20 • 05 • 2005`) + ' ';
     this.color = options.color || '#fce4ec';
@@ -24,14 +23,23 @@ class TextEffect {
     this.bound = buffer.measureText(this.copy);
     this.bound.height = this.size * 1.5;
     
+    // Ensure offscreen pool is wide and tall enough to fully render text without truncation
+    pool.width = Math.max(canvasWidth, this.bound.width + 20);
+    pool.height = Math.max(canvasHeight, this.bound.height + 20);
+    
     // Center the text
     this.x = canvasWidth * 0.5 - this.bound.width * 0.5;
     this.y = canvasHeight * 0.5 - this.bound.height * 0.5;
 
+    // Re-apply styles on newly resized offscreen pool context
+    buffer.font = `bold ${this.size}px Cinzel, serif`;
+    if ('letterSpacing' in buffer) {
+      buffer.letterSpacing = this.letterSpacing;
+    }
     buffer.strokeStyle = this.color;
     buffer.lineWidth = this.strokeWidth;
     buffer.strokeText(this.copy, 0, this.bound.height * 0.8);
-    this.data = buffer.getImageData(0, 0, this.bound.width, this.bound.height);
+    this.data = buffer.getImageData(0, 0, this.bound.width + 10, this.bound.height);
     this.index = 0;
   }
 
@@ -252,6 +260,16 @@ const LightningText = ({ text = "20 • 05 • 2005", size = 40, letterSpacing =
 
     updateDimensions();
 
+    // Safely re-measure dimensions when standard browser fonts are ready (resolves Cinzel loading timing truncation)
+    if (typeof document !== 'undefined' && document.fonts) {
+      document.fonts.ready.then(() => {
+        updateDimensions();
+      }).catch(() => {});
+    }
+
+    // Safety timeout fallback
+    const safetyTimeout = setTimeout(updateDimensions, 1000);
+
     const loop = () => {
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
@@ -287,6 +305,7 @@ const LightningText = ({ text = "20 • 05 • 2005", size = 40, letterSpacing =
     window.addEventListener('resize', handleResize);
 
     return () => {
+      clearTimeout(safetyTimeout);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
