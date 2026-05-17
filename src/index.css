@@ -1081,12 +1081,6 @@ html {
 /* Scene balloons — mobile-first date / age; --bd-lightning > --bd-font so stroke canvas matches filled Cinzel */
 .balloons-detail-row {
   --bd-font: 11px;
-  --bd-lightning: 14;
-  --bd-spacing: 0.12em;
-  --bd-weight: 1.5;
-  --bd-age-w: 6.8rem;
-  --bd-age-h: 2rem;
-  --bd-age-offset: 15px; /* Option 1: 15px shift to the right on mobile */
   box-sizing: border-box;
   width: 100%;
   max-width: 310px; /* Constrain on mobile to perfectly flank the center lanyard line */
@@ -1098,48 +1092,24 @@ html {
 @media (min-width: 360px) {
   .balloons-detail-row {
     --bd-font: 12px;
-    --bd-lightning: 16;
-    --bd-spacing: 0.12em;
-    --bd-weight: 1.5;
-    --bd-age-w: 7.6rem;
-    --bd-age-h: 2.15rem;
-    --bd-age-offset: 15px;
   }
 }
 
 @media (min-width: 375px) {
   .balloons-detail-row {
     --bd-font: 13px;
-    --bd-lightning: 18;
-    --bd-spacing: 0.12em;
-    --bd-weight: 1.5;
-    --bd-age-w: 8.2rem;
-    --bd-age-h: 2.25rem;
-    --bd-age-offset: 15px;
   }
 }
 
 @media (min-width: 480px) {
   .balloons-detail-row {
     --bd-font: 15px;
-    --bd-lightning: 20;
-    --bd-spacing: 0.12em;
-    --bd-weight: 1.5;
-    --bd-age-w: 9.8rem;
-    --bd-age-h: 2.5rem;
-    --bd-age-offset: 15px;
   }
 }
 
 @media (min-width: 640px) {
   .balloons-detail-row {
     --bd-font: 18px;
-    --bd-lightning: 25;
-    --bd-spacing: 0.11em;
-    --bd-weight: 1.2;
-    --bd-age-w: 11.5rem;
-    --bd-age-h: 2.875rem;
-    --bd-age-offset: 0px; /* Reset offset on larger screens where space is ample */
     max-width: min(100% - 2rem, 80rem); /* Restore full-width centering on tablet/desktop */
   }
 }
@@ -1147,42 +1117,24 @@ html {
 @media (min-width: 768px) {
   .balloons-detail-row {
     --bd-font: 22px;
-    --bd-lightning: 23;
-    --bd-spacing: 0.1em;
-    --bd-weight: 1;
-    --bd-age-w: 13.75rem;
-    --bd-age-h: 3.2rem;
   }
 }
 
 @media (min-width: 1024px) {
   .balloons-detail-row {
     --bd-font: 24px;
-    --bd-lightning: 25;
-    --bd-spacing: 0.1em;
-    --bd-weight: 1;
-    --bd-age-w: 15rem;
-    --bd-age-h: 3.4rem;
   }
 }
 
 @media (min-width: 1280px) {
   .balloons-detail-row {
     --bd-font: 26px;
-    --bd-lightning: 27;
-    --bd-spacing: 0.1em;
-    --bd-weight: 1;
-    --bd-age-w: 16.25rem;
-    --bd-age-h: 3.55rem;
   }
 }
 
 @media (min-width: 1536px) {
   .balloons-detail-row {
     --bd-font: 28px;
-    --bd-lightning: 29;
-    --bd-age-w: 17.25rem;
-    --bd-age-h: 3.65rem;
   }
 }
 
@@ -1204,14 +1156,9 @@ html {
 .balloons-detail-row .balloons-age-col {
   position: relative;
   z-index: 2;
-  transform: translateX(var(--bd-age-offset, 0px)); /* Apply horizontal shift offset */
 }
 
-.balloons-detail-row .balloons-age-slot {
-  width: var(--bd-age-w);
-  height: var(--bd-age-h);
-  flex-shrink: 0;
-}
+
 
 /* Balloons scene: keep content inside viewport, avoid horizontal spill */
 .scene-balloons-root {

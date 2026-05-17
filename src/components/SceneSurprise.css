@@ -381,6 +381,43 @@
   transform: rotate(90deg);
 }
 
+.modal-back-btn {
+  position: absolute;
+  top: 2.5rem;
+  right: 2rem;
+  left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  background: rgba(255, 182, 193, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 182, 193, 0.25);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 50;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.15);
+}
+
+.modal-back-btn:hover {
+  background: rgba(255, 105, 180, 0.3);
+  border-color: rgba(255, 105, 180, 0.6);
+  color: #fff;
+  transform: translateX(-4px);
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.25);
+}
+
+.modal-back-btn:active {
+  transform: translateX(-2px) scale(0.96);
+}
+
 @media (max-width: 480px) {
   .modal-content-container {
     border-radius: 1.5rem;
@@ -393,6 +430,14 @@
     width: 2rem;
     height: 2rem;
     font-size: 1rem;
+  }
+
+  .modal-back-btn {
+    top: 2rem;
+    right: 1.25rem;
+    left: auto;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
   }
 }
 

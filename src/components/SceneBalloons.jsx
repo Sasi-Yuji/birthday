@@ -5,7 +5,6 @@ import Lanyard from './Lanyard';
 import CurvedLoop from './CurvedLoop';
 import { AnimatedText } from './AnimatedText';
 import { Counter } from './AnimatedCounter';
-import LightningText from './ui/LightningText';
 
 const BALLOON_COLORS = [
   { bg: 'radial-gradient(circle at 30% 30%, #ff4579, #b0003a, #4a0018)', base: '#ff4579' },
@@ -36,21 +35,6 @@ function createInitialBalloons() {
   return Array.from({ length: initialCount }).map(() => createRandomBalloon({ isMobile }));
 }
 
-/** Keep in sync with `index.css` `.balloons-detail-row` --bd-lightning (stroke text reads smaller than filled date) */
-function readInitialLightningSize() {
-  if (typeof window === 'undefined') return 20;
-  const w = window.innerWidth;
-  if (w < 360) return 20;
-  if (w < 375) return 21;
-  if (w < 480) return 22;
-  if (w < 640) return 23;
-  if (w < 768) return 25;
-  if (w < 1024) return 23;
-  if (w < 1280) return 25;
-  if (w < 1536) return 27;
-  return 29;
-}
-
 const SceneBalloons = ({ onComplete }) => {
   const [balloons, setBalloons] = useState(createInitialBalloons);
   const [hasPopped, setHasPopped] = useState(false);
@@ -60,35 +44,6 @@ const SceneBalloons = ({ onComplete }) => {
   const [firstLetterRef, setFirstLetterRef] = useState(null);
   const [lastLetterRef, setLastLetterRef] = useState(null);
   const detailRowRef = useRef(null);
-  const [lightningSize, setLightningSize] = useState(readInitialLightningSize);
-  const [lightningSpacing, setLightningSpacing] = useState('0.1em');
-  const [lightningWeight, setLightningWeight] = useState(1);
-
-  useLayoutEffect(() => {
-    const row = detailRowRef.current;
-    if (!row) return;
-    const read = () => {
-      const style = getComputedStyle(row);
-      const rawSize = style.getPropertyValue('--bd-lightning').trim();
-      const nSize = parseFloat(rawSize, 10);
-      if (!Number.isNaN(nSize) && nSize > 0) setLightningSize(nSize);
-
-      const rawSpacing = style.getPropertyValue('--bd-spacing').trim();
-      if (rawSpacing) setLightningSpacing(rawSpacing);
-
-      const rawWeight = style.getPropertyValue('--bd-weight').trim();
-      const nWeight = parseFloat(rawWeight, 10);
-      if (!Number.isNaN(nWeight) && nWeight > 0) setLightningWeight(nWeight);
-    };
-    read();
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(read) : null;
-    ro?.observe(row);
-    window.addEventListener('resize', read);
-    return () => {
-      ro?.disconnect();
-      window.removeEventListener('resize', read);
-    };
-  }, []);
 
   useEffect(() => {
     const spawnInterval = setInterval(() => {
@@ -172,13 +127,10 @@ const SceneBalloons = ({ onComplete }) => {
           </div>
 
           <div className="balloons-age-col flex shrink-0 justify-end text-date-age">
-            <LightningText 
-              text="21 YEARS" 
-              size={lightningSize} 
-              letterSpacing={lightningSpacing}
-              strokeWidth={lightningWeight}
-              className="balloons-age-slot" 
-            />
+            <div className="balloons-date-text flex items-center">
+              <Counter end={21} duration={2} className="px-0 w-auto" />
+              <span className="ml-1 sm:ml-2 shrink-0">YEARS</span>
+            </div>
           </div>
         </div>
 

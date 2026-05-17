@@ -290,6 +290,7 @@ const MessageSurpriseModal = ({ lines, onClose }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
+      <button className="modal-back-btn" onClick={(e) => { e.stopPropagation(); onClose(); }}>&larr; Go Back</button>
       <div className="modal-content-container max-w-[34rem]" onClick={e => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose}>&times;</button>
         
@@ -377,13 +378,13 @@ const FlowersSurpriseModal = ({ onClose }) => {
     {
       id: 3,
       title: "White & Cream Blooms",
-      url: "https://images.unsplash.com/photo-1596436889106-be35e843f974?auto=format&fit=crop&q=80&w=600",
+      url: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&q=80&w=600",
       tag: "Precious 💖"
     },
     {
       id: 4,
       title: "Sweet Spring Tulips",
-      url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=600",
+      url: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&q=80&w=600",
       tag: "Magical ✨"
     }
   ];
@@ -484,6 +485,7 @@ const FlowersSurpriseModal = ({ onClose }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
+      <button className="modal-back-btn" onClick={(e) => { e.stopPropagation(); onClose(); }}>&larr; Go Back</button>
       <div className="modal-content-container max-w-[40rem]" onClick={e => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose}>&times;</button>
         
@@ -696,6 +698,7 @@ const CakeSurpriseModal = ({ onClose }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
+      <button className="modal-back-btn" onClick={(e) => { e.stopPropagation(); onClose(); }}>&larr; Go Back</button>
       <div className="modal-content-container max-w-[36rem]" onClick={e => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose}>&times;</button>
         
