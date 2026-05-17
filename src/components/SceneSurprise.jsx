@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SceneSurprise.css';
+import AudioSys from '../utils/AudioSystem';
 
 const SceneSurprise = ({ onComplete }) => {
   const [activeModal, setActiveModal] = useState(null); // 'message', 'flowers', 'cake', or null
   const [openedSurprises, setOpenedSurprises] = useState({ message: false, flowers: false, cake: false });
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const audioRef = useRef(null);
 
   // Message Typing State
   const [typedText, setTypedText] = useState('');
@@ -22,41 +21,13 @@ const SceneSurprise = ({ onComplete }) => {
     "Wishing you the happiest birthday ever! ✨"
   ];
   
-  // Audio Initialization
-  useEffect(() => {
-    // A beautiful soft, emotional instrumental acoustic piano track
-    audioRef.current = new Audio('https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
-  }, []);
-
-  const toggleMusic = () => {
-    if (!audioRef.current) return;
-    if (isMusicPlaying) {
-      audioRef.current.pause();
-      setIsMusicPlaying(false);
-    } else {
-      audioRef.current.play().catch(err => console.log("Audio play blocked by browser. User interaction required."));
-      setIsMusicPlaying(true);
-    }
-  };
-
   // Open modal handler
   const openModal = (type) => {
     setActiveModal(type);
     setOpenedSurprises(prev => ({ ...prev, [type]: true }));
     
-    // Automatically trigger music on first surprise if not already playing
-    if (!isMusicPlaying && audioRef.current) {
-      audioRef.current.play().catch(() => {});
-      setIsMusicPlaying(true);
-    }
+    // Automatically trigger/ensure background music is playing
+    AudioSys.playBGM();
   };
 
   const closeModal = () => {

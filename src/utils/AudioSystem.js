@@ -1,11 +1,67 @@
+import bgmUrl from '../assets/birthday bgm.mpeg';
+
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let ctx = null;
+let bgmAudio = null;
+let isPlaying = false;
 
 const AudioSys = {
   init: () => {
+    // 1. Initialize Web Audio Context for synthesized SFX (pops, blows, chimes)
     if (!ctx) ctx = new AudioContext();
     if (ctx.state === 'suspended') ctx.resume();
+
+    // 2. Initialize Single Centralized Background Music Element if not already done
+    if (!bgmAudio) {
+      bgmAudio = new Audio(bgmUrl);
+      bgmAudio.loop = true;
+      bgmAudio.volume = 0.35; // Soft, premium, cinematic balance
+      
+      // Keep track of internal state
+      bgmAudio.addEventListener('play', () => { isPlaying = true; });
+      bgmAudio.addEventListener('pause', () => { isPlaying = false; });
+    }
   },
+  
+  playBGM: () => {
+    AudioSys.init();
+    if (bgmAudio && bgmAudio.paused) {
+      bgmAudio.play().catch(err => {
+        console.log("BGM play blocked by browser, waiting for user action.", err);
+      });
+    }
+  },
+
+  pauseBGM: () => {
+    if (bgmAudio && !bgmAudio.paused) {
+      bgmAudio.pause();
+    }
+  },
+
+  toggleBGM: () => {
+    AudioSys.init();
+    if (!bgmAudio) return false;
+    
+    if (bgmAudio.paused) {
+      bgmAudio.play().catch(err => console.log("BGM toggle play blocked", err));
+      return true;
+    } else {
+      bgmAudio.pause();
+      return false;
+    }
+  },
+
+  isBGMPlaying: () => {
+    return bgmAudio ? !bgmAudio.paused : false;
+  },
+
+  setBGMVolume: (volume) => {
+    if (bgmAudio) {
+      bgmAudio.volume = Math.max(0, Math.min(1, volume));
+    }
+  },
+
+  // Synthesized Sound Effects (SFX)
   playPop: () => {
     if (!ctx) return;
     const t = ctx.currentTime;
@@ -21,6 +77,7 @@ const AudioSys = {
     osc.start(t);
     osc.stop(t + 0.1);
   },
+
   playChime: (freq = 800) => {
     if (!ctx) return;
     const t = ctx.currentTime;
@@ -36,6 +93,7 @@ const AudioSys = {
     osc.start(t);
     osc.stop(t + 1.5);
   },
+
   playBlow: () => {
     if (!ctx) return;
     const t = ctx.currentTime;
@@ -58,6 +116,7 @@ const AudioSys = {
     gain.gain.exponentialRampToValueAtTime(0.01, t + 0.8);
     noise.start(t);
   },
+
   playExplosion: () => {
     if (!ctx) return;
     const t = ctx.currentTime;

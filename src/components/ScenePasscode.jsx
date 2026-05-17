@@ -18,7 +18,6 @@ const ScenePasscode = ({ onComplete }) => {
   // PAGE 5: TYPING STATE
   const [typedMessage, setTypedMessage] = useState('');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const audioRef = useRef(null);
   
   // Camera Interaction States (Page 3)
   const [shutterFlash, setShutterFlash] = useState(false);
@@ -39,29 +38,15 @@ const ScenePasscode = ({ onComplete }) => {
     "Happiest Birthday, Shathini! 🎉🌸"
   ];
 
-  // Initialize audio for Page 5
+  // Initialize audio state
   useEffect(() => {
     AudioSys.init();
-    audioRef.current = new Audio('https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
+    setIsMusicPlaying(AudioSys.isBGMPlaying());
   }, []);
 
   const toggleMusic = () => {
-    if (!audioRef.current) return;
-    if (isMusicPlaying) {
-      audioRef.current.pause();
-      setIsMusicPlaying(false);
-    } else {
-      audioRef.current.play().catch(err => console.log("Audio play blocked by browser", err));
-      setIsMusicPlaying(true);
-    }
+    const isPlayingNow = AudioSys.toggleBGM();
+    setIsMusicPlaying(isPlayingNow);
   };
 
   // Generate random sparkles for Page 2
@@ -188,11 +173,9 @@ const ScenePasscode = ({ onComplete }) => {
       let bufferText = '';
       let timerId;
 
-      // Automatically start background music on page 5
-      if (audioRef.current && !isMusicPlaying) {
-        audioRef.current.play().catch(() => {});
-        setIsMusicPlaying(true);
-      }
+      // Ensure global background music is active on page 5
+      AudioSys.playBGM();
+      setIsMusicPlaying(true);
 
       const type = () => {
         if (currentLine >= messageLines.length) {

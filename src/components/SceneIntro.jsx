@@ -21,6 +21,7 @@ const SceneIntro = ({ onStart }) => {
 
   const handleStart = () => {
     AudioSys.init();
+    AudioSys.playBGM();
     AudioSys.playChime(1200);
     onStart();
   };
