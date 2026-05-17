@@ -34,6 +34,8 @@ const TeddyBear = ({
 	topOffset = 0,
 	/** Manual vertical offset for bottom-aligned bears (px) */
 	bottomOffset = 0,
+	/** Explicit position: 'top-left', 'top-right', 'bottom-left', 'bottom-right'. If omitted, falls back to type-based defaults. */
+	position,
 }) => {
 	const [dims, setDims] = useState(() => ({
 		w: typeof window !== 'undefined' ? window.innerWidth : 390,
@@ -74,51 +76,82 @@ const TeddyBear = ({
 		Math.round(dims.h * 0.045)
 	);
 
-	const animateTL = useMemo(
-		() => ({
-			left: edgeX,
-			top: edgeTop + topOffset,
-			opacity: 1,
-			rotate: 0,
-		}),
-		[edgeX, edgeTop, topOffset]
-	);
+	const resolvedPosition = useMemo(() => {
+		if (position) return position;
+		return type === 'teddy4' ? 'bottom-right' : 'top-left';
+	}, [position, type]);
 
-	const animateBR = useMemo(() => {
-		const extraInset =
-			dims.w < 400 ? 10 : dims.w < 480 ? 8 : dims.w < 768 ? 6 : 4;
-		const leftPx = Math.max(0, dims.w - imgW - edgeX - extraInset);
-		const topPx = Math.max(0, dims.h - imgH - bottomGap + bottomOffset);
+	const initial = useMemo(() => {
+		const bottomTop = Math.max(0, dims.h - imgH - bottomGap + bottomOffset);
+		if (resolvedPosition === 'bottom-left') {
+			return {
+				left: -imgW * 1.35,
+				top: bottomTop,
+				opacity: 0,
+				rotate: -18,
+			};
+		}
+		if (resolvedPosition === 'bottom-right') {
+			return {
+				left: dims.w + imgW * 0.15,
+				top: -Math.round(imgH * 0.55),
+				opacity: 0,
+				rotate: 18,
+			};
+		}
+		if (resolvedPosition === 'top-right') {
+			return {
+				left: dims.w + imgW * 0.35,
+				top: Math.round(dims.h * 0.92),
+				opacity: 0,
+				rotate: 18,
+			};
+		}
+		// 'top-left'
 		return {
-			left: leftPx,
-			top: topPx,
-			opacity: 1,
-			rotate: 0,
-		};
-	}, [dims.w, dims.h, imgW, imgH, edgeX, bottomGap, bottomOffset]);
-
-	const initialTL = useMemo(
-		() => ({
 			left: -imgW * 1.35,
 			top: Math.round(dims.h * 0.92),
 			opacity: 0,
 			rotate: -18,
-		}),
-		[dims.h, imgW]
-	);
+		};
+	}, [resolvedPosition, dims.w, dims.h, imgW, imgH, bottomGap, bottomOffset]);
 
-	const initialBR = useMemo(
-		() => ({
-			left: dims.w + imgW * 0.15,
-			top: -Math.round(imgH * 0.55),
-			opacity: 0,
-			rotate: 18,
-		}),
-		[dims.w, imgH]
-	);
-
-	const initial = type === 'teddy4' ? initialBR : initialTL;
-	const animate = type === 'teddy4' ? animateBR : animateTL;
+	const animate = useMemo(() => {
+		const bottomTop = Math.max(0, dims.h - imgH - bottomGap + bottomOffset);
+		if (resolvedPosition === 'bottom-left') {
+			return {
+				left: edgeX,
+				top: bottomTop,
+				opacity: 1,
+				rotate: 0,
+			};
+		}
+		if (resolvedPosition === 'bottom-right') {
+			const extraInset = dims.w < 400 ? 10 : dims.w < 480 ? 8 : dims.w < 768 ? 6 : 4;
+			const leftPx = Math.max(0, dims.w - imgW - edgeX - extraInset);
+			return {
+				left: leftPx,
+				top: bottomTop,
+				opacity: 1,
+				rotate: 0,
+			};
+		}
+		if (resolvedPosition === 'top-right') {
+			return {
+				left: Math.max(0, dims.w - imgW - edgeX),
+				top: edgeTop + topOffset,
+				opacity: 1,
+				rotate: 0,
+			};
+		}
+		// 'top-left'
+		return {
+			left: edgeX,
+			top: edgeTop + topOffset,
+			opacity: 1,
+			rotate: 0,
+		};
+	}, [resolvedPosition, dims.w, imgW, imgH, edgeX, edgeTop, topOffset, bottomGap, bottomOffset]);
 
 	return (
 		<motion.div

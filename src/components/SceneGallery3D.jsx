@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import pic1 from '../assets/pic1.jpeg';
 import pic2 from '../assets/pic2.jpeg';
+import TeddyBear from './ui/TeddyBear';
 
 const StaggeredTitle = ({ text }) => {
   // Correctly splits surrogate pairs (emojis) to prevent broken character boxes
@@ -194,6 +195,10 @@ const SceneGallery3D = ({ onComplete }) => {
 
       {/* Vignette */}
       <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/80 pointer-events-none z-20" />
+
+      {/* Premium Teddy Bear Friends - framing the bottom corners */}
+      <TeddyBear type="teddy3" position="bottom-left" delay={1.2} sizeMultiplier={1.4} stackReserve={0.05} bottomOffset={45} />
+      <TeddyBear type="teddy4" position="bottom-right" delay={2.2} sizeMultiplier={1.3} stackReserve={0.05} bottomOffset={45} />
     </div>
   );
 };

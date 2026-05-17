@@ -137,18 +137,6 @@ function App() {
       <GlobalCanvas effectMode={effectMode} />
 
       <div className="pointer-events-auto fixed left-2 top-2 z-[9999] flex max-w-[calc(100vw-0.75rem)] flex-wrap items-center justify-end gap-1.5 sm:left-auto sm:right-3 sm:top-3 md:right-4 md:top-4 md:gap-2">
-        <button
-          onClick={() => goToScene(currentSceneIdx - 1)}
-          className="rounded border border-white/20 bg-white/10 px-2 py-1 text-[9px] uppercase tracking-widest transition-all hover:bg-white/20 sm:px-3 sm:text-[10px]"
-        >
-          Prev
-        </button>
-        <button
-          onClick={() => goToScene(currentSceneIdx + 1)}
-          className="rounded border border-white/20 bg-white/10 px-2 py-1 text-[9px] uppercase tracking-widest transition-all hover:bg-white/20 sm:px-3 sm:text-[10px]"
-        >
-          Next
-        </button>
         <div className="flex items-center rounded bg-white/5 px-1.5 py-1 font-mono text-[9px] opacity-50 sm:px-2 sm:text-[10px]">
           {currentSceneIdx + 1} / {SCENES.length}
         </div>
