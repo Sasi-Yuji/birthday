@@ -1,4 +1,4 @@
-import bgmUrl from '../assets/birthday bgm.mpeg';
+import bgmUrl from '../assets/birthday bgm1.mpeg';
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let ctx = null;

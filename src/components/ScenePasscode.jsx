@@ -35,7 +35,7 @@ const ScenePasscode = ({ onComplete }) => {
     "",
     "Thank you for being in my life and for being the wonderful, beautiful soul that you are. May all your dreams and wishes shine bright today! ✨",
     "",
-    "Happiest Birthday, Shathini! 🎉🌸"
+    "Happiest Birthday, Santhini! 🎉🌸"
   ];
 
   // Initialize audio state

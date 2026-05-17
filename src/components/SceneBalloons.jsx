@@ -86,7 +86,7 @@ const SceneBalloons = ({ onComplete, startTrigger = true }) => {
         </div>
 
         <AnimatedText
-          text="SHATHINI"
+          text="SANTHINI"
           replay={startTrigger}
           textClassName="text-[clamp(1.625rem,10vw,3rem)] sm:text-[clamp(2.75rem,12vw,5rem)] md:text-[clamp(5.5rem,14vw,8.75rem)] lg:text-[clamp(7rem,16vw,11.25rem)] font-cinzel font-bold text-white tracking-[0.12em] sm:tracking-[0.18em] md:tracking-[0.28em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
           underlineGradient="from-purple-400 via-fuchsia-500 to-pink-500"
