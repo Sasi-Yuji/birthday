@@ -1,0 +1,82 @@
+.door-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999; /* Extremely high to sit above all scenes */
+  pointer-events: none; /* Allows interaction below when transparent, but blocks during transition? Let's make it block everything during transition by App.jsx passing pointer-events none if not active */
+  display: flex;
+  overflow: hidden;
+}
+
+.royal-door {
+  width: 50vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  background: linear-gradient(135deg, #590000 0%, #200000 100%);
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+}
+
+.royal-door.left {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.royal-door.right {
+  right: 0;
+  transform: translateX(100%);
+}
+
+.door-inner-texture {
+  position: absolute;
+  inset: 0;
+  /* subtle velvet vertical folds texture */
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0.15) 20px,
+    rgba(0, 0, 0, 0) 40px
+  );
+  opacity: 0.8;
+}
+
+.door-border-glow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: linear-gradient(90deg, #ffd700, #ffea70, #ffd700);
+  box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255, 170, 0, 0.6);
+  z-index: 2;
+}
+
+.door-border-glow.right-edge {
+  right: 0;
+  transform: translateX(50%);
+}
+
+.door-border-glow.left-edge {
+  left: 0;
+  transform: translateX(-50%);
+}
+
+.door-sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.door-sparkle {
+  position: absolute;
+  font-size: clamp(0.8rem, 1.5vw, 1.5rem);
+  color: #ffd700;
+  opacity: 0;
+  animation: sparkle-fade infinite ease-in-out;
+  text-shadow: 0 0 15px #ffd700, 0 0 25px #ffffff;
+}
+
+@keyframes sparkle-fade {
+  0%, 100% { opacity: 0; transform: scale(0.3) translateY(0); }
+  50% { opacity: 0.9; transform: scale(1.1) translateY(-10px); }
+}

@@ -70,11 +70,14 @@ const ScenePasscode = ({ onComplete }) => {
     AudioSys.playChime(1100);
 
     if (passcode.length < 4) {
-      const nextCode = passcode + val;
-      setPasscode(nextCode);
+      const expectedChar = correctPasscode[passcode.length];
 
-      if (nextCode.length === 4) {
-        if (nextCode === correctPasscode) {
+      if (val === expectedChar) {
+        // Correct press
+        const nextCode = passcode + val;
+        setPasscode(nextCode);
+
+        if (nextCode.length === 4) {
           // Success
           setKeypadStatus('success');
           // Soft success fanfare
@@ -86,15 +89,14 @@ const ScenePasscode = ({ onComplete }) => {
           setTimeout(() => {
             setStep(2);
             setKeypadStatus('');
-          }, 800);
-        } else {
-          // Failure
-          setKeypadStatus('shake');
-          setTimeout(() => {
-            setPasscode('');
-            setKeypadStatus('');
-          }, 600);
+          }, 1200); // Wait slightly longer for smooth transition
         }
+      } else {
+        // Wrong press - do not continue sequence, just shake
+        setKeypadStatus('shake');
+        setTimeout(() => {
+          setKeypadStatus('');
+        }, 400);
       }
     }
   };
@@ -237,17 +239,28 @@ const ScenePasscode = ({ onComplete }) => {
               ))}
             </div>
 
+            {/* Hint text for expected next number */}
+            <div className={`next-number-hint ${passcode.length === 4 ? 'success-text' : ''}`}>
+              {passcode.length < 4 
+                ? `Next Number: ${correctPasscode[passcode.length]}` 
+                : "Passcode Accepted ✨"
+              }
+            </div>
+
             {/* Keypad Grid */}
             <div className="keypad-grid">
-              {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(val => (
-                <button 
-                  key={val} 
-                  className="keypad-btn"
-                  onClick={() => handleKeypadPress(val)}
-                >
-                  {val}
-                </button>
-              ))}
+              {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(val => {
+                const isExpected = passcode.length < 4 && val === correctPasscode[passcode.length];
+                return (
+                  <button 
+                    key={val} 
+                    className={`keypad-btn ${isExpected ? 'glow-expected' : ''}`}
+                    onClick={() => handleKeypadPress(val)}
+                  >
+                    {val}
+                  </button>
+                );
+              })}
               <button 
                 className="keypad-btn action-btn"
                 onClick={handleClear}
@@ -255,7 +268,7 @@ const ScenePasscode = ({ onComplete }) => {
                 C
               </button>
               <button 
-                className="keypad-btn"
+                className={`keypad-btn ${passcode.length < 4 && correctPasscode[passcode.length] === '0' ? 'glow-expected' : ''}`}
                 onClick={() => handleKeypadPress('0')}
               >
                 0
@@ -336,6 +349,14 @@ const ScenePasscode = ({ onComplete }) => {
             <div className="camera-film-slot"></div>
             <div className="camera-viewfinder"></div>
             <div className="camera-flash"></div>
+            
+            {!filmSliding && (
+              <div className="shutter-arrow">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff3344" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-[0_0_10px_rgba(255,51,68,0.8)]">
+                  <path d="M12 5v14M19 12l-7 7-7-7"/>
+                </svg>
+              </div>
+            )}
             <div className="camera-shutter-btn" onClick={!filmSliding ? handleShutterTrigger : undefined} style={{ cursor: 'pointer' }}></div>
             
             {/* Film slot output when triggered */}
@@ -352,7 +373,7 @@ const ScenePasscode = ({ onComplete }) => {
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col items-center">
             {!filmSliding ? (
               <button 
                 className="blow-btn" 

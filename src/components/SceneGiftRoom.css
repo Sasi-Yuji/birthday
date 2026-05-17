@@ -1,0 +1,298 @@
+/* SceneGiftRoom.css */
+
+.gift-room-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 50%, #fecfef 100%);
+  overflow: hidden;
+  font-family: 'Quicksand', 'Nunito', 'Montserrat', sans-serif;
+}
+
+.gift-sparkles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gift-sparkle {
+  position: absolute;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: #fff;
+  opacity: 0;
+  animation: gift-sparkle-float infinite ease-in-out;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+}
+
+@keyframes gift-sparkle-float {
+  0%, 100% { opacity: 0; transform: translateY(0) scale(0.6); }
+  50% { opacity: 0.9; transform: translateY(-30px) scale(1.2); }
+}
+
+.gift-room-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  gap: 2rem;
+  animation: fade-in-gift 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fade-in-gift {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.gift-room-title {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 
+    0 4px 15px rgba(255, 105, 180, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+  width: 100%;
+  font-family: 'Sniglet', 'Montserrat', sans-serif; /* Soft rounded feel */
+}
+
+/* Door Wrapper */
+.cute-door-wrapper {
+  position: relative;
+  width: clamp(200px, 40vw, 260px);
+  height: clamp(300px, 60vw, 380px);
+  perspective: 1200px;
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.15),
+    0 0 40px rgba(255, 182, 193, 0.6);
+  border-radius: 12px;
+  background: #ffffff; /* Wall color behind door frame */
+  border: 10px solid #ffccd5; /* Door frame */
+  border-bottom: 2px solid #ffccd5;
+  display: flex;
+  justify-content: center;
+  animation: float-door 4s ease-in-out infinite alternate;
+}
+
+@keyframes float-door {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+/* Inside Room */
+.cute-room-inside {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #fff0f5 0%, #ffffff 100%);
+  overflow: hidden;
+  box-shadow: inset 8px 8px 20px rgba(0,0,0,0.06);
+}
+
+/* Peeking Cats */
+.peeking-cats {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%; 
+  height: 100%;
+  z-index: 2;
+}
+
+.cat {
+  position: absolute;
+  width: clamp(55px, 11vw, 75px);
+  height: clamp(55px, 11vw, 75px);
+  border-radius: 50% 50% 0 0;
+  bottom: -5px; /* Stand higher initially so they are cute and visible */
+  transition: transform 0.5s ease;
+  animation: cat-peek 5s infinite;
+}
+
+.cat.white-cat {
+  right: clamp(40px, 20vw, 60px); /* Position next to the orange cat with a cute cuddle overlap */
+  background: #ffffff;
+  box-shadow: inset -5px -5px 12px rgba(0,0,0,0.06);
+  animation-delay: 1.5s;
+  z-index: 2;
+}
+
+.cat.orange-cat {
+  right: 2px; /* Position at the outer right edge */
+  background: #ffb347;
+  box-shadow: inset -5px -5px 12px rgba(200, 100, 0, 0.15);
+  animation-delay: 3s;
+  z-index: 3; /* Sit slightly in front of the white cat */
+}
+
+@keyframes cat-peek {
+  0%, 60%, 100% { transform: translateY(0); }
+  75%, 90% { transform: translateY(-28px) rotate(4deg); } /* Peek up high and tilt */
+  85% { transform: translateY(-28px) rotate(-4deg); }
+}
+
+.cat-ear {
+  position: absolute;
+  top: -12px;
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid currentColor;
+}
+
+.white-cat .cat-ear { color: #ffffff; }
+.orange-cat .cat-ear { color: #ffb347; }
+
+.cat-ear.left { left: 4px; transform: rotate(-20deg); }
+.cat-ear.right { right: 4px; transform: rotate(20deg); }
+
+.cat-face {
+  position: absolute;
+  top: 18px; /* Lift face higher up on head */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cat-eye {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #333;
+  border-radius: 50%;
+  animation: cat-blink 4s infinite;
+}
+
+.cat-eye.left { left: 24%; }
+.cat-eye.right { right: 24%; }
+
+@keyframes cat-blink {
+  0%, 96%, 100% { transform: scaleY(1); }
+  98% { transform: scaleY(0.1); }
+}
+
+.cat-nose {
+  position: absolute;
+  top: 7px;
+  width: 8px;
+  height: 5px;
+  background: #ff9a9e;
+  border-radius: 50%;
+}
+
+.cat-blush {
+  position: absolute;
+  top: 9px;
+  width: 10px;
+  height: 7px;
+  background: rgba(255, 105, 180, 0.45);
+  border-radius: 50%;
+  filter: blur(1.5px);
+}
+.cat-blush.left { left: 12%; }
+.cat-blush.right { right: 12%; }
+
+
+/* Actual Door */
+.cute-door {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffb6c1; /* Pastel Pink */
+  transform-origin: left;
+  transform: rotateY(55deg); /* Wide opening so BOTH cats are fully and clearly visible side-by-side */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10% 0;
+  gap: 15%;
+  box-shadow: 5px 0 15px rgba(0,0,0,0.15);
+  border-right: 4px solid #ff99a8;
+  border-top: 1px solid #ff99a8;
+  border-bottom: 1px solid #ff99a8;
+  border-radius: 2px;
+  z-index: 5;
+}
+
+.door-panel {
+  width: 65%;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+}
+.door-panel.top { height: 40%; }
+.door-panel.bottom { height: 35%; }
+
+.door-knob {
+  position: absolute;
+  right: 12%;
+  top: 52%;
+  width: 14px;
+  height: 14px;
+  background: #ffd700; /* Gold knob */
+  border-radius: 50%;
+  box-shadow: 
+    1px 1px 4px rgba(0,0,0,0.3),
+    inset -2px -2px 4px rgba(200, 150, 0, 0.5);
+}
+
+/* Enter Button */
+.enter-room-btn {
+  margin-top: 1rem;
+  padding: 1rem 3rem;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-weight: 700;
+  color: #d11a68;
+  background: linear-gradient(135deg, #ffffff 0%, #ffeff4 100%);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 
+    0 10px 20px rgba(255, 105, 180, 0.3),
+    inset 0 0 10px rgba(255,255,255,1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: btn-glow-pulse 2s infinite alternate;
+  font-family: inherit;
+  z-index: 20;
+}
+
+.enter-room-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 15px 30px rgba(255, 105, 180, 0.5),
+    inset 0 0 15px rgba(255,255,255,1);
+  color: #ff1493;
+}
+
+.enter-room-btn:active {
+  transform: translateY(2px) scale(0.98);
+}
+
+.enter-room-btn:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+  animation: none;
+}
+
+@keyframes btn-glow-pulse {
+  0% { box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3), inset 0 0 10px #fff; }
+  100% { box-shadow: 0 12px 30px rgba(255, 105, 180, 0.6), inset 0 0 20px #fff; }
+}
+
+@media (max-width: 768px) {
+  .gift-room-title {
+    margin-bottom: 1.5rem;
+  }
+}

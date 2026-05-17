@@ -145,7 +145,45 @@
 .dots-display {
   display: flex;
   gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.next-number-hint {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255, 182, 193, 0.9);
+  letter-spacing: 0.05em;
   margin-bottom: 1.5rem;
+  min-height: 1.2rem;
+  text-align: center;
+  animation: fade-in-hint 0.3s ease-in;
+}
+
+.next-number-hint.success-text {
+  color: #00ffcc;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+  font-weight: 600;
+}
+
+@keyframes fade-in-hint {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glow-expected {
+  border-color: rgba(255, 105, 180, 0.8) !important;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.5), inset 0 0 10px rgba(255, 105, 180, 0.2);
+  animation: pulse-glow 1.5s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.4), inset 0 0 5px rgba(255, 105, 180, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8), inset 0 0 15px rgba(255, 105, 180, 0.4);
+    background: rgba(255, 105, 180, 0.15) !important;
+  }
 }
 
 .dot {
@@ -278,7 +316,12 @@
   }
 
   .dots-display {
+    margin-bottom: 0.5rem;
+  }
+
+  .next-number-hint {
     margin-bottom: 1rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -312,6 +355,7 @@
   color: #ffb6c1;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 /* Instax CSS Camera Graphic */
@@ -480,6 +524,36 @@
   width: 250px;
   height: 250px;
   border-radius: 3rem;
+}
+
+.instax-camera.large-scale .camera-shutter-btn {
+  top: -14px;
+  left: 60px;
+  width: 44px;
+  height: 18px;
+  border-radius: 6px 6px 0 0;
+  background: #ff3344;
+  box-shadow: 0 0 15px rgba(255, 51, 68, 0.8), 0 0 25px rgba(255, 51, 68, 0.5);
+  animation: shutter-pulse 1.5s infinite alternate;
+  z-index: 15;
+}
+
+.instax-camera.large-scale .shutter-arrow {
+  position: absolute;
+  top: -55px;
+  left: 66px;
+  animation: bounce-point-down-shutter 1.2s infinite ease-in-out;
+  z-index: 20;
+}
+
+@keyframes bounce-point-down-shutter {
+  0%, 100% { transform: translateY(-8px); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes shutter-pulse {
+  0% { box-shadow: 0 0 10px rgba(255, 51, 68, 0.6); }
+  100% { box-shadow: 0 0 25px rgba(255, 51, 68, 1), 0 0 45px rgba(255, 51, 68, 0.8); background: #ff4d5a; }
 }
 .instax-camera.large-scale .camera-lens {
   width: 140px;

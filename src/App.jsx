@@ -13,10 +13,13 @@ import SceneCake from './components/SceneCake';
 import ScenePuzzle from './components/ScenePuzzle';
 import SceneGift from './components/SceneGift';
 import SceneFinale from './components/SceneFinale';
+import DoorTransition from './components/DoorTransition';
+import SceneGiftRoom from './components/SceneGiftRoom';
 
 const SCENES = [
   'intro',
   'balloons',
+  'giftroom',
   'surprise',
   'passcode',
   'gallery',
@@ -31,11 +34,27 @@ function App() {
   const [currentSceneIdx, setCurrentSceneIdx] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [effectMode, setEffectMode] = useState('ambient');
+  const [showDoorTransition, setShowDoorTransition] = useState(false);
   const containerRef = useRef(null);
 
-  const goToScene = (index) => {
+  const goToScene = (index, skipAnimation = false) => {
     if (isTransitioning || index < 0 || index >= SCENES.length) return;
     setIsTransitioning(true);
+
+    // Cinematic Door Transition specifically from intro -> balloons (0 -> 1)
+    if (currentSceneIdx === 0 && index === 1) {
+      setShowDoorTransition(true);
+      return;
+    }
+
+    if (skipAnimation) {
+      setCurrentSceneIdx(index);
+      setIsTransitioning(false);
+      // Ensure styles are cleared for the next scene
+      gsap.set('.scene-container', { clearProps: 'opacity,scale,filter' });
+      if (SCENES[index] === 'finale') setEffectMode('fireworks');
+      return;
+    }
 
     const timeline = gsap.timeline({
       onComplete: () => {
@@ -52,6 +71,32 @@ function App() {
       duration: 1,
       ease: "power2.inOut"
     });
+  };
+
+  const handleDoorMiddleRevert = () => {
+    setCurrentSceneIdx(1);
+    // Initial state for the next scene behind the doors
+    gsap.set('.scene-container', { 
+      opacity: 0.2, 
+      scale: 1.1, 
+      filter: 'blur(12px)'
+    });
+    
+    // Smooth cinematic fade + zoom as doors open
+    gsap.to('.scene-container', {
+      opacity: 1,
+      scale: 1,
+      filter: 'blur(0px)',
+      duration: 3.5,
+      delay: 0.2,
+      ease: 'power2.out',
+      clearProps: 'all'
+    });
+  };
+
+  const handleDoorTransitionComplete = () => {
+    setShowDoorTransition(false);
+    setIsTransitioning(false);
   };
 
   useEffect(() => {
@@ -83,6 +128,12 @@ function App() {
       className="relative mx-auto h-[100dvh] min-h-0 w-full max-w-[100vw] overflow-x-hidden overflow-y-hidden bg-[#050508] text-[#F9F6EE] font-montserrat select-none"
       ref={containerRef}
     >
+      <DoorTransition 
+        isActive={showDoorTransition} 
+        onMiddleRevert={handleDoorMiddleRevert} 
+        onTransitionComplete={handleDoorTransitionComplete} 
+      />
+
       <GlobalCanvas effectMode={effectMode} />
 
       <div className="pointer-events-auto fixed left-2 top-2 z-[9999] flex max-w-[calc(100vw-0.75rem)] flex-wrap items-center justify-end gap-1.5 sm:left-auto sm:right-3 sm:top-3 md:right-4 md:top-4 md:gap-2">
@@ -109,15 +160,16 @@ function App() {
           className={`scene-container ${currentSceneIdx === idx ? 'active' : ''}`}
         >
           {currentSceneIdx === 0 && idx === 0 && <SceneIntro onStart={() => goToScene(1)} />}
-          {currentSceneIdx === 1 && idx === 1 && <SceneBalloons onComplete={() => goToScene(2)} />}
-          {currentSceneIdx === 2 && idx === 2 && <SceneSurprise onComplete={() => goToScene(3)} />}
-          {currentSceneIdx === 3 && idx === 3 && <ScenePasscode onComplete={() => goToScene(4)} />}
-          {currentSceneIdx === 4 && idx === 4 && <SceneGallery onComplete={() => goToScene(5)} />}
-          {currentSceneIdx === 5 && idx === 5 && <SceneGallery3D onComplete={() => goToScene(6)} />}
-          {currentSceneIdx === 6 && idx === 6 && <SceneCake onComplete={() => goToScene(7)} />}
-          {currentSceneIdx === 7 && idx === 7 && <ScenePuzzle onComplete={() => goToScene(8)} />}
-          {currentSceneIdx === 8 && idx === 8 && <SceneGift onComplete={() => goToScene(9)} />}
-          {currentSceneIdx === 9 && idx === 9 && <SceneFinale />}
+          {currentSceneIdx === 1 && idx === 1 && <SceneBalloons onComplete={() => goToScene(2)} startTrigger={!showDoorTransition} />}
+          {currentSceneIdx === 2 && idx === 2 && <SceneGiftRoom onComplete={() => goToScene(3, true)} />}
+          {currentSceneIdx === 3 && idx === 3 && <SceneSurprise onComplete={() => goToScene(4)} />}
+          {currentSceneIdx === 4 && idx === 4 && <ScenePasscode onComplete={() => goToScene(5)} />}
+          {currentSceneIdx === 5 && idx === 5 && <SceneGallery onComplete={() => goToScene(6)} />}
+          {currentSceneIdx === 6 && idx === 6 && <SceneGallery3D onComplete={() => goToScene(7)} />}
+          {currentSceneIdx === 7 && idx === 7 && <SceneCake onComplete={() => goToScene(8)} />}
+          {currentSceneIdx === 8 && idx === 8 && <ScenePuzzle onComplete={() => goToScene(9)} />}
+          {currentSceneIdx === 9 && idx === 9 && <SceneGift onComplete={() => goToScene(10)} />}
+          {currentSceneIdx === 10 && idx === 10 && <SceneFinale />}
         </section>
       ))}
     </div>

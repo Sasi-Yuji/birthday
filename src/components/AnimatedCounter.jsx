@@ -12,11 +12,17 @@ export const Counter = ({
   end,
   duration = 2,
   className,
+  startTrigger = true,
   ...rest
 }) => {
   const [value, setValue] = useState(start);
  
   useEffect(() => {
+    if (!startTrigger) {
+      setValue(start);
+      return;
+    }
+
     let startTime;
     let animationFrame;
 
@@ -39,7 +45,7 @@ export const Counter = ({
 
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
-  }, [end, start, duration]);
+  }, [end, start, duration, startTrigger]);
 
   return (
     <div

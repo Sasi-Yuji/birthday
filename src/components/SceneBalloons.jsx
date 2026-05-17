@@ -35,8 +35,8 @@ function createInitialBalloons() {
   return Array.from({ length: initialCount }).map(() => createRandomBalloon({ isMobile }));
 }
 
-const SceneBalloons = ({ onComplete }) => {
-  const [balloons, setBalloons] = useState(createInitialBalloons);
+const SceneBalloons = ({ onComplete, startTrigger = true }) => {
+  const [balloons, setBalloons] = useState([]);
   const [hasPopped, setHasPopped] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
   const containerRef = useRef(null);
@@ -46,13 +46,18 @@ const SceneBalloons = ({ onComplete }) => {
   const detailRowRef = useRef(null);
 
   useEffect(() => {
+    if (!startTrigger) return;
+    
+    // Create initial balloons once the door is fully open
+    setBalloons(createInitialBalloons());
+
     const spawnInterval = setInterval(() => {
       const isMobile = window.innerWidth < 768;
       setBalloons(prev => [...prev, createRandomBalloon({ isMobile })]);
     }, 800);
 
     return () => clearInterval(spawnInterval);
-  }, []);
+  }, [startTrigger]);
 
   const handlePop = (id, e, color) => {
     AudioSys.playPop();
@@ -67,10 +72,11 @@ const SceneBalloons = ({ onComplete }) => {
   };
 
   useEffect(() => {
+    if (!startTrigger) return;
     // Auto-appear button after 3 seconds for consistency
     const timer = setTimeout(() => setShowContinue(true), 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [startTrigger]);
 
   return (
     <>
@@ -81,6 +87,7 @@ const SceneBalloons = ({ onComplete }) => {
 
         <AnimatedText
           text="SHATHINI"
+          replay={startTrigger}
           textClassName="text-[clamp(1.625rem,10vw,3rem)] sm:text-[clamp(2.75rem,12vw,5rem)] md:text-[clamp(5.5rem,14vw,8.75rem)] lg:text-[clamp(7rem,16vw,11.25rem)] font-cinzel font-bold text-white tracking-[0.12em] sm:tracking-[0.18em] md:tracking-[0.28em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
           underlineGradient="from-purple-400 via-fuchsia-500 to-pink-500"
           underlineHeight="h-[2px] md:h-[4px]"
@@ -117,18 +124,18 @@ const SceneBalloons = ({ onComplete }) => {
         >
           <div className="balloons-date-col flex min-w-0 flex-1 justify-start text-date-age">
             <div className="balloons-date-text flex items-center">
-              <Counter end={20} duration={2} className="px-0 w-auto" />
+              <Counter end={20} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
               <span className="mx-0.5 sm:mx-1 opacity-60 shrink-0">&bull;</span>
-              <Counter end={5} duration={2} className="px-0 w-auto" />
+              <Counter end={5} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
               <span className="mx-0.5 sm:mx-1 opacity-60 shrink-0">&bull;</span>
-              <Counter end={2005} duration={2} className="px-0 w-auto" />
+              <Counter end={2005} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
             </div>
             <span className="text-pink-400 ml-1.5 sm:ml-2 hidden sm:inline shrink-0">✦</span>
           </div>
 
           <div className="balloons-age-col flex shrink-0 justify-end text-date-age">
             <div className="balloons-date-text flex items-center">
-              <Counter end={21} duration={2} className="px-0 w-auto" />
+              <Counter end={21} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
               <span className="ml-1 sm:ml-2 shrink-0">YEARS</span>
             </div>
           </div>
