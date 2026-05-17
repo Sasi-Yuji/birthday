@@ -5,6 +5,17 @@ import AudioSys from '../utils/AudioSystem';
 const SceneSurprise = ({ onComplete }) => {
   const [activeModal, setActiveModal] = useState(null); // 'message', 'flowers', 'cake', or null
   const [openedSurprises, setOpenedSurprises] = useState({ message: false, flowers: false, cake: false });
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+  // Sync music playing state on mount
+  useEffect(() => {
+    setIsMusicPlaying(AudioSys.isBGMPlaying());
+  }, []);
+
+  const toggleMusic = () => {
+    const nextState = AudioSys.toggleBGM();
+    setIsMusicPlaying(nextState);
+  };
 
   // Message Typing State
   const [typedText, setTypedText] = useState('');
@@ -28,6 +39,7 @@ const SceneSurprise = ({ onComplete }) => {
     
     // Automatically trigger/ensure background music is playing
     AudioSys.playBGM();
+    setIsMusicPlaying(true);
   };
 
   const closeModal = () => {
