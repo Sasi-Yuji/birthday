@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactDom from 'react-dom';
 import gsap from 'gsap';
 import GlobalCanvas from './components/GlobalCanvas';
 import SceneIntro from './components/SceneIntro';
 import SceneBalloons from './components/SceneBalloons';
+import SceneSurprise from './components/SceneSurprise';
+import ScenePasscode from './components/ScenePasscode';
 import SceneGallery from './components/SceneGallery';
 import ScenePosters from './components/ScenePosters';
 import SceneGallery3D from './components/SceneGallery3D';
@@ -14,6 +17,8 @@ import SceneFinale from './components/SceneFinale';
 const SCENES = [
   'intro',
   'balloons',
+  'surprise',
+  'passcode',
   'gallery',
   'gallery3d',
   'cake',
@@ -105,12 +110,14 @@ function App() {
         >
           {currentSceneIdx === 0 && idx === 0 && <SceneIntro onStart={() => goToScene(1)} />}
           {currentSceneIdx === 1 && idx === 1 && <SceneBalloons onComplete={() => goToScene(2)} />}
-          {currentSceneIdx === 2 && idx === 2 && <SceneGallery onComplete={() => goToScene(3)} />}
-          {currentSceneIdx === 3 && idx === 3 && <SceneGallery3D onComplete={() => goToScene(4)} />}
-          {currentSceneIdx === 4 && idx === 4 && <SceneCake onComplete={() => goToScene(5)} />}
-          {currentSceneIdx === 5 && idx === 5 && <ScenePuzzle onComplete={() => goToScene(6)} />}
-          {currentSceneIdx === 6 && idx === 6 && <SceneGift onComplete={() => goToScene(7)} />}
-          {currentSceneIdx === 7 && idx === 7 && <SceneFinale />}
+          {currentSceneIdx === 2 && idx === 2 && <SceneSurprise onComplete={() => goToScene(3)} />}
+          {currentSceneIdx === 3 && idx === 3 && <ScenePasscode onComplete={() => goToScene(4)} />}
+          {currentSceneIdx === 4 && idx === 4 && <SceneGallery onComplete={() => goToScene(5)} />}
+          {currentSceneIdx === 5 && idx === 5 && <SceneGallery3D onComplete={() => goToScene(6)} />}
+          {currentSceneIdx === 6 && idx === 6 && <SceneCake onComplete={() => goToScene(7)} />}
+          {currentSceneIdx === 7 && idx === 7 && <ScenePuzzle onComplete={() => goToScene(8)} />}
+          {currentSceneIdx === 8 && idx === 8 && <SceneGift onComplete={() => goToScene(9)} />}
+          {currentSceneIdx === 9 && idx === 9 && <SceneFinale />}
         </section>
       ))}
     </div>
