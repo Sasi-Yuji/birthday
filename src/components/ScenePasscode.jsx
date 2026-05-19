@@ -8,8 +8,8 @@ import pic2 from '../assets/pic2.jpeg';
 import teddy1 from '../assets/teddy1.png';
 
 const ScenePasscode = ({ onComplete }) => {
-  const [step, setStep] = useState(2); // steps 1 to 5 (starts at 2 to bypass passcode page)
-  
+  const [step, setStep] = useState(5); // steps 1 to 5 (starts at 5 to bypass camera pages)
+
   // PAGE 1: PASSCODE STATE
   const [passcode, setPasscode] = useState('');
   const [keypadStatus, setKeypadStatus] = useState(''); // 'shake', 'success', or ''
@@ -18,7 +18,7 @@ const ScenePasscode = ({ onComplete }) => {
   // PAGE 5: TYPING STATE
   const [typedMessage, setTypedMessage] = useState('');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  
+
   // Camera Interaction States (Page 3)
   const [shutterFlash, setShutterFlash] = useState(false);
   const [filmSliding, setFilmSliding] = useState(false);
@@ -116,31 +116,31 @@ const ScenePasscode = ({ onComplete }) => {
     if (typeof window === 'undefined') return;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
-    
+
     try {
       const context = new AudioContext();
       const t = context.currentTime;
-      
+
       // Mirror flip click (Highpass noise decay)
-      const bufferSize = context.sampleRate * 0.12; 
+      const bufferSize = context.sampleRate * 0.12;
       const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
         data[i] = Math.random() * 2 - 1;
       }
-      
+
       const noise = context.createBufferSource();
       noise.buffer = buffer;
-      
+
       const filter = context.createBiquadFilter();
       filter.type = 'highpass';
       filter.frequency.setValueAtTime(1500, t);
       filter.frequency.exponentialRampToValueAtTime(7000, t + 0.08);
-      
+
       const gain = context.createGain();
       gain.gain.setValueAtTime(1.0, t);
       gain.gain.exponentialRampToValueAtTime(0.01, t + 0.12);
-      
+
       noise.connect(filter);
       filter.connect(gain);
       gain.connect(context.destination);
@@ -154,7 +154,7 @@ const ScenePasscode = ({ onComplete }) => {
   const handleShutterTrigger = () => {
     playCameraClick();
     setShutterFlash(true);
-    
+
     // Shutter flash visual blink duration
     setTimeout(() => {
       setShutterFlash(false);
@@ -206,7 +206,7 @@ const ScenePasscode = ({ onComplete }) => {
   return (
     <div className="passcode-scene-root">
       <div className="passcode-aurora"></div>
-      
+
       {/* FULL SCREEN FLASH OVERLAY FOR PAGE 3 CAMERA CLICK */}
       <div className={`shutter-flash-overlay ${shutterFlash ? 'shutter-flash-active' : ''}`} />
 
@@ -279,7 +279,7 @@ const ScenePasscode = ({ onComplete }) => {
       )} */}
 
       {/* ----------------- PAGE 2: COMPLIMENT SCREEN ----------------- */}
-      {step === 2 && (
+      {false && step === 2 && (
         <div className="passcode-container camera-box-layout">
           {/* Floating sparks around camera */}
           <div className="passcode-sparkle-layer">
@@ -317,7 +317,7 @@ const ScenePasscode = ({ onComplete }) => {
             </div>
           </div>
 
-          <button 
+          <button
             className="btn-luxury border-pink-400/40 hover:border-pink-500 hover:shadow-pink-500/10 mt-2 px-10 py-3"
             onClick={() => setStep(3)}
           >
@@ -327,13 +327,13 @@ const ScenePasscode = ({ onComplete }) => {
       )}
 
       {/* ----------------- PAGE 3: CAMERA INTERACTION ----------------- */}
-      {step === 3 && (
+      {false && step === 3 && (
         <div className="passcode-container camera-box-layout">
           <div className="compliment-text-wrap">
             <h2 className="compliment-text">Smile for the camera! 😊</h2>
             <p className="compliment-sub">
-              {filmSliding 
-                ? (filmComplete ? "Click below to see!" : "Developing chemical layers... 🧪") 
+              {filmSliding
+                ? (filmComplete ? "Click below to see!" : "Developing chemical layers... 🧪")
                 : "Tap shutter button to snap a Polaroid!"}
             </p>
           </div>
@@ -343,16 +343,16 @@ const ScenePasscode = ({ onComplete }) => {
             <div className="camera-film-slot"></div>
             <div className="camera-viewfinder"></div>
             <div className="camera-flash"></div>
-            
+
             {!filmSliding && (
               <div className="shutter-arrow">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff3344" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-[0_0_10px_rgba(255,51,68,0.8)]">
-                  <path d="M12 5v14M19 12l-7 7-7-7"/>
+                  <path d="M12 5v14M19 12l-7 7-7-7" />
                 </svg>
               </div>
             )}
             <div className="camera-shutter-btn" onClick={!filmSliding ? handleShutterTrigger : undefined} style={{ cursor: 'pointer' }}></div>
-            
+
             {/* Film slot output when triggered */}
             {filmSliding && (
               <div className="instax-film-out">
@@ -369,14 +369,14 @@ const ScenePasscode = ({ onComplete }) => {
 
           <div className="mt-8 flex flex-col items-center">
             {!filmSliding ? (
-              <button 
-                className="blow-btn" 
+              <button
+                className="blow-btn"
                 onClick={handleShutterTrigger}
               >
                 See the Picture 📸
               </button>
             ) : (
-              <button 
+              <button
                 className={`blow-btn ${filmComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
                 disabled={!filmComplete}
                 onClick={filmComplete ? () => setStep(5) : undefined}
@@ -403,8 +403,8 @@ const ScenePasscode = ({ onComplete }) => {
             <p className="reveal-desc">
               A breathtaking smile captured inside the cosmic camera lens. You look absolutely gorgeous, radiating light and endless warmth to everyone around you!
             </p>
-            
-            <button 
+
+            <button
               className="btn-luxury border-pink-400/40 hover:border-pink-500 hover:shadow-pink-500/10 px-10 py-3"
               onClick={() => setStep(5)}
             >
@@ -439,19 +439,19 @@ const ScenePasscode = ({ onComplete }) => {
           </div>
 
           {/* Music Toggle Control */}
-          <button 
-            className={`music-toggle-btn ${isMusicPlaying ? 'playing' : ''}`} 
+          <button
+            className={`music-toggle-btn ${isMusicPlaying ? 'playing' : ''}`}
             onClick={toggleMusic}
             title={isMusicPlaying ? "Mute Music" : "Play Music"}
             style={{ position: 'absolute', top: '1.5rem', right: '1.5rem' }}
           >
             {isMusicPlaying ? (
               <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6zm-2 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6zm-2 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
               </svg>
             ) : (
               <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73L19.73 21 21 19.73 4.27 3zM14 7h4V3h-6v5.18l2 2z"/>
+                <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73L19.73 21 21 19.73 4.27 3zM14 7h4V3h-6v5.18l2 2z" />
               </svg>
             )}
           </button>
@@ -463,7 +463,7 @@ const ScenePasscode = ({ onComplete }) => {
             </p>
           </div>
 
-          <button 
+          <button
             className="btn-luxury animate-fade-up shadow-2xl border-pink-400/40 hover:border-pink-500 hover:shadow-pink-500/10 px-12 py-4 text-base"
             onClick={onComplete}
           >

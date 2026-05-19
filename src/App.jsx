@@ -22,7 +22,7 @@ const SCENES = [
   'giftroom',
   'surprise',
   'passcode',
-  // 'gallery',
+  // 'gallery', // Temporarily hidden
   // 'gallery3d',
   'cake',
   'puzzle',
