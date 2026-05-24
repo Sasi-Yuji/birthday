@@ -1,4 +1,4 @@
-import bgmUrl from '../assets/birthday bgm1.mpeg';
+import bgmUrl from '../assets/birthday bgm.mpeg';
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let ctx = null;
@@ -16,13 +16,13 @@ const AudioSys = {
       bgmAudio = new Audio(bgmUrl);
       bgmAudio.loop = true;
       bgmAudio.volume = 0.35; // Soft, premium, cinematic balance
-      
+
       // Keep track of internal state
       bgmAudio.addEventListener('play', () => { isPlaying = true; });
       bgmAudio.addEventListener('pause', () => { isPlaying = false; });
     }
   },
-  
+
   playBGM: () => {
     AudioSys.init();
     if (bgmAudio && bgmAudio.paused) {
@@ -41,7 +41,7 @@ const AudioSys = {
   toggleBGM: () => {
     AudioSys.init();
     if (!bgmAudio) return false;
-    
+
     if (bgmAudio.paused) {
       bgmAudio.play().catch(err => console.log("BGM toggle play blocked", err));
       return true;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import gsap from 'gsap';
 import AudioSys from '../utils/AudioSystem';
-import PUZZLE_IMG from '../assets/img1.jpeg';
+import PUZZLE_IMG from '../assets/img3.jpg';
 import TeddyBear from './ui/TeddyBear';
 
 const ScenePuzzle = ({ onComplete }) => {

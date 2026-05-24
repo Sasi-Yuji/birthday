@@ -1206,3 +1206,100 @@ html {
 .animate-fade-up {
   animation: fade-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
+
+/* Base styles for the orbiting layout components */
+.gallery3d-orbit-wrapper {
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  width: calc(var(--radius) * 2);
+  height: calc(var(--radius) * 2);
+  margin-left: calc(var(--radius) * -1);
+  margin-top: calc(var(--radius) * -1);
+}
+
+.gallery3d-orbit-card {
+  width: var(--size);
+  height: calc(var(--size) * 1.3);
+  top: calc(var(--size) * -0.5);
+  left: 50%;
+  margin-left: calc(var(--size) * -0.5);
+}
+
+/* Tablet, Laptop, and Desktop adjustments only */
+@media (min-width: 768px) {
+  /* Center the outer staging area correctly in the center of the viewport */
+  .scene-gallery-3d-root .gallery3d-orbit-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .scene-gallery-3d-root .gallery3d-orbit-core {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Set the orbital variables to scale dynamically with both viewport width and height */
+  .gallery3d-orbit-wrapper {
+    --radius: clamp(140px, 22vmin, 280px);
+    --size: clamp(90px, 14vmin, 180px);
+  }
+
+  /* Make sure the title has a clean, readable font-size and letter-spacing */
+  .scene-gallery-3d-root .gallery3d-title {
+    font-size: clamp(1.6rem, 3.2vw, 2.5rem) !important;
+    letter-spacing: 0.15em !important;
+    text-align: center;
+    white-space: normal;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 90vw;
+    margin-inline: auto;
+  }
+
+  /* Keep the header perfectly centered and in a clean top band */
+  .scene-gallery-3d-root .gallery3d-header {
+    top: clamp(2rem, 6vh, 4rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 80rem;
+  }
+
+  /* Adjust quote band positioning on larger screens */
+  .scene-gallery-3d-root .gallery3d-desktop-quote {
+    position: absolute;
+    bottom: clamp(6.5rem, 16vh, 9rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 80rem;
+    padding-inline: 2rem;
+  }
+
+  /* Ensure button is aligned exactly at the bottom center and stays within bounds */
+  .scene-gallery-3d-root .gallery3d-btn-container {
+    position: absolute;
+    bottom: clamp(2.5rem, 7vh, 4rem);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    width: auto;
+  }
+}
+

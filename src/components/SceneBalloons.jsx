@@ -86,7 +86,7 @@ const SceneBalloons = ({ onComplete, startTrigger = true }) => {
         </div>
 
         <AnimatedText
-          text="SANTHINI"
+          text="SMRITI"
           replay={startTrigger}
           textClassName="text-[clamp(1.625rem,10vw,3rem)] sm:text-[clamp(2.75rem,12vw,5rem)] md:text-[clamp(5.5rem,14vw,8.75rem)] lg:text-[clamp(7rem,16vw,11.25rem)] font-cinzel font-bold text-white tracking-[0.12em] sm:tracking-[0.18em] md:tracking-[0.28em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
           underlineGradient="from-purple-400 via-fuchsia-500 to-pink-500"
@@ -124,18 +124,18 @@ const SceneBalloons = ({ onComplete, startTrigger = true }) => {
         >
           <div className="balloons-date-col flex min-w-0 flex-1 justify-start text-date-age">
             <div className="balloons-date-text flex items-center">
-              <Counter end={20} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
+              <Counter end={18} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
               <span className="mx-0.5 sm:mx-1 opacity-60 shrink-0">&bull;</span>
-              <Counter end={5} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
+              <Counter end={7} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
               <span className="mx-0.5 sm:mx-1 opacity-60 shrink-0">&bull;</span>
-              <Counter end={2005} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
+              <Counter end={1996} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
             </div>
             <span className="text-pink-400 ml-1.5 sm:ml-2 hidden sm:inline shrink-0">✦</span>
           </div>
 
           <div className="balloons-age-col flex shrink-0 justify-end text-date-age">
             <div className="balloons-date-text flex items-center">
-              <Counter end={21} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
+              <Counter end={29} duration={2} className="px-0 w-auto" startTrigger={startTrigger} />
               <span className="ml-1 sm:ml-2 shrink-0">YEARS</span>
             </div>
           </div>

@@ -3,12 +3,12 @@ import './ScenePasscode.css';
 import AudioSys from '../utils/AudioSystem';
 
 // Local Assets
-import img2 from '../assets/images.webp';
-import pic2 from '../assets/pic2.jpeg';
+import img2 from '../assets/img3.jpg';
+import pic2 from '../assets/img2.jpg';
 import teddy1 from '../assets/teddy1.png';
 
 const ScenePasscode = ({ onComplete }) => {
-  const [step, setStep] = useState(5); // steps 1 to 5 (starts at 5 to bypass camera pages)
+  const [step, setStep] = useState(1); // steps 1 to 5 (starts at 1)
 
   // PAGE 1: PASSCODE STATE
   const [passcode, setPasscode] = useState('');
@@ -29,13 +29,16 @@ const ScenePasscode = ({ onComplete }) => {
 
   // Birthday Message Lines
   const messageLines = [
-    "Happy Birthday to the most precious person 💖",
+    "Dearest Friend, 💖",
     "",
-    "You deserve all the happiness in the world. Your kindness, laughter, and presence bring so much joy to my life. I am incredibly grateful and lucky to know you.",
+    "Happy Birthday to the most precious person! 🌟",
+    "Your smile makes every day better, and I am so incredibly lucky to have you in my life. You bring a warmth and light to everyone around you that is truly rare and beautiful.",
     "",
-    "Thank you for being in my life and for being the wonderful, beautiful soul that you are. May all your dreams and wishes shine bright today! ✨",
+    "These flowers are a reflection of your beauty, and this cake is for the sweet moments we share. 🎂🌸",
     "",
-    "Happiest Birthday, Santhini! 🎉🌸"
+    "May your day be filled with endless laughter, sweet memories, and all the happiness your heart can hold. You deserve the absolute best today and always.",
+    "",
+    "Wishing you the happiest birthday ever! ✨"
   ];
 
   // Initialize audio state
@@ -210,8 +213,8 @@ const ScenePasscode = ({ onComplete }) => {
       {/* FULL SCREEN FLASH OVERLAY FOR PAGE 3 CAMERA CLICK */}
       <div className={`shutter-flash-overlay ${shutterFlash ? 'shutter-flash-active' : ''}`} />
 
-      {/* ----------------- PAGE 1: SECRET PASSWORD SCREEN (COMMENTED OUT) ----------------- */}
-      {/* {step === 1 && (
+      {/* ----------------- PAGE 1: SECRET PASSWORD SCREEN ----------------- */}
+      {step === 1 && (
         <div className={`passcode-container passcode-split-layout ${keypadStatus === 'shake' ? 'shake-error' : ''} ${keypadStatus === 'success' ? 'flash-success' : ''}`}>
           <div className="polaroid-wrapper">
             <div className="polaroid-img-container">
@@ -276,10 +279,10 @@ const ScenePasscode = ({ onComplete }) => {
             </div>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* ----------------- PAGE 2: COMPLIMENT SCREEN ----------------- */}
-      {false && step === 2 && (
+      {step === 2 && (
         <div className="passcode-container camera-box-layout">
           {/* Floating sparks around camera */}
           <div className="passcode-sparkle-layer">
@@ -327,7 +330,7 @@ const ScenePasscode = ({ onComplete }) => {
       )}
 
       {/* ----------------- PAGE 3: CAMERA INTERACTION ----------------- */}
-      {false && step === 3 && (
+      {step === 3 && (
         <div className="passcode-container camera-box-layout">
           <div className="compliment-text-wrap">
             <h2 className="compliment-text">Smile for the camera! 😊</h2>
@@ -379,7 +382,7 @@ const ScenePasscode = ({ onComplete }) => {
               <button
                 className={`blow-btn ${filmComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
                 disabled={!filmComplete}
-                onClick={filmComplete ? () => setStep(5) : undefined}
+                onClick={filmComplete ? () => setStep(4) : undefined}
               >
                 {filmComplete ? "Reveal Polaroid ✨" : "Developing..."}
               </button>
@@ -388,8 +391,8 @@ const ScenePasscode = ({ onComplete }) => {
         </div>
       )}
 
-      {/* ----------------- PAGE 4: PHOTO REVEAL (COMMENTED OUT) ----------------- */}
-      {/* {step === 4 && (
+      {/* ----------------- PAGE 4: PHOTO REVEAL ----------------- */}
+      {step === 4 && (
         <div className="passcode-container reveal-split-layout">
           <div className="reveal-photo-frame">
             <img src={img2} alt="Revealed Polaroid" className="film-img-actual" />
@@ -412,7 +415,7 @@ const ScenePasscode = ({ onComplete }) => {
             </button>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* ----------------- PAGE 5: BIRTHDAY MESSAGE ----------------- */}
       {step === 5 && (
@@ -458,7 +461,7 @@ const ScenePasscode = ({ onComplete }) => {
 
           {/* Letter / Card with typing text */}
           <div className="message-glow-letter">
-            <p className="message-typing-text">
+            <p className="message-typing-text font-serif whitespace-pre-line leading-relaxed">
               {typedMessage}
             </p>
           </div>

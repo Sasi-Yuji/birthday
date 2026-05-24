@@ -7,7 +7,7 @@ class TextEffect {
     const buffer = pool.getContext('2d');
     
     this.size = options.size || 40; 
-    this.copy = (options.copy || `20 • 05 • 2005`) + ' ';
+    this.copy = (options.copy || `18 • 07 • 1996`) + ' ';
     this.color = options.color || '#fce4ec';
     this.delay = options.delay || 4; 
     this.basedelay = this.delay;
@@ -228,7 +228,7 @@ class Particles {
 }
 
 // Main React Component
-const LightningText = ({ text = "20 • 05 • 2005", size = 40, letterSpacing = "0px", strokeWidth = 1, className = "" }) => {
+const LightningText = ({ text = "18 • 07 • 1996", size = 40, letterSpacing = "0px", strokeWidth = 1, className = "" }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const thunderRef = useRef([]);

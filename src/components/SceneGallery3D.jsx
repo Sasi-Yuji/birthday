@@ -1,7 +1,19 @@
 import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import img1 from '../assets/img1.jpeg';
-import img2 from '../assets/img2.png';
+import img2 from '../assets/img2.jpg';
+import img3 from '../assets/img3.jpg';
+import img4 from '../assets/img4.jpg';
+import img8 from '../assets/img8.jpg';
+import img10 from '../assets/img10.jpg';
+import img11 from '../assets/img11.jpg';
+import img12 from '../assets/img12.jpg';
+import img13 from '../assets/img13.jpg';
+
+const img1 = img10;
+const img5 = img11;
+const img6 = img12;
+const img7 = img13;
+const img9 = img2;
 import TeddyBear from './ui/TeddyBear';
 
 const StaggeredTitle = ({ text }) => {
@@ -35,8 +47,11 @@ const OrbitingPhoto = ({ src, index, total, radius, speed, size, isMobile }) => 
     <motion.div
       animate={{ rotate: [initialAngleDeg, initialAngleDeg + 360] }}
       transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
-      className="absolute flex items-center justify-center pointer-events-none"
-      style={{ width: finalRadius * 2, height: finalRadius * 2 }}
+      className="gallery3d-orbit-wrapper absolute flex items-center justify-center pointer-events-none"
+      style={{
+        '--radius': `${finalRadius}px`,
+        '--size': `${finalSize}px`,
+      }}
     >
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
@@ -50,14 +65,7 @@ const OrbitingPhoto = ({ src, index, total, radius, speed, size, isMobile }) => 
           opacity: { delay: index * 0.2 + 1, duration: 1 },
           rotate: { duration: speed, repeat: Infinity, ease: "linear" },
         }}
-        className="absolute glass-card-premium rounded-xl pointer-events-auto shadow-2xl"
-        style={{ 
-          width: finalSize, 
-          height: finalSize * 1.3,
-          top: -finalSize / 2, // Center the image on the orbital path
-          left: '50%',
-          marginLeft: -finalSize / 2
-        }}
+        className="gallery3d-orbit-card absolute glass-card-premium rounded-xl pointer-events-auto shadow-2xl"
       >
         <img src={src} className="w-full h-full object-cover rounded-xl" alt="Memory" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 rounded-xl" />
@@ -72,7 +80,7 @@ const birthdayQuotes = [
   '👑 Wearing your Invisible Princess Crown ✨',
   '💫 Forever Young, Radiant, & Blessed 🌸',
   '⭐ Shine Brightly Like the Midnight Star ✨',
-  '🎈 Celebrating 21 Years of Pure Happiness 🎂',
+  '🎈 Celebrating 29 Years of Pure Happiness 🎂',
   '✉️ A Galaxy of Sweet, Golden Memories 💫',
   '💖 Keep Smiling, Your Smile is Magical 😊',
   '💎 Pure Sparkle, Elegance, & Grace ✨',
@@ -123,8 +131,9 @@ const SceneGallery3D = ({ onComplete }) => {
   const isMobile = dims.w < 768;
 
   const photos = useMemo(() => [
-    { src: img1 }, { src: img2 }, { src: img1 }, { src: img2 }, { src: img1 }
-  ], []);
+    { src: img1 }, { src: img2 }, { src: img3 }, { src: img4 }, { src: img5 },
+    { src: img6 }, { src: img7 }, { src: img8 }, { src: img9 }
+  ], [img1, img2, img3, img4, img5, img6, img7, img8, img9]);
 
   return (
     <div className="scene-gallery-3d-root w-full h-full relative bg-transparent overflow-hidden flex flex-col items-center">
@@ -179,7 +188,7 @@ const SceneGallery3D = ({ onComplete }) => {
       </div>
 
       {/* 4. BUTTON - BOTTOM */}
-      <div className="absolute bottom-10 sm:bottom-16 z-40">
+      <div className="gallery3d-btn-container absolute bottom-10 sm:bottom-16 z-40">
         <motion.button
           onClick={onComplete}
           initial={{ opacity: 0, scale: 0.9 }}
@@ -197,8 +206,8 @@ const SceneGallery3D = ({ onComplete }) => {
       <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/80 pointer-events-none z-20" />
 
       {/* Premium Teddy Bear Friends - framing the bottom corners */}
-      <TeddyBear type="teddy3" position="bottom-left" delay={1.2} sizeMultiplier={1.4} stackReserve={0.05} bottomOffset={45} />
-      <TeddyBear type="teddy4" position="bottom-right" delay={2.2} sizeMultiplier={1.3} stackReserve={0.05} bottomOffset={45} />
+      <TeddyBear type="teddy3" position="bottom-left" delay={1.2} sizeMultiplier={1.4} stackReserve={0.05} bottomOffset={isMobile ? 45 : 10} />
+      <TeddyBear type="teddy4" position="bottom-right" delay={2.2} sizeMultiplier={1.3} stackReserve={0.05} bottomOffset={isMobile ? 45 : 10} />
     </div>
   );
 };

@@ -6,9 +6,9 @@ import SceneIntro from './components/SceneIntro';
 import SceneBalloons from './components/SceneBalloons';
 import SceneSurprise from './components/SceneSurprise';
 import ScenePasscode from './components/ScenePasscode';
-// import SceneGallery from './components/SceneGallery';
+import SceneGallery from './components/SceneGallery';
 import ScenePosters from './components/ScenePosters';
-// import SceneGallery3D from './components/SceneGallery3D';
+import SceneGallery3D from './components/SceneGallery3D';
 import SceneCake from './components/SceneCake';
 import ScenePuzzle from './components/ScenePuzzle';
 import SceneGift from './components/SceneGift';
@@ -22,8 +22,8 @@ const SCENES = [
   'giftroom',
   'surprise',
   'passcode',
-  // 'gallery', // Temporarily hidden
-  // 'gallery3d',
+  'gallery',
+  'gallery3d',
   'cake',
   'puzzle',
   'gift',
@@ -152,12 +152,12 @@ function App() {
           {currentSceneIdx === 2 && idx === 2 && <SceneGiftRoom onComplete={() => goToScene(3, true)} />}
           {currentSceneIdx === 3 && idx === 3 && <SceneSurprise onComplete={() => goToScene(4)} />}
           {currentSceneIdx === 4 && idx === 4 && <ScenePasscode onComplete={() => goToScene(5)} />}
-          {/* {currentSceneIdx === 5 && idx === 5 && <SceneGallery onComplete={() => goToScene(6)} />} */}
-          {/* {currentSceneIdx === 6 && idx === 6 && <SceneGallery3D onComplete={() => goToScene(7)} />} */}
-          {currentSceneIdx === 5 && idx === 5 && <SceneCake onComplete={() => goToScene(6)} />}
-          {currentSceneIdx === 6 && idx === 6 && <ScenePuzzle onComplete={() => goToScene(7)} />}
-          {currentSceneIdx === 7 && idx === 7 && <SceneGift onComplete={() => goToScene(8)} />}
-          {currentSceneIdx === 8 && idx === 8 && <SceneFinale />}
+          {currentSceneIdx === 5 && idx === 5 && <SceneGallery onComplete={() => goToScene(6)} />}
+          {currentSceneIdx === 6 && idx === 6 && <SceneGallery3D onComplete={() => goToScene(7)} />}
+          {currentSceneIdx === 7 && idx === 7 && <SceneCake onComplete={() => goToScene(8)} />}
+          {currentSceneIdx === 8 && idx === 8 && <ScenePuzzle onComplete={() => goToScene(9)} />}
+          {currentSceneIdx === 9 && idx === 9 && <SceneGift onComplete={() => goToScene(10)} />}
+          {currentSceneIdx === 10 && idx === 10 && <SceneFinale />}
         </section>
       ))}
     </div>

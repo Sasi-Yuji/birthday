@@ -7,7 +7,7 @@ const birthdayTextItems = [
   { text: 'Princess Energy 👑', className: 'joy-text--left-two', delay: '7.2s' },
   { text: 'Forever Young 🌸', className: 'joy-text--right-two', delay: '10.8s' },
   { text: 'Shine Like a Star ✨', className: 'joy-text--left-three', delay: '14.4s' },
-  { text: '21 Years of Happiness 🎂', className: 'joy-text--right-three', delay: '18s' },
+  { text: '29 Years of Happiness 🎂', className: 'joy-text--right-three', delay: '18s' },
   { text: 'Sweet Memories 💫', className: 'joy-text--left-four', delay: '21.6s' },
   { text: 'Keep Smiling 😊', className: 'joy-text--right-four', delay: '25.2s' },
   { text: 'Born to Sparkle 💎', className: 'joy-text--center-low', delay: '28.8s' },
