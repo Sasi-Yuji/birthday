@@ -386,7 +386,7 @@ const SceneCake = ({ onComplete }) => {
             // Ignite flame instantly
             const flame = flames[idx];
             flame.userData.active = true;
-            
+
             gsap.to(flame.scale, {
               x: 0.6,
               y: 1.2,
@@ -595,12 +595,12 @@ const SceneCake = ({ onComplete }) => {
               {/* Premium Pill Container */}
               <div className="relative group mt-2">
                 {/* Animated glow background */}
-                <motion.div 
+                <motion.div
                   className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-400/40 via-yellow-200/40 to-amber-400/40 opacity-70 blur-md"
                   animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.95, 1.05, 0.95] }}
                   transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                 />
-                
+
                 {/* Glassmorphism Badge */}
                 <div className="relative flex items-center justify-center rounded-full border border-amber-300/40 bg-white/10 px-6 py-2.5 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.2)] overflow-hidden">
                   {/* Subtle shine sweep */}
@@ -610,16 +610,16 @@ const SceneCake = ({ onComplete }) => {
                     animate={{ x: "150%" }}
                     transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
                   />
-                  
+
                   {/* Pulsing Text */}
-                  <motion.span 
+                  <motion.span
                     className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-amber-100 sm:text-xs drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
                     animate={{ opacity: [0.7, 1, 0.7] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   >
                     Tap the flames
                   </motion.span>
-                  
+
                   {/* Sparkles */}
                   <motion.div className="absolute top-1 left-2 text-amber-300/80 text-[8px]"
                     animate={{ opacity: [0, 1, 0], scale: [0.5, 1, 0.5] }}
@@ -668,3 +668,4 @@ const SceneCake = ({ onComplete }) => {
 };
 
 export default SceneCake;
+//done
