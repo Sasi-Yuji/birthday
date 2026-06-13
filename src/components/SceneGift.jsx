@@ -9,6 +9,7 @@ const SceneGift = ({ onComplete }) => {
   const containerRef = useRef(null);
   const [showHint, setShowHint] = useState(true);
   const [showCardContent, setShowCardContent] = useState(false);
+  const [isCardOpen, setIsCardOpen] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
   const openedRef = useRef(false);
 
@@ -210,6 +211,7 @@ const SceneGift = ({ onComplete }) => {
           // Trigger the 2D image appearance slightly before the 3D card reaches the top
           setTimeout(() => {
             setShowCardContent(true);
+            setTimeout(() => setIsCardOpen(true), 800); // Trigger the 3D pop-up open animation
             gsap.to(cardMat, { opacity: 0, duration: 0.6 });
           }, 600);
         }
@@ -301,7 +303,23 @@ const SceneGift = ({ onComplete }) => {
   }, []);
 
   return (
-    <div className="relative flex h-full min-h-0 w-full max-w-[100vw] flex-col items-center justify-between overflow-x-hidden overflow-y-hidden bg-[#050508] py-4 sm:py-6 md:py-8 lg:py-10">
+    <>
+      <style>
+        {`
+          @keyframes flapLeft {
+            0% { transform: rotateY(20deg); }
+            100% { transform: rotateY(70deg); }
+          }
+          @keyframes flapRight {
+            0% { transform: rotateY(-20deg); }
+            100% { transform: rotateY(-70deg); }
+          }
+          .transform-style-3d {
+            transform-style: preserve-3d;
+          }
+        `}
+      </style>
+      <div className="relative flex h-full min-h-0 w-full max-w-[100vw] flex-col items-center justify-between overflow-x-hidden overflow-y-hidden bg-[#050508] py-4 sm:py-6 md:py-8 lg:py-10">
       {/* Cinematic dark theme preserved */}
       <div className="ambient-aurora opacity-40" />
       
@@ -343,27 +361,107 @@ const SceneGift = ({ onComplete }) => {
           {showCardContent && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.5, y: 60 }}
-              animate={{ 
-                opacity: 1, 
-                scale: 1, 
-                y: [0, -15, 0],
-              }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-              transition={{
-                y: {
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                },
-                default: { duration: 0.8, ease: "easeOut" }
-              }}
-              className="absolute top-[30%] md:top-[32%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 w-[85%] max-w-[280px] md:max-w-[420px] pointer-events-auto"
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="absolute top-[35%] md:top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-auto flex justify-center perspective-[1500px]"
             >
-              <img 
-                src="/luxury_birthday_card.png" 
-                alt="Birthday Card" 
-                className="w-full h-auto drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)] rounded-lg"
-              />
+              <div 
+                className="relative w-[160px] h-[220px] md:w-[220px] md:h-[300px] cursor-pointer" 
+                onClick={() => setIsCardOpen(!isCardOpen)}
+              >
+                <div 
+                  className="w-full h-full absolute top-0 left-0 transition-transform duration-[1.5s] ease-in-out transform-style-3d"
+                  style={{ 
+                    transform: isCardOpen ? 'rotateX(15deg) rotateY(-5deg) translateX(50%)' : 'rotateX(10deg) rotateY(-15deg)'
+                  }}
+                >
+                  {/* Base (Right side / Inside Back) */}
+                  <div 
+                    className="absolute top-0 right-0 w-full h-full bg-[#fdfaf5] rounded-r-xl shadow-2xl flex flex-col items-center justify-center p-3 sm:p-5 border-l border-gray-200"
+                    style={{ transformOrigin: 'left center' }}
+                  >
+                    <div className="w-full h-full border border-dashed border-[#d4af37] p-2 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                       <h2 className="text-sm md:text-xl font-serif text-[#8b0000] mb-2 md:mb-4">You Are Amazing</h2>
+                       <p className="text-[10px] md:text-xs text-gray-700 font-serif leading-relaxed">Wishing you a year filled with elegance, joy, and endless success.</p>
+                       <p className="text-[10px] md:text-xs text-gray-700 mt-2 font-serif">May all your dreams come true.</p>
+                       <div className="absolute -bottom-4 -right-4 w-12 h-12 border-2 border-pink-200 rounded-full opacity-50"></div>
+                       <div className="absolute -top-4 -left-4 w-16 h-16 border border-pink-200 rounded-full opacity-50"></div>
+                    </div>
+                  </div>
+
+                  {/* Cover (Left side / Front) */}
+                  <div 
+                    className="absolute top-0 right-0 w-full h-full rounded-r-xl shadow-xl transition-transform duration-[1.5s] ease-in-out origin-left transform-style-3d z-10"
+                    style={{ transform: isCardOpen ? 'rotateY(-160deg)' : 'rotateY(0deg)' }}
+                  >
+                    {/* Front Face of the Cover */}
+                    <div 
+                      className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#8b0000] to-[#4a0000] rounded-r-xl flex items-center justify-center border-l border-[#d4af37]/40 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]"
+                      style={{ backfaceVisibility: 'hidden' }}
+                    >
+                      <div className="w-[85%] h-[90%] border-[0.5px] border-[#d4af37]/60 rounded-md flex items-center justify-center relative overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+                        <span className="text-[#d4af37] font-serif text-lg md:text-2xl text-center px-2 py-3 leading-relaxed tracking-widest border-y-[0.5px] border-[#d4af37]/50 bg-black/20 backdrop-blur-sm z-10">
+                          A Special<br/>Gift
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Back Face of the Cover (Inside Left) */}
+                    <div 
+                      className="absolute inset-0 w-full h-full bg-[#fdfaf5] rounded-l-xl flex flex-col items-center justify-center p-3 sm:p-5 border-r border-gray-200"
+                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    >
+                      <div className="w-full h-full border border-dashed border-[#d4af37] p-2 flex flex-col items-center justify-center relative overflow-hidden">
+                         <span className="text-xs md:text-base font-serif text-[#8b0000] mb-2 text-center relative z-10">For the best person</span>
+                         <span className="text-2xl md:text-4xl text-pink-400 drop-shadow-md relative z-10 mt-1">♥</span>
+                         <div className="absolute bottom-2 left-2 text-[10px] text-gray-400 font-serif italic">Always & Forever</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pop-up Butterfly (Center Spine) */}
+                  <div 
+                    className="absolute top-1/2 left-0 w-0 h-0 transition-opacity duration-1000 flex items-center justify-center pointer-events-none"
+                    style={{
+                       opacity: isCardOpen ? 1 : 0,
+                       transformStyle: 'preserve-3d',
+                       transform: 'translateZ(10px) translateY(-10px)',
+                       transitionDelay: isCardOpen ? '0.5s' : '0s'
+                    }}
+                  >
+                    <div 
+                       className="relative flex items-center justify-center origin-bottom transition-transform duration-[1.5s]"
+                       style={{ 
+                         transform: isCardOpen ? 'scale(1.1) rotateX(-15deg)' : 'scale(0) rotateX(90deg)',
+                         transitionDelay: isCardOpen ? '0.5s' : '0s'
+                       }}
+                    >
+                      {/* Butterfly Body */}
+                      <div className="w-[2px] md:w-[3px] h-10 md:h-12 bg-[#222] rounded-full absolute top-0 -left-[1px] md:-left-[1.5px] z-10 shadow-lg"></div>
+                      
+                      {/* Left Wing */}
+                      <div 
+                        className="absolute right-[1px] top-1 w-12 h-14 md:w-16 md:h-20 origin-right rounded-[60%_40%_40%_60%] bg-gradient-to-br from-[#ff4579] to-[#ff7597] shadow-[0_0_15px_rgba(255,69,121,0.6)] border-[0.5px] border-white/50"
+                        style={{ animation: isCardOpen ? 'flapLeft 0.4s ease-in-out infinite alternate' : 'none' }}
+                      >
+                         <div className="absolute top-2 right-2 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white/60 blur-[1px]"></div>
+                         <div className="absolute bottom-2 right-3 w-2 h-2 md:w-3 md:h-3 rounded-full bg-black/30 blur-[1px]"></div>
+                      </div>
+                      
+                      {/* Right Wing */}
+                      <div 
+                        className="absolute left-[1px] top-1 w-12 h-14 md:w-16 md:h-20 origin-left rounded-[40%_60%_60%_40%] bg-gradient-to-bl from-[#ff4579] to-[#ff7597] shadow-[0_0_15px_rgba(255,69,121,0.6)] border-[0.5px] border-white/50"
+                        style={{ animation: isCardOpen ? 'flapRight 0.4s ease-in-out infinite alternate' : 'none' }}
+                      >
+                         <div className="absolute top-2 left-2 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white/60 blur-[1px]"></div>
+                         <div className="absolute bottom-2 left-3 w-2 h-2 md:w-3 md:h-3 rounded-full bg-black/30 blur-[1px]"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -379,7 +477,8 @@ const SceneGift = ({ onComplete }) => {
           </button>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

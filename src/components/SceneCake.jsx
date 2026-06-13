@@ -551,7 +551,7 @@ const SceneCake = ({ onComplete }) => {
             </motion.div>
           )}
 
-          {countdownState !== 'active' && activeFlames > 0 && (
+          {wishReady && activeFlames > 0 && (
             <motion.div
               key="wish"
               initial={{ opacity: 0, scale: 0.95 }}

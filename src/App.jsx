@@ -32,18 +32,18 @@ const SCENES = [
 
 function App() {
   const [currentSceneIdx, setCurrentSceneIdx] = useState(() => {
-    const saved = localStorage.getItem('birthday_scene_idx');
+    const saved = sessionStorage.getItem('birthday_scene_idx');
     return saved !== null ? parseInt(saved, 10) : 0;
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [effectMode, setEffectMode] = useState(() => {
-    const saved = localStorage.getItem('birthday_scene_idx');
+    const saved = sessionStorage.getItem('birthday_scene_idx');
     const idx = saved !== null ? parseInt(saved, 10) : 0;
     return SCENES[idx] === 'finale' ? 'fireworks' : 'ambient';
   });
 
   useEffect(() => {
-    localStorage.setItem('birthday_scene_idx', currentSceneIdx);
+    sessionStorage.setItem('birthday_scene_idx', currentSceneIdx);
   }, [currentSceneIdx]);
   const [showDoorTransition, setShowDoorTransition] = useState(false);
   const containerRef = useRef(null);
